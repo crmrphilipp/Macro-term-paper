@@ -1,0 +1,47 @@
+rm(list=ls())
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+library(dplyr)
+library(tidyr)
+library(tidyverse)
+library(stargazer)
+library(readr)
+library(WDI)
+library(readxl)
+library(kableExtra)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SOURCE 2 : OECD / GDP values 
+# ═════════════════════════════════════════════════════════════════════════════════
+
+oecd_url_gdppc  <- "https://sdmx.oecd.org/public/rest/data/OECD.SDD.NAD,DSD_NAAG@DF_NAAG_I,1.0/A.AUS+AUT+BEL+CAN+CHL+COL+CRI+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA.B1GQ_R+B1GQ_R_POP.USD_PPP+USD_PPP_PS.?startPeriod=1988&endPeriod=2025&dimensionAtObservation=AllDimensions&format=csvfilewithlabels"
+oecd_file_gdppc <- "../data/oecd_data_gdppc.csv"
+
+dir.create("../data", showWarnings = FALSE)
+
+if (!file.exists(oecd_file_gdppc)) {
+  download.file(oecd_url_gdppc, destfile = oecd_file_gdppc, mode = "wb")
+  message("oecd_gdppc dataset downloaded.")
+}
+ 
+# Load the main data sheet 
+oecd_gdppc_raw <- read_csv(oecd_file_gdppc)
+
+#investigate data structure
+head(oecd_gdppc_raw)
+
+# Clean data to form a working dataset
+
+oecd_gdppc_raw <- oecd_gdppc_raw %>%
+  filter(TIME_PERIOD >= 1990)
+
+oecd_gdppc_raw <- oecd_gdppc_raw %>%
+  filter(`Reference area` %in% oecd_countries)
+
+oecd_gdppc_raw_wide <- oecd_gdppc_raw %>%
+  pivot_wider(
+    id_cols = c(`Reference area`, TIME_PERIOD),
+    names_from = Transaction,
+    values_from = OBS_VALUE
+  )
+
