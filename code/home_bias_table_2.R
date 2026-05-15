@@ -7,8 +7,7 @@
 
 
 rm(list=ls())
-setwd("/Users/philippcremer/Documents/Master/M1 S2/Macro 3/home_bias_recreation")
-
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 library(dplyr)
 library(tidyr)
 library(tidyverse)
@@ -54,9 +53,9 @@ target_years <- c(1993, 2003)
 # ══════════════════════════════════════════════════════════════════════════════
 
 ewn_url  <- "https://www.brookings.edu/wp-content/uploads/2026/02/EWN-dataset-year-end-2024_2.27.26.xlsx"
-ewn_file <- "data/EWN_dataset.xlsx"
+ewn_file <- "../data/EWN_dataset.xlsx"
 
-dir.create("data", showWarnings = FALSE)
+dir.create("../data", showWarnings = FALSE)
 
 if (!file.exists(ewn_file)) {
   download.file(ewn_url, destfile = ewn_file, mode = "wb")
@@ -70,6 +69,8 @@ print(ewn_sheets)
 # Load the main data sheet 
 ewn_raw <- read_excel(ewn_file, sheet = "Dataset")
 
+# Investigate data structure
+head(ewn_raw)
 
 # Filter countries, years and variables as needed for the table recreation
 ewn <- ewn_raw |>
@@ -120,6 +121,9 @@ wdi_raw <- WDI(
   end       = 2024,
   extra     = FALSE
 )
+
+# Investigate data structure
+head(wdi_raw)
 
 # Fiter years and variables as needed for table recreation
 wdi <- wdi_raw |>
@@ -279,9 +283,7 @@ table1_wide |>
                      "Assets"    = 6,
                      "Liabilities" = 6)) |>
   kable_styling(latex_options = c("hold_position", "scale_down")) |>
-  footnote(general = "The rows display the value of foreign equity, debt, and foreign direct investment holdings divided by GDP in the same year.",
-           general_title = "Note.",
-           footnote_as_chunk = TRUE)
+  save_kable("../output/table1.tex")
 
 
 # ── Compute Equity Home Bias ──────────────────────────────────────────────────
@@ -351,19 +353,14 @@ table2_equity_wide |>
     booktabs = TRUE,
     caption  = "Equity Home Bias 1993 and 2003",
     col.names = c("Country",
-                  "Foreign equity in portfolio (\\%)", "Equity Home Bias",
-                  "Foreign equity in portfolio (\\%)", "Equity Home Bias"),
+                  "\\shortstack{Foreign equity \\\\ in portfolio (\\%)}", "Equity Home Bias",
+                  "\\shortstack{Foreign equity \\\\ in portfolio (\\%)}", "Equity Home Bias"),
     align   = c("l", "r", "r", "r", "r"),
     escape  = FALSE
   ) |>
   add_header_above(c(" " = 1, "1993" = 2, "2003" = 2)) |>
   kable_styling(latex_options = c("hold_position", "scale_down")) |>
-  footnote(
-    general       = "Equity Home Bias $= 1 -$ column (1)$/[1 - A]$. Column (1) $=$ total foreign equity held by country/country's total equity portfolio, where the total equity portfolio of a country $=$ stock market capitalization $+$ foreign equity held $-$ amount of country's equity held by foreigners. $A =$ stock market capitalization of a country/stock market capitalization of the world.",
-    general_title = "Note.",
-    footnote_as_chunk = TRUE,
-    escape        = FALSE
-  )
+  save_kable("../output/table2.tex")
 
 
 
@@ -419,12 +416,22 @@ coverage_summary |>
       align    = c("l","r","r","r","r","r","l")) |>
   kable_styling(latex_options = c("hold_position", "scale_down")) |>
   footnote(general = "Coverage computed over 32 years (1993–2024). Missing years listed explicitly when 6 or fewer, otherwise summarised by count.",
-           general_title = "Note.", footnote_as_chunk = TRUE)
+           general_title = "Note.", footnote_as_chunk = TRUE)|>
+           save_kable("../output/table_coverage.tex")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TABLE 2: Year-level summary — how many countries are covered each year?
 # ══════════════════════════════════════════════════════════════════════════════
+
+year_coverage <- wdi_full |>
+  group_by(year) |>
+  summarise(
+    n_available = sum(available),
+    n_missing   = sum(!available),
+    pct         = round(100 * mean(available), 1),
+    .groups     = "drop"
+  )
 
 year_coverage |>
   rename(Year = year,
@@ -436,8 +443,10 @@ year_coverage |>
       caption  = "WDI market capitalisation: number of countries with available data by year",
       align    = c("r","r","r","r")) |>
   kable_styling(latex_options = c("hold_position")) |>
-  footnote(general = "Sample is the 24 OECD countries from Sørensen et al. (2007). Coverage is out of 24 countries.",
-           general_title = "Note.", footnote_as_chunk = TRUE)
+  footnote(general = "Sample is the 24 OECD countries. Coverage is out of 24 countries.",
+           general_title = "Note.", footnote_as_chunk = TRUE)|>
+           save_kable("../output/year_coverage.tex")
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Table 3: Missing data post-2003
@@ -452,4 +461,75 @@ extension_gaps <- wdi_full |>
             .groups       = "drop") |>
   arrange(desc(n_missing))
 
-print(extension_gaps, n = 30)
+extension_gaps |>
+  arrange(desc(n_missing)) |>
+  rename(Country = iso,
+         `Missing Years` = missing_years,
+         `N Missing` = n_missing) |>
+  kbl(format    = "latex",
+      booktabs  = TRUE,
+      caption   = "Missing WDI market capitalisation data post-2003",
+      align     = c("l", "l", "r")) |>
+  kable_styling(latex_options = c("hold_position", "scale_down")) |>
+  footnote(general = "Only countries with at least one missing observation after 2003 are shown.",
+           general_title = "Note.", footnote_as_chunk = TRUE) |>
+  save_kable("../output/table_extension_gaps.tex")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# Market Capitalisation Alternative - IMF Financial Development Index
+# Try to find a more complete source or substitute
+# ══════════════════════════════════════════════════════════════════════════════
+
+# IMF data API package for direct data download
+library(imfapi)
+
+# List all available IMF dataflows and find FDI
+all_flows <- imf_get_dataflows()
+
+# Filter for Financial Development
+all_flows[grepl("Financial Development", all_flows$name, ignore.case = TRUE), ]
+
+
+library(countrycode)
+
+# Get the FDI country codelist to see all codes in the dataset ──────
+country_codes <- imf_get_codelists(
+  dimension_ids = "COUNTRY",
+  dataflow_id   = "FDI"
+)
+
+# countries have ISO3, only agregate groups need to be sorted out
+
+# Download all countries, annual, 1993–2024 ─────────────────────────
+fdi_raw <- imf_get(
+  dataflow_id  = "FDI",
+  dimensions   = list(FREQUENCY = "A"),
+  start_period = "1993",
+  end_period   = "2024"
+)
+
+# Add ISO3 and drop aggregates in one step ──────────────────────────
+# countrycode() returns NA for anything that isn't a real country (aggregates,
+# regions, world totals, etc.) — we use that to filter them out cleanly
+fdi_clean <- fdi_raw |>
+  mutate(
+    iso3c = countrycode(
+      sourcevar   = COUNTRY,
+      origin      = "iso3c",     # IMF codes are largely ISO3
+      destination = "iso3c",
+      warn        = FALSE        # suppress warnings for known aggregates
+    ),
+    year  = as.integer(TIME_PERIOD),
+    value = as.numeric(OBS_VALUE)
+  ) |>
+  filter(!is.na(iso3c)) |>      # drops all aggregates/regions/world totals
+  select(iso3c, INDICATOR, year, value)
+
+# Check what got dropped ────────────────────────────────────────────
+# Useful to verify the filter did the right thing
+dropped <- fdi_raw |>
+  filter(!COUNTRY %in% fdi_clean$iso3c) |>
+  distinct(COUNTRY) |>
+  left_join(country_codes, by = c("COUNTRY" = "code")) |>
+  select(COUNTRY, name)
