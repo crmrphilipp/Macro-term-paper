@@ -536,7 +536,8 @@ ehb_reg <- ehb_reg |>
 ehb_reg_small <- ehb_reg |>
   select(iso,year,EHB_dev)
 
-write.csv()
+write_csv(ehb_reg_small, "../data/ehb_reg_small.csv")
+
 
 # prepare second ehb measure for regression
 ehb_crude_raw <- df_full|>
@@ -560,3 +561,5 @@ ehb_crude_reg <- ehb_crude_reg |>
 
 ehb_crude_reg_small <- ehb_crude_reg |>
   select(iso,year,ehb_crude_dev)
+
+write_csv(ehb_crude_reg_small, "../data/ehb_crude_reg_small.csv")
