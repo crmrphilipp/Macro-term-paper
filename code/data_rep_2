@@ -35,9 +35,6 @@ head(wb_gdp_raw)
 #wb_gdp_raw <- wb_gdp_raw %>%
   #filter(TIME_PERIOD >= 1990)
 
-wb_gdp_raw <- wb_gdp_raw %>%
-  filter(`Country Name` %in% oecd_countries)
-
 library(dplyr)
 library(tidyr)
 
@@ -76,9 +73,6 @@ head(wb_gni_raw)
 
 #wb_gdp_raw <- wb_gdp_raw %>%
   #filter(TIME_PERIOD >= 1990)
-
-wb_gni_raw <- wb_gni_raw %>%
-  filter(`Country Name` %in% oecd_countries)
 
 wb_gni_long <- wb_gni_raw %>%
   pivot_longer(
@@ -143,8 +137,6 @@ head(oecd_pop_raw)
 oecd_pop_raw <- oecd_pop_raw %>%
   filter(TIME_PERIOD >= 1990)
 
-oecd_pop_raw <- oecd_pop_raw %>%
-  filter(`Reference area` %in% oecd_countries)
 
 oecd_pop_raw_wide <- oecd_pop_raw %>%
   pivot_wider(
@@ -172,8 +164,16 @@ wb_oecd_df <- wb_oecd_df %>%
     gnipc = gni / (population * 1000)
   )
 
-####### deviations created
 
+####### filtering for OECD countries
+
+oecd_countries <- c("AUS","CAN","DNK","FRA","DEU",
+"MEX","NLD","NZL","NOR","ESP","SWE",
+"CHE","TUR","USA"
+)
+
+wb_oecd_df <- wb_oecd_df %>%
+  filter(iso%in% oecd_countries)
 
 # per capita growth rates
 wb_oecd_df <- wb_oecd_df %>%
@@ -194,8 +194,12 @@ wb_oecd_aggregate <- wb_oecd_df %>%
     gni_real_total = sum(gni, na.rm = TRUE),
   ) %>%
   mutate(
-    gdp_log_diff_total = log(gdp_real_total) - log(lag(gdp_real_total)),
-    gni_log_diff_total = log(gni_real_total) - log(lag(gni_real_total))
+    gdp_total_pc = gdp_real_total/pop_total,
+    gni_total_pc = gni_real_total/pop_total
+  ) %>%
+  mutate(
+    gdp_log_diff_total = log(gdp_total_pc) - log(lag(gdp_total_pc)),
+    gni_log_diff_total = log(gni_total_pc) - log(lag(gni_total_pc))
   )
 
 # join the aggregate growth rates
@@ -215,4 +219,9 @@ oecd_small_reg <- wb_oecd_df%>%
   select(iso, year, gdp_dev, gni_dev)
 
 write_csv(oecd_small_reg, "../data/oecd_small_reg.csv")
+
+
+
+
+
 
