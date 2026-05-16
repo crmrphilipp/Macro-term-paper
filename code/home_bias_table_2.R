@@ -168,7 +168,7 @@ wdi_world_agg_full <- wdi_world %>%
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Merge the two Sources
+# Merge the two Sources and Compute EHB
 # ══════════════════════════════════════════════════════════════════════════════
 
 
@@ -191,6 +191,39 @@ df_full <- ewn_full |>
     mktcap       = mktcap       / 1e6,
     world_mktcap = world_mktcap / 1e6
   )
+
+# ── Compute Equity Home Bias ──────────────────────────────────────────────────
+
+df <-df |>
+  mutate(
+    # Total equity portfolio = domestic market cap + foreign equity held - equity held by foreigners
+    total_eq_portfolio = mktcap + eq_assets - eq_liab,
+    
+    # Share of foreign equity in total portfolio (column 1 in Table 2, as %)
+    share_foreign_eq   = eq_assets / total_eq_portfolio,
+    
+    # Country share of world market cap
+    A                  = mktcap / world_mktcap,
+    
+    # Equity Home Bias (column 2 in Table 2)
+    EHB                = 1 - share_foreign_eq / (1 - A)
+  )
+
+df_full <-df_full |>
+  mutate(
+    # Total equity portfolio = domestic market cap + foreign equity held - equity held by foreigners
+    total_eq_portfolio = mktcap + eq_assets - eq_liab,
+    
+    # Share of foreign equity in total portfolio (column 1 in Table 2, as %)
+    share_foreign_eq   = eq_assets / total_eq_portfolio,
+    
+    # Country share of world market cap
+    A                  = mktcap / world_mktcap,
+    
+    # Equity Home Bias (column 2 in Table 2)
+    EHB                = 1 - share_foreign_eq / (1 - A)
+  )
+  
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Paper Table Replication: Table 1, Home Bias and Table 2
@@ -285,39 +318,6 @@ table1_wide |>
   kable_styling(latex_options = c("hold_position", "scale_down")) |>
   save_kable("../output/table1.tex")
 
-
-# ── Compute Equity Home Bias ──────────────────────────────────────────────────
-
-df <-df |>
-  mutate(
-    # Total equity portfolio = domestic market cap + foreign equity held - equity held by foreigners
-    total_eq_portfolio = mktcap + eq_assets - eq_liab,
-    
-    # Share of foreign equity in total portfolio (column 1 in Table 2, as %)
-    share_foreign_eq   = eq_assets / total_eq_portfolio,
-    
-    # Country share of world market cap
-    A                  = mktcap / world_mktcap,
-    
-    # Equity Home Bias (column 2 in Table 2)
-    EHB                = 1 - share_foreign_eq / (1 - A)
-  )
-
-df_full <-df_full |>
-  mutate(
-    # Total equity portfolio = domestic market cap + foreign equity held - equity held by foreigners
-    total_eq_portfolio = mktcap + eq_assets - eq_liab,
-    
-    # Share of foreign equity in total portfolio (column 1 in Table 2, as %)
-    share_foreign_eq   = eq_assets / total_eq_portfolio,
-    
-    # Country share of world market cap
-    A                  = mktcap / world_mktcap,
-    
-    # Equity Home Bias (column 2 in Table 2)
-    EHB                = 1 - share_foreign_eq / (1 - A)
-  )
-  
 
 
 # ── Table 2 columns 1 and 2 ───────────────────────────────────────────────────
@@ -493,6 +493,8 @@ extension_gaps |>
   save_kable("../output/table_extension_gaps.tex")
 
 
+
+
 # ══════════════════════════════════════════════════════════════════════════════
 # Regression Ready EHB data
 # prepare the EHB data for the replication
@@ -563,3 +565,172 @@ ehb_crude_reg_small <- ehb_crude_reg |>
   select(iso,year,ehb_crude_dev)
 
 write_csv(ehb_crude_reg_small, "../data/ehb_crude_reg_small.csv")
+
+# test data with some graphs
+
+library(ggplot2)
+
+# ── 1. EHB (one line per country) ─────────────────────────────────────────────
+ggplot(ehb_reg, aes(x = year, y = EHB, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Equity Home Bias (EHB) by Country",
+    x = "Year", y = "EHB",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+# ── 2. EHB_dev (deviation from yearly mean, one line per country) ─────────────
+ggplot(ehb_reg, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "EHB Deviation from Yearly Mean by Country",
+    x = "Year", y = "EHB - Year Mean",
+    color = "Country"
+  ) +
+  theme_minimal()+
+  guides(color = guide_legend(ncol = 2))
+
+# ── 3. EHB_mean (one observation per year — collapse first to avoid overplotting)
+ehb_mean_ts <- ehb_reg |>
+  distinct(year, EHB_mean)
+
+ggplot(ehb_mean_ts, aes(x = year, y = EHB_mean)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Unweighted Cross-Country Mean EHB over Time",
+    x = "Year", y = "Mean EHB"
+  ) +
+  theme_minimal()
+
+# furhter investigation of the variables on which EHB is built
+df_replication_years <- df_full %>%
+  filter(year>1992, year<2004)
+
+ggplot(df_replication_years, aes(x = year, y = eq_assets, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Equity Assets by Country",
+    x = "Year", y = "Equity Assets",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years, aes(x = year, y = log(eq_assets), group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Log Equity Assets by Country",
+    x = "Year", y = "Log Equity Assets",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years, aes(x = year, y = eq_liab, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Equity Liabilities by Country",
+    x = "Year", y = "Equity Liabilties",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years, aes(x = year, y = log(eq_liab), group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Log Equity Liabilities by Country",
+    x = "Year", y = "Log Equity Liabilties",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years, aes(x = year, y = mktcap, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Market Capitalisation by Country",
+    x = "Year", y = "Market Capitalisation",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years, aes(x = year, y = log(mktcap), group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Log Market Capitalisation by Country",
+    x = "Year", y = "Log Market Capitalisation",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+
+market_cap_world_ts <- df_replication_years |>
+  distinct(year, world_mktcap)
+
+ggplot(market_cap_world_ts, aes(x = year, y = world_mktcap)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Total Market Capitalisation",
+    x = "Year", y = "Sum of Market Capitalisation"
+  ) +
+  theme_minimal()
+
+# ── 4. ehb_crude (one line per country) ───────────────────────────────────────
+ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Crude EHB [log(Foreign Equity / GDP)] by Country",
+    x = "Year", y = "log(eq_assets / GDP)",
+    color = "Country"
+  ) +
+  theme_minimal()
+
+# ── 5. ehb_crude_dev (one line per country) ───────────────────────────────────
+ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev, group = iso, color = iso)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Crude EHB Deviation from Yearly Mean by Country",
+    x = "Year", y = "ehb_crude - Year Mean",
+    color = "Country"
+  ) +
+  theme_minimal()
+
+# ── 6. ehb_crude_mean (one observation per year) ──────────────────────────────
+ehb_crude_mean_ts <- ehb_crude_reg |>
+  distinct(year, ehb_crude_mean)
+
+ggplot(ehb_crude_mean_ts, aes(x = year, y = ehb_crude_mean)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Unweighted Cross-Country Mean of Crude EHB over Time",
+    x = "Year", y = "Mean log(eq_assets / GDP)"
+  ) +
+  theme_minimal()
+
