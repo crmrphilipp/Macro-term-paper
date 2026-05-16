@@ -55,7 +55,7 @@ target_years <- c(1993, 2003)
 ewn_url  <- "https://www.brookings.edu/wp-content/uploads/2026/02/EWN-dataset-year-end-2024_2.27.26.xlsx"
 ewn_file <- "../data/EWN_dataset.xlsx"
 
-dir.create("../data", showWarnings = FALSE)
+#dir.create("../data", showWarnings = FALSE)
 
 if (!file.exists(ewn_file)) {
   download.file(ewn_url, destfile = ewn_file, mode = "wb")
@@ -303,6 +303,23 @@ df <-df |>
     EHB                = 1 - share_foreign_eq / (1 - A)
   )
 
+df_full <-df_full |>
+  mutate(
+    # Total equity portfolio = domestic market cap + foreign equity held - equity held by foreigners
+    total_eq_portfolio = mktcap + eq_assets - eq_liab,
+    
+    # Share of foreign equity in total portfolio (column 1 in Table 2, as %)
+    share_foreign_eq   = eq_assets / total_eq_portfolio,
+    
+    # Country share of world market cap
+    A                  = mktcap / world_mktcap,
+    
+    # Equity Home Bias (column 2 in Table 2)
+    EHB                = 1 - share_foreign_eq / (1 - A)
+  )
+  
+
+
 # ── Table 2 columns 1 and 2 ───────────────────────────────────────────────────
 
 table2_equity <- df |>
@@ -477,59 +494,72 @@ extension_gaps |>
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Market Capitalisation Alternative - IMF Financial Development Index
-# Try to find a more complete source or substitute
+# Regression Ready EHB data
+# prepare the EHB data for the replication
 # ══════════════════════════════════════════════════════════════════════════════
 
-# IMF data API package for direct data download
-library(imfapi)
+# Get data for 1993 to 2003 only
+ehb_raw <- df_full |>
+  filter(year>1992, year<2004)
 
-# List all available IMF dataflows and find FDI
-all_flows <- imf_get_dataflows()
+# Exclude negative total equity portfolio values
+# see log book for further discussion
+sum(ehb_raw$total_eq_portfolio<0, na.rm = TRUE)
 
-# Filter for Financial Development
-all_flows[grepl("Financial Development", all_flows$name, ignore.case = TRUE), ]
+sum(ehb_raw$EHB>1, na.rm=TRUE)
+  # counting negative total equity protfolio and counting larger 1 EHB gives same number
 
 
-library(countrycode)
+ehb_reg <- ehb_raw |>
+  filter(is.na(total_eq_portfolio) | !total_eq_portfolio<0)
+  # 11 observations were dropped
 
-# Get the FDI country codelist to see all codes in the dataset ──────
-country_codes <- imf_get_codelists(
-  dimension_ids = "COUNTRY",
-  dataflow_id   = "FDI"
-)
+# Check for EHB values larger 1
+sum(ehb_reg$EHB>1)
 
-# countries have ISO3, only agregate groups need to be sorted out
+  # gives 0 counts
 
-# Download all countries, annual, 1993–2024 ─────────────────────────
-fdi_raw <- imf_get(
-  dataflow_id  = "FDI",
-  dimensions   = list(FREQUENCY = "A"),
-  start_period = "1993",
-  end_period   = "2024"
-)
+# we excluded all EHB values > 1 with all of them coming from total equity values lower 0
 
-# Add ISO3 and drop aggregates in one step ──────────────────────────
-# countrycode() returns NA for anything that isn't a real country (aggregates,
-# regions, world totals, etc.) — we use that to filter them out cleanly
-fdi_clean <- fdi_raw |>
+# unweighted EHB mean
+ehb_reg <- ehb_reg |>
+  group_by(year) |>
   mutate(
-    iso3c = countrycode(
-      sourcevar   = COUNTRY,
-      origin      = "iso3c",     # IMF codes are largely ISO3
-      destination = "iso3c",
-      warn        = FALSE        # suppress warnings for known aggregates
-    ),
-    year  = as.integer(TIME_PERIOD),
-    value = as.numeric(OBS_VALUE)
-  ) |>
-  filter(!is.na(iso3c)) |>      # drops all aggregates/regions/world totals
-  select(iso3c, INDICATOR, year, value)
+    EHB_mean = mean(EHB, na.rm = TRUE),
+    n = sum(!is.na(EHB))
+  )
 
-# Check what got dropped ────────────────────────────────────────────
-# Useful to verify the filter did the right thing
-dropped <- fdi_raw |>
-  filter(!COUNTRY %in% fdi_clean$iso3c) |>
-  distinct(COUNTRY) |>
-  left_join(country_codes, by = c("COUNTRY" = "code")) |>
-  select(COUNTRY, name)
+# deviation from the mean
+ehb_reg <- ehb_reg |>
+  mutate(EHB_dev = EHB-EHB_mean)
+
+ehb_reg_small <- ehb_reg |>
+  select(iso,year,EHB_dev)
+
+write_csv(ehb_reg_small, "../data/ehb_reg_small.csv")
+
+
+# prepare second ehb measure for regression
+ehb_crude_raw <- df_full|>
+  filter(year>1992, year<2004)
+
+# create the "crude" EHB measure using foreign equity over GDP
+ehb_crude_reg <- ehb_crude_raw |>
+  mutate(ehb_crude = log(eq_assets/gdp))
+
+# unweighted mean
+ehb_crude_reg <- ehb_crude_reg |>
+  group_by(year) |>
+  mutate(
+    ehb_crude_mean = mean(ehb_crude, na.rm = TRUE),
+    n = sum(!is.na(ehb_crude))
+  )
+
+# deviation from the mean
+ehb_crude_reg <- ehb_crude_reg |>
+  mutate(ehb_crude_dev = ehb_crude-ehb_crude_mean)
+
+ehb_crude_reg_small <- ehb_crude_reg |>
+  select(iso,year,ehb_crude_dev)
+
+write_csv(ehb_crude_reg_small, "../data/ehb_crude_reg_small.csv")
