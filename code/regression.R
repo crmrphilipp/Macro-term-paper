@@ -39,7 +39,7 @@ panel_df <- pdata.frame(merged_df, index = c("iso", "year"))
 
 # Regression 1: Equity Home Bias deviation
 reg_ehb <- plm(
-  gni_dev ~ 1+ growth_dev + I(time * growth_dev) + I(EHB_dev * growth_dev),
+  gni_dev ~ 1+ gdp_dev + I(time * gdp_dev) + I(EHB_dev * gdp_dev),
   data   = panel_df,
   model  = "within",   # country fixed effects
   effect = "individual"
@@ -47,7 +47,7 @@ reg_ehb <- plm(
 
 # Regression 2: Crude home bias (log foreign equity / GDP)
 reg_crude <- plm(
-  gni_dev ~ 1+ growth_dev + I(time * growth_dev) + I(ehb_crude_dev * growth_dev),
+  gni_dev ~ 1+ gdp_dev + I(time * gdp_dev) + I(ehb_crude_dev * gdp_dev),
   data   = panel_df,
   model  = "within",
   effect = "individual"
