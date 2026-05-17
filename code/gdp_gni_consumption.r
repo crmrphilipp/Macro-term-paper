@@ -141,3 +141,4 @@ final_data_cap <- final_data %>%
 
 # Export the final dataset
 write_csv(final_data_cap, "../data/gdp_gni_consumption_per_capita.csv")
+

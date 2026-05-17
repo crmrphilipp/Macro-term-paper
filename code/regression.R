@@ -18,7 +18,7 @@ library(kableExtra)
 
 # load data
 
-oecd_data <- read.csv("../data/oecd_small_reg.csv")
+oecd_data <- read.csv("../data/gdp_gni_consumption_per_capita.csv")
 
 oecd_data <- oecd_data %>%
     filter(year>1992, year<2004)
