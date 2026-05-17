@@ -77,3 +77,25 @@ stargazer(
   label     = "tab:risk_sharing"
 )
 
+
+
+########### Test (16/05/2026): Use OECD Data on GDP and consumption at current (constant) prices and run regression with these values
+library(readr)
+
+# 1. Fixed the URL to end with exactly 'format=csv'
+test_oecd_sdmx  <- "https://sdmx.oecd.org/public/rest/data/OECD.SDD.NAD,DSD_NAMAIN10@DF_TABLE1_MULT_INDICES,2.0/A.AUS+AUT+BEL+CAN+DNK+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+JPN+MEX+NLD+NZL+NOR+PRT+ESP+SWE+CHE+TUR+GBR+USA+OECD...B1GQ_POP.....LR..?startPeriod=1993&endPeriod=2003&dimensionAtObservation=AllDimensions&format=csv"
+test_oecd_data <- "../data/test_oecd_data.csv"
+
+# 2. Download the file
+if (!file.exists(test_oecd_data)) {
+  download.file(test_oecd_sdmx, destfile = test_oecd_data, mode = "wb")
+  message("test_oecd dataset downloaded.")
+}
+ 
+# 3. Read the CSV without skipping rows
+test_oecd_raw <- read_csv(test_oecd_data)
+
+# 4. View the first few rows to confirm it worked
+head(test_oecd_raw)
+
+
