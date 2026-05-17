@@ -6,6 +6,10 @@
 # ══════════════════════════════════════════════════════════════════════════════
 
 
+#-------------------------#
+###### Part I - Data ######
+#-------------------------#
+
 rm(list=ls())
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 library(dplyr)
@@ -224,6 +228,654 @@ df_full <-df_full |>
     EHB                = 1 - share_foreign_eq / (1 - A)
   )
   
+# ══════════════════════════════════════════════════════════════════════════════
+# Check and Clean EHB data
+# ══════════════════════════════════════════════════════════════════════════════
+
+# Get data for 1993 to 2003 only
+ehb_raw <- df_full |>
+  filter(year>1992, year<2004)
+
+# Exclude negative total equity portfolio values
+# see log book for further discussion
+sum(ehb_raw$total_eq_portfolio<0, na.rm = TRUE)
+
+sum(ehb_raw$EHB>1, na.rm=TRUE)
+  # counting negative total equity protfolio and counting larger 1 EHB gives same number
+
+
+ehb_reg <- ehb_raw |>
+  filter(is.na(total_eq_portfolio) | !total_eq_portfolio<0)
+  # 11 observations were dropped
+  # 4 of those are Ireland which we will completely discard
+  # 1 is italy 1998 coming from a huge drop in market capitalisation for that year (see plots below) while all other variables are continuous
+    # this most likely comes from a change in the stock exchange structure in Italy between 1997 and 1998 (https://en.wikipedia.org/wiki/Borsa_Italiana)
+  # 1 of it is France 1998 which also saw a strong drop in market capitalisation in that year (less strong than Italy)
+    # again all other variables are continuous as can be seen below
+    # there is no direct historic explanation for this
+  # 5 are Finland 1999-2003
+
+# Check for EHB values larger 1
+sum(ehb_reg$EHB>1)
+
+  # gives 0 counts
+
+# we excluded all EHB values > 1 with all of them coming from total equity values lower 0
+
+# look for negative EHB values
+sum(ehb_raw$EHB<0, na.rm = TRUE)
+  # 4 negative values
+    # 3 are from Ireland which will be discarded
+    # 1 is from Austria 1998
+      # also austria exhibits a very pronounced decline in market capitalisation in 1998 with all other variables continuous
+      # this again comes most likely from a restructuring in the Vienna Stock Exchange in December 1997 (https://www.wienerborse.at/en/about-us/vienna-stock-exchange/250-years-wiener-boerse/history/)
+
+
+ehb_reg <- ehb_reg |>
+  filter(is.na(EHB) | !EHB<0)
+# 4 observations dropped
+
+# unweighted EHB mean
+ehb_reg <- ehb_reg |>
+  group_by(year) |>
+  mutate(
+    EHB_mean = mean(EHB, na.rm = TRUE),
+    n = sum(!is.na(EHB))
+  )
+
+# deviation from the mean
+ehb_reg <- ehb_reg |>
+  mutate(EHB_dev = EHB-EHB_mean)
+
+# plot mean trend
+ehb_mean_ts <- ehb_reg |>
+  distinct(year, EHB_mean)
+
+ggplot(ehb_mean_ts, aes(x = year, y = EHB_mean)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Unweighted Cross-Country Mean EHB over Time",
+    x = "Year", y = "Mean EHB"
+  ) +
+  theme_minimal()
+
+# looks similar to the plot from Soresen but not identical
+# starts on roughly the same level but declines slightly more
+
+
+# plot mean deviation
+ggplot(ehb_reg, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "EHB Deviation from Yearly Mean by Country",
+    x = "Year", y = "EHB - Year Mean",
+    color = "Country"
+  ) +
+  theme_minimal()+
+  guides(color = guide_legend(ncol = 2))
+
+  # austria is still weird
+  # drops from 0.65 in 1997 to 0.4 in 1999 (98 discarded)
+  # goes to 0.2 in 2000 and slowly increases back to 0.4 in 2003 (where the 2003 value is the same as in the paper)
+  # we should do one version without Austria
+
+ehb_reg_small <- ehb_reg |>
+  select(iso,year,EHB_dev)
+
+write_csv(ehb_reg_small, "../data/ehb_reg_small.csv")
+
+#---------------------------------------
+# as an additional version of the EHB data we exclude Austria to make sure that the outlier values dont drive the estimation results
+#----------------------------------------
+
+# filter data
+ehb_reg_no_aut <- ehb_reg |>
+  filter(iso!="AUT")
+
+# unweighted EHB mean
+ehb_reg_no_aut <- ehb_reg_no_aut |>
+  group_by(year) |>
+  mutate(
+    EHB_mean = mean(EHB, na.rm = TRUE),
+    n = sum(!is.na(EHB))
+  )
+
+# deviation from the mean
+ehb_reg_no_aut <- ehb_reg_no_aut |>
+  mutate(EHB_dev = EHB-EHB_mean)
+
+# plot mean trend
+ehb_mean_no_aut_ts <- ehb_reg_no_aut |>
+  distinct(year, EHB_mean)
+
+ggplot(ehb_mean_no_aut_ts, aes(x = year, y = EHB_mean)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Unweighted Cross-Country Mean EHB over Time",
+    x = "Year", y = "Mean EHB"
+  ) +
+  theme_minimal()
+
+# plot mean deviation
+ggplot(ehb_reg_no_aut, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "EHB Deviation from Yearly Mean by Country",
+    x = "Year", y = "EHB - Year Mean",
+    color = "Country"
+  ) +
+  theme_minimal()+
+  guides(color = guide_legend(ncol = 2))
+
+# save
+ehb_reg_no_aut_small <- ehb_reg_no_aut |>
+  select(iso,year,EHB_dev)
+
+write_csv(ehb_reg_no_aut_small, "../data/ehb_reg_no_aut_small.csv")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# Crude EHB measure
+# ══════════════════════════════════════════════════════════════════════════════
+
+# prepare second ehb measure for regression
+ehb_crude_raw <- df_full|>
+  filter(year>1992, year<2004)
+
+# create the "crude" EHB measure using foreign equity over GDP
+ehb_crude_reg <- ehb_crude_raw |>
+  mutate(ehb_crude = log((eq_assets+debt_assets+fdi_assets)/gdp))
+
+# unweighted mean
+ehb_crude_reg <- ehb_crude_reg |>
+  group_by(year) |>
+  mutate(
+    ehb_crude_mean = mean(ehb_crude, na.rm = TRUE),
+    n = sum(!is.na(ehb_crude))
+  )
+
+# deviation from the mean
+ehb_crude_reg <- ehb_crude_reg |>
+  mutate(ehb_crude_dev = ehb_crude-ehb_crude_mean)
+
+# plot mean time trend
+ehb_crude_mean_ts <- ehb_crude_reg |>
+  distinct(year, ehb_crude_mean)
+
+ggplot(ehb_crude_mean_ts, aes(x = year, y = ehb_crude_mean)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Unweighted Cross-Country Mean of Crude EHB over Time",
+    x = "Year", y = "Mean log(eq_assets / GDP)"
+  ) +
+  theme_minimal()
+
+# very similar shape as in paper
+# different level probably due to different GDP data
+# !!! needs fixing still
+
+# plot mean deviation
+ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev, group = iso, color = iso)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Crude EHB Deviation from Yearly Mean by Country",
+    x = "Year", y = "ehb_crude - Year Mean",
+    color = "Country"
+  ) +
+  theme_minimal()
+
+
+
+ehb_crude_reg_small <- ehb_crude_reg |>
+  select(iso,year,ehb_crude_dev)
+
+write_csv(ehb_crude_reg_small, "../data/ehb_crude_reg_small.csv")
+
+
+
+#=====================================#
+##### Part II - Tables and Graphs #####
+#=====================================#
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# Check and Visualize Data
+# ══════════════════════════════════════════════════════════════════════════════
+
+library(ggplot2)
+
+# 1a. EHB (one line per country)
+ggplot(ehb_reg, aes(x = year, y = EHB, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Equity Home Bias (EHB) by Country",
+    x = "Year", y = "EHB",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+# 1b. EHB without Austria (one line per country)
+ggplot(ehb_reg_no_aut, aes(x = year, y = EHB, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Equity Home Bias (EHB) by Country (Austria excluded)",
+    x = "Year", y = "EHB",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+# 2a. EHB_dev (deviation from yearly mean, one line per country)
+ggplot(ehb_reg, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "EHB Deviation from Yearly Mean by Country",
+    x = "Year", y = "EHB - Year Mean",
+    color = "Country"
+  ) +
+  theme_minimal()+
+  guides(color = guide_legend(ncol = 2))
+
+# 2b. EHB_dev (deviation from yearly mean, one line per country)
+ggplot(ehb_reg_no_aut, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "EHB Deviation from Yearly Mean by Country (Austria excluded)",
+    x = "Year", y = "EHB - Year Mean",
+    color = "Country"
+  ) +
+  theme_minimal()+
+  guides(color = guide_legend(ncol = 2))
+
+
+# 3a. EHB_mean (one observation per year — collapse first to avoid overplotting)
+ehb_mean_ts <- ehb_reg |>
+  distinct(year, EHB_mean)
+
+ggplot(ehb_mean_ts, aes(x = year, y = EHB_mean)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Unweighted Cross-Country Mean EHB over Time",
+    x = "Year", y = "Mean EHB"
+  ) +
+  theme_minimal()
+
+# 3b. EHB_mean and EHB_mean without Austria (one observation per year — collapse first to avoid overplotting)
+ehb_mean_ts_no_aut <- ehb_reg_no_aut |>
+  distinct(year, EHB_mean)
+
+ehb_mean_ts_no_aut <- ehb_mean_ts_no_aut|>
+  rename(no_aut_EHB_mean=EHB_mean)
+
+ehb_mean_ts <- ehb_mean_ts|>
+  left_join(ehb_mean_ts_no_aut, by="year")
+
+ehb_mean_ts_long <- ehb_mean_ts |>
+  pivot_longer(
+    cols      = c(EHB_mean, no_aut_EHB_mean),
+    names_to  = "series",
+    values_to = "value"
+  ) |>
+  mutate(series = recode(series,
+    "EHB_mean"        = "All countries",
+    "no_aut_EHB_mean" = "Excl. Austria"
+  ))
+
+ggplot(ehb_mean_ts_long, aes(x = year, y = value, color = series, linetype = series)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title  = "Unweighted Cross-Country Mean EHB over Time",
+    x      = "Year",
+    y      = "Mean EHB",
+    color  = NULL,
+    linetype = NULL
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+
+
+# furhter investigation of the variables on which EHB is built
+df_replication_years <- df_full %>%
+  filter(year>1992, year<2004)
+
+ggplot(df_replication_years, aes(x = year, y = eq_assets, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Equity Assets by Country",
+    x = "Year", y = "Equity Assets",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years, aes(x = year, y = log(eq_assets), group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Log Equity Assets by Country",
+    x = "Year", y = "Log Equity Assets",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years, aes(x = year, y = eq_liab, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Equity Liabilities by Country",
+    x = "Year", y = "Equity Liabilties",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years, aes(x = year, y = log(eq_liab), group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Log Equity Liabilities by Country",
+    x = "Year", y = "Log Equity Liabilties",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years, aes(x = year, y = mktcap, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Market Capitalisation by Country",
+    x = "Year", y = "Market Capitalisation",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years, aes(x = year, y = log(mktcap), group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Log Market Capitalisation by Country",
+    x = "Year", y = "Log Market Capitalisation",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+
+market_cap_world_ts <- df_replication_years |>
+  distinct(year, world_mktcap)
+
+ggplot(market_cap_world_ts, aes(x = year, y = world_mktcap)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Total Market Capitalisation",
+    x = "Year", y = "Sum of Market Capitalisation"
+  ) +
+  theme_minimal()
+
+# invstigation on Austria
+df_replication_years_aut <- df_replication_years %>%
+  filter(iso=="AUT")
+
+ggplot(df_replication_years_aut, aes(x = year, y = eq_assets, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Equity Assets by Country",
+    x = "Year", y = "Equity Assets",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years_aut, aes(x = year, y = log(eq_assets), group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Log Equity Assets by Country",
+    x = "Year", y = "Log Equity Assets",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years_aut, aes(x = year, y = eq_liab, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Equity Liabilities by Country",
+    x = "Year", y = "Equity Liabilties",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years_aut, aes(x = year, y = log(eq_liab), group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Log Equity Liabilities by Country",
+    x = "Year", y = "Log Equity Liabilties",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years_aut, aes(x = year, y = mktcap, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Market Capitalisation by Country",
+    x = "Year", y = "Market Capitalisation",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+# invstigation on Italy
+df_replication_years_ita <- df_replication_years %>%
+  filter(iso=="ITA")
+
+ggplot(df_replication_years_ita, aes(x = year, y = eq_assets, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Equity Assets by Country",
+    x = "Year", y = "Equity Assets",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years_ita, aes(x = year, y = log(eq_assets), group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Log Equity Assets by Country",
+    x = "Year", y = "Log Equity Assets",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years_ita, aes(x = year, y = eq_liab, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Equity Liabilities by Country",
+    x = "Year", y = "Equity Liabilties",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years_ita, aes(x = year, y = log(eq_liab), group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Log Equity Liabilities by Country",
+    x = "Year", y = "Log Equity Liabilties",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years_ita, aes(x = year, y = mktcap, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Market Capitalisation by Country",
+    x = "Year", y = "Market Capitalisation",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+# invstigation on France
+df_replication_years_fra <- df_replication_years %>%
+  filter(iso=="FRA")
+
+ggplot(df_replication_years_fra, aes(x = year, y = eq_assets, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Equity Assets by Country",
+    x = "Year", y = "Equity Assets",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years_fra, aes(x = year, y = log(eq_assets), group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Log Equity Assets by Country",
+    x = "Year", y = "Log Equity Assets",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years_fra, aes(x = year, y = eq_liab, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Equity Liabilities by Country",
+    x = "Year", y = "Equity Liabilties",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years_fra, aes(x = year, y = log(eq_liab), group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Log Equity Liabilities by Country",
+    x = "Year", y = "Log Equity Liabilties",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+ggplot(df_replication_years_fra, aes(x = year, y = mktcap, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Market Capitalisation by Country",
+    x = "Year", y = "Market Capitalisation",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")+
+  guides(color = guide_legend(ncol = 2))
+
+
+# ── 4. ehb_crude (one line per country) ───────────────────────────────────────
+ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Crude EHB [log(Foreign Equity / GDP)] by Country",
+    x = "Year", y = "log(eq_assets / GDP)",
+    color = "Country"
+  ) +
+  theme_minimal()
+
+# ── 5. ehb_crude_dev (one line per country) ───────────────────────────────────
+ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev, group = iso, color = iso)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Crude EHB Deviation from Yearly Mean by Country",
+    x = "Year", y = "ehb_crude - Year Mean",
+    color = "Country"
+  ) +
+  theme_minimal()
+
+# ── 6. ehb_crude_mean (one observation per year) ──────────────────────────────
+ehb_crude_mean_ts <- ehb_crude_reg |>
+  distinct(year, ehb_crude_mean)
+
+ggplot(ehb_crude_mean_ts, aes(x = year, y = ehb_crude_mean)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Unweighted Cross-Country Mean of Crude EHB over Time",
+    x = "Year", y = "Mean log(eq_assets / GDP)"
+  ) +
+  theme_minimal()
+
+
+
+
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Paper Table Replication: Table 1, Home Bias and Table 2
@@ -495,242 +1147,4 @@ extension_gaps |>
 
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# Regression Ready EHB data
-# prepare the EHB data for the replication
-# ══════════════════════════════════════════════════════════════════════════════
-
-# Get data for 1993 to 2003 only
-ehb_raw <- df_full |>
-  filter(year>1992, year<2004)
-
-# Exclude negative total equity portfolio values
-# see log book for further discussion
-sum(ehb_raw$total_eq_portfolio<0, na.rm = TRUE)
-
-sum(ehb_raw$EHB>1, na.rm=TRUE)
-  # counting negative total equity protfolio and counting larger 1 EHB gives same number
-
-
-ehb_reg <- ehb_raw |>
-  filter(is.na(total_eq_portfolio) | !total_eq_portfolio<0)
-  # 11 observations were dropped
-
-# Check for EHB values larger 1
-sum(ehb_reg$EHB>1)
-
-  # gives 0 counts
-
-# we excluded all EHB values > 1 with all of them coming from total equity values lower 0
-
-# unweighted EHB mean
-ehb_reg <- ehb_reg |>
-  group_by(year) |>
-  mutate(
-    EHB_mean = mean(EHB, na.rm = TRUE),
-    n = sum(!is.na(EHB))
-  )
-
-# deviation from the mean
-ehb_reg <- ehb_reg |>
-  mutate(EHB_dev = EHB-EHB_mean)
-
-ehb_reg_small <- ehb_reg |>
-  select(iso,year,EHB_dev)
-
-write_csv(ehb_reg_small, "../data/ehb_reg_small.csv")
-
-
-# prepare second ehb measure for regression
-ehb_crude_raw <- df_full|>
-  filter(year>1992, year<2004)
-
-# create the "crude" EHB measure using foreign equity over GDP
-ehb_crude_reg <- ehb_crude_raw |>
-  mutate(ehb_crude = log(eq_assets/gdp))
-
-# unweighted mean
-ehb_crude_reg <- ehb_crude_reg |>
-  group_by(year) |>
-  mutate(
-    ehb_crude_mean = mean(ehb_crude, na.rm = TRUE),
-    n = sum(!is.na(ehb_crude))
-  )
-
-# deviation from the mean
-ehb_crude_reg <- ehb_crude_reg |>
-  mutate(ehb_crude_dev = ehb_crude-ehb_crude_mean)
-
-ehb_crude_reg_small <- ehb_crude_reg |>
-  select(iso,year,ehb_crude_dev)
-
-write_csv(ehb_crude_reg_small, "../data/ehb_crude_reg_small.csv")
-
-# test data with some graphs
-
-library(ggplot2)
-
-# ── 1. EHB (one line per country) ─────────────────────────────────────────────
-ggplot(ehb_reg, aes(x = year, y = EHB, group = iso, color = iso)) +
-  geom_line() +
-  geom_point() +
-  labs(
-    title = "Equity Home Bias (EHB) by Country",
-    x = "Year", y = "EHB",
-    color = "Country"
-  ) +
-  theme_minimal() +
-  theme(legend.position = "right")+
-  guides(color = guide_legend(ncol = 2))
-
-# ── 2. EHB_dev (deviation from yearly mean, one line per country) ─────────────
-ggplot(ehb_reg, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
-  geom_line() +
-  geom_point() +
-  labs(
-    title = "EHB Deviation from Yearly Mean by Country",
-    x = "Year", y = "EHB - Year Mean",
-    color = "Country"
-  ) +
-  theme_minimal()+
-  guides(color = guide_legend(ncol = 2))
-
-# ── 3. EHB_mean (one observation per year — collapse first to avoid overplotting)
-ehb_mean_ts <- ehb_reg |>
-  distinct(year, EHB_mean)
-
-ggplot(ehb_mean_ts, aes(x = year, y = EHB_mean)) +
-  geom_line() +
-  geom_point() +
-  labs(
-    title = "Unweighted Cross-Country Mean EHB over Time",
-    x = "Year", y = "Mean EHB"
-  ) +
-  theme_minimal()
-
-# furhter investigation of the variables on which EHB is built
-df_replication_years <- df_full %>%
-  filter(year>1992, year<2004)
-
-ggplot(df_replication_years, aes(x = year, y = eq_assets, group = iso, color = iso)) +
-  geom_line() +
-  geom_point() +
-  labs(
-    title = "Equity Assets by Country",
-    x = "Year", y = "Equity Assets",
-    color = "Country"
-  ) +
-  theme_minimal() +
-  theme(legend.position = "right")+
-  guides(color = guide_legend(ncol = 2))
-
-ggplot(df_replication_years, aes(x = year, y = log(eq_assets), group = iso, color = iso)) +
-  geom_line() +
-  geom_point() +
-  labs(
-    title = "Log Equity Assets by Country",
-    x = "Year", y = "Log Equity Assets",
-    color = "Country"
-  ) +
-  theme_minimal() +
-  theme(legend.position = "right")+
-  guides(color = guide_legend(ncol = 2))
-
-ggplot(df_replication_years, aes(x = year, y = eq_liab, group = iso, color = iso)) +
-  geom_line() +
-  geom_point() +
-  labs(
-    title = "Equity Liabilities by Country",
-    x = "Year", y = "Equity Liabilties",
-    color = "Country"
-  ) +
-  theme_minimal() +
-  theme(legend.position = "right")+
-  guides(color = guide_legend(ncol = 2))
-
-ggplot(df_replication_years, aes(x = year, y = log(eq_liab), group = iso, color = iso)) +
-  geom_line() +
-  geom_point() +
-  labs(
-    title = "Log Equity Liabilities by Country",
-    x = "Year", y = "Log Equity Liabilties",
-    color = "Country"
-  ) +
-  theme_minimal() +
-  theme(legend.position = "right")+
-  guides(color = guide_legend(ncol = 2))
-
-ggplot(df_replication_years, aes(x = year, y = mktcap, group = iso, color = iso)) +
-  geom_line() +
-  geom_point() +
-  labs(
-    title = "Market Capitalisation by Country",
-    x = "Year", y = "Market Capitalisation",
-    color = "Country"
-  ) +
-  theme_minimal() +
-  theme(legend.position = "right")+
-  guides(color = guide_legend(ncol = 2))
-
-ggplot(df_replication_years, aes(x = year, y = log(mktcap), group = iso, color = iso)) +
-  geom_line() +
-  geom_point() +
-  labs(
-    title = "Log Market Capitalisation by Country",
-    x = "Year", y = "Log Market Capitalisation",
-    color = "Country"
-  ) +
-  theme_minimal() +
-  theme(legend.position = "right")+
-  guides(color = guide_legend(ncol = 2))
-
-
-market_cap_world_ts <- df_replication_years |>
-  distinct(year, world_mktcap)
-
-ggplot(market_cap_world_ts, aes(x = year, y = world_mktcap)) +
-  geom_line() +
-  geom_point() +
-  labs(
-    title = "Total Market Capitalisation",
-    x = "Year", y = "Sum of Market Capitalisation"
-  ) +
-  theme_minimal()
-
-# ── 4. ehb_crude (one line per country) ───────────────────────────────────────
-ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude, group = iso, color = iso)) +
-  geom_line() +
-  geom_point() +
-  labs(
-    title = "Crude EHB [log(Foreign Equity / GDP)] by Country",
-    x = "Year", y = "log(eq_assets / GDP)",
-    color = "Country"
-  ) +
-  theme_minimal()
-
-# ── 5. ehb_crude_dev (one line per country) ───────────────────────────────────
-ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev, group = iso, color = iso)) +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
-  geom_line() +
-  geom_point() +
-  labs(
-    title = "Crude EHB Deviation from Yearly Mean by Country",
-    x = "Year", y = "ehb_crude - Year Mean",
-    color = "Country"
-  ) +
-  theme_minimal()
-
-# ── 6. ehb_crude_mean (one observation per year) ──────────────────────────────
-ehb_crude_mean_ts <- ehb_crude_reg |>
-  distinct(year, ehb_crude_mean)
-
-ggplot(ehb_crude_mean_ts, aes(x = year, y = ehb_crude_mean)) +
-  geom_line() +
-  geom_point() +
-  labs(
-    title = "Unweighted Cross-Country Mean of Crude EHB over Time",
-    x = "Year", y = "Mean log(eq_assets / GDP)"
-  ) +
-  theme_minimal()
 

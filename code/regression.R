@@ -56,6 +56,14 @@ reg_crude <- plm(
 summary(reg_ehb)
 summary(reg_crude)
 
+# Check how many obs per country enter the regression
+used_obs <- model.frame(reg_ehb)
+table(attr(used_obs, "index")$iso)
+
+used_obs_crude <- model.frame(reg_crude)
+table(attr(used_obs_crude, "index")$iso)
+
+
 library(stargazer)
 
 

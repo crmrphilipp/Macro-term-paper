@@ -17,16 +17,9 @@ library(kableExtra)
 
 # ═════ preparing countries═════════════════════════════════════════════════════
 
-oecd_countries <- c(
-  "Australia", "Austria", "Belgium", "Canada", "Chile", "Colombia",
-  "Costa Rica", "Czechia", "Denmark", "Estonia", "Finland", "France",
-  "Germany", "Greece", "Hungary", "Iceland", "Ireland", "Israel",
-  "Italy", "Japan", "Korea", "Latvia", "Lithuania", "Luxembourg",
-  "Mexico", "Netherlands", "New Zealand", "Norway", "Poland",
-  "Portugal", "Slovak Republic", "Slovenia", "Spain", "Sweden",
-  "Switzerland", "Türkiye", "United Kingdom", "United States"
-)
-
+oecd_countries <- c("AUS","AUT","BEL","CAN","DNK","FIN","FRA","DEU","GRC","ISL",
+                    "IRL","ITA","JPN","MEX","NLD","NZL","NOR","PRT","ESP","SWE",
+                    "CHE","TUR","GBR","USA")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # SOURCE 1: OECD / Annual GDP and components - expenditure approach
@@ -59,11 +52,11 @@ oecd_gdp_raw <- oecd_gdp_raw %>%
   filter(TIME_PERIOD >= 1990)
 
 oecd_gdp_raw <- oecd_gdp_raw %>%
-  filter(`Reference area` %in% oecd_countries)
+  filter(REF_AREA %in% oecd_countries)
 
 oecd_gdp_raw_wide <- oecd_gdp_raw %>%
   pivot_wider(
-    id_cols = c(`Reference area`, TIME_PERIOD),
+    id_cols = c(REF_AREA, TIME_PERIOD),
     names_from = Transaction,
     values_from = OBS_VALUE
   )
@@ -95,11 +88,11 @@ oecd_gni_raw <- oecd_gni_raw %>%
   filter(TIME_PERIOD >= 1990)
 
 oecd_gni_raw <- oecd_gni_raw %>%
-  filter(`Reference area` %in% oecd_countries)
+  filter(REF_AREA %in% oecd_countries)
 
 oecd_gni_raw_wide <- oecd_gni_raw %>%
   pivot_wider(
-    id_cols = c(`Reference area`, TIME_PERIOD),
+    id_cols = c(REF_AREA, TIME_PERIOD),
     names_from = Transaction,
     values_from = OBS_VALUE
   )
@@ -134,11 +127,11 @@ oecd_cpi_raw <- oecd_cpi_raw %>%
   filter(TIME_PERIOD >= 1990)
 
 oecd_cpi_raw <- oecd_cpi_raw %>%
-  filter(`Reference area` %in% oecd_countries)
+  filter(REF_AREA %in% oecd_countries)
 
 oecd_cpi_raw_wide <- oecd_cpi_raw %>%
   pivot_wider(
-    id_cols = c(`Reference area`, TIME_PERIOD),
+    id_cols = c(REF_AREA, TIME_PERIOD),
     names_from = MEASURE,
     values_from = OBS_VALUE
   )
@@ -173,11 +166,11 @@ oecd_pop_raw <- oecd_pop_raw %>%
   filter(TIME_PERIOD >= 1990)
 
 oecd_pop_raw <- oecd_pop_raw %>%
-  filter(`Reference area` %in% oecd_countries)
+  filter(REF_AREA %in% oecd_countries)
 
 oecd_pop_raw_wide <- oecd_pop_raw %>%
   pivot_wider(
-    id_cols = c(`Reference area`, TIME_PERIOD),
+    id_cols = c(REF_AREA, TIME_PERIOD),
     names_from = Transaction,
     values_from = OBS_VALUE
   )
@@ -192,12 +185,107 @@ oecd_df <- list(
   oecd_gni_raw_wide,
   oecd_cpi_raw_wide
 ) %>%
-  reduce(left_join, by = c("Reference area", "TIME_PERIOD"))
+  reduce(left_join, by = c("REF_AREA", "TIME_PERIOD"))
 
 oecd_df <- oecd_df %>%
   mutate(
     gni = `Gross domestic income` + `Net primary income from the rest of the world`
   )
 
+# Build US deflator anchored to 2020 = 1
+us_deflator <- oecd_cpi_raw_wide %>%
+  filter(REF_AREA == "USA") %>%
+  arrange(TIME_PERIOD) %>%
+  mutate(
+    multiplier  = 1 + CPI / 100,
+    price_level = cumprod(multiplier),
+    deflator    = price_level / price_level[TIME_PERIOD == 2020]
+  ) %>%
+  select(TIME_PERIOD, deflator)
+
+# relabel
+oecd_df <- oecd_df%>%
+  rename(gdp_nominal = `Gross domestic product.y`)
+
+
+oecd_df <- oecd_df%>%
+  rename(pop = `Total population`)
+
+# Join to main df and deflate
+oecd_df <- oecd_df %>%
+  left_join(us_deflator, by = "TIME_PERIOD") %>%
+  mutate(gdp_real_2020usd = gdp_nominal / deflator)
+
+# per capita  real gdp
+oecd_df <- oecd_df%>%
+  mutate(gdp_real_pc = gdp_real_2020usd/pop)
+
+# per capita growth rates
+oecd_df <- oecd_df %>%
+  arrange(REF_AREA, TIME_PERIOD) %>%
+  group_by(REF_AREA) %>%
+  mutate(gdp_real_pc_growth = (gdp_real_pc / lag(gdp_real_pc) - 1) * 100) %>%
+  ungroup()
+
+# aggregate p.c. growht rates
+oecd_aggregate <- oecd_df %>%
+  group_by(TIME_PERIOD) %>%
+  summarise(
+    gdp_real_total = sum(gdp_real_2020usd, na.rm = TRUE),
+    pop_total      = sum(pop, na.rm = TRUE)
+  ) %>%
+  mutate(
+    gdp_real_pc_oecd        = gdp_real_total / pop_total,
+    gdp_real_pc_oecd_growth = (gdp_real_pc_oecd / lag(gdp_real_pc_oecd) - 1) * 100
+  )
+
+# join the aggregate growth rates
+oecd_df <- oecd_df %>%
+  left_join(oecd_aggregate %>% select(TIME_PERIOD, gdp_real_pc_oecd_growth), 
+            by = "TIME_PERIOD")
+
+# growth rate deviation
+oecd_df <- oecd_df %>%
+  mutate(growth_dev = gdp_real_pc_growth - gdp_real_pc_oecd_growth)
+
+
+# 1. Real + per capita + growth rates
+oecd_df <- oecd_df %>%
+  mutate(gni_real_2020usd = gni / deflator,
+         gni_real_pc      = gni_real_2020usd / pop) %>%
+  arrange(REF_AREA, TIME_PERIOD) %>%
+  group_by(REF_AREA) %>%
+  mutate(gni_real_pc_growth = (gni_real_pc / lag(gni_real_pc) - 1) * 100) %>%
+  ungroup()
+
+# 2. Aggregate OECD GNI series
+oecd_aggregate_gni <- oecd_df %>%
+  group_by(TIME_PERIOD) %>%
+  summarise(
+    gni_real_total = sum(gni_real_2020usd, na.rm = TRUE),
+    pop_total      = sum(pop, na.rm = TRUE)
+  ) %>%
+  mutate(
+    gni_real_pc_oecd        = gni_real_total / pop_total,
+    gni_real_pc_oecd_growth = (gni_real_pc_oecd / lag(gni_real_pc_oecd) - 1) * 100
+  )
+
+# 3. Join back and compute deviation
+oecd_df <- oecd_df %>%
+  left_join(oecd_aggregate_gni %>% select(TIME_PERIOD, gni_real_pc_oecd_growth),
+            by = "TIME_PERIOD") %>%
+  mutate(gni_dev = gni_real_pc_growth - gni_real_pc_oecd_growth)
+
+oecd_df <- oecd_df %>%
+  rename(gdp_dev = growth_dev)
+
+# regression data export
+oecd_small_reg <- oecd_df%>%
+  select(REF_AREA, TIME_PERIOD, gdp_dev, gni_dev)
+
+oecd_small_reg <- oecd_small_reg %>%
+  rename(iso = REF_AREA, year =TIME_PERIOD)
+
+write_csv(oecd_small_reg, "../data/oecd_small_reg.csv")
 
 
