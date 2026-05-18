@@ -34,7 +34,7 @@ library(kableExtra)
 country_selection_replication <- c(
     "Australia", "Austria", "Belgium", "Canada", "Denmark", "Finland", "France", "Germany", "Greece", "Hungary",
     "Iceland", "Ireland", "Italy", "Japan", "Mexico", "Netherlands", "New Zealand", "Norway", "Portugal", "Spain", "Sweden", "Switzerland",
-    "Turkey", "UK", "United States"
+    "Türkiye", "United Kingdom", "United States"
 )
 
 country_selection <- country_selection_replication # SELECT COUNTRIES FOR ANALYSIS!!!
@@ -141,4 +141,5 @@ final_data_cap <- final_data %>%
 
 # Export the final dataset
 write_csv(final_data_cap, "../data/gdp_gni_consumption_per_capita.csv")
+
 

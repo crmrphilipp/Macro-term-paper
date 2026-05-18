@@ -1,4 +1,5 @@
 #### The main regression: Consumption Risk Sharing
+rm(list = ls())
 library(dplyr)
 library(tidyr)
 library(purrr)
@@ -26,26 +27,6 @@ df_oecd <- oecd_data %>%
     NNI_pc = NNI_OBS_VALUE_per_capita
   )
 
-# Analysing missing data
-missing_wide <- df_oecd %>%
-  pivot_longer(
-    cols = c(GDP, GNI, NNI, consumption,
-             GDP_pc, GNI_pc, NNI_pc, consumption_pc),
-    names_to = "variable",
-    values_to = "value"
-  ) %>%
-  filter(is.na(value)) %>%
-  group_by(REF_AREA, variable) %>%
-  summarise(
-    first_missing_year = min(TIME_PERIOD),
-    last_missing_year = max(TIME_PERIOD),
-    n_missing = n(),
-    missing_years = paste(TIME_PERIOD, collapse = ", "),
-    .groups = "drop"
-  ) %>%
-  arrange(REF_AREA, variable)
-
-
 ### Creating deviation variables 
 
 ### Regression sample
@@ -71,33 +52,49 @@ df_oecd <- df_oecd %>%
 
 
 # aggregate per capita growth rates: GDP and consumption
-df_oecd_aggregate <- df_oecd %>%
+
+
+# common country-year sample: GDP, consumption and Population must all be available
+
+df_oecd_aggregate2 <- df_oecd %>%
   group_by(TIME_PERIOD) %>%
   summarise(
-    gdp_real_total = sum(GDP, na.rm = TRUE),
-    pop_gdp_total  = sum(Population[!is.na(GDP) & !is.na(Population)], na.rm = TRUE),
+    gdp_total2 = sum(
+      GDP[!is.na(GDP) & !is.na(consumption) & !is.na(Population)],
+      na.rm = TRUE
+    ),
     
-    consumption_real_total = sum(consumption, na.rm = TRUE),
-    pop_consumption_total  = sum(Population[!is.na(consumption) & !is.na(Population)], na.rm = TRUE),
+    consumption_total2 = sum(
+      consumption[!is.na(GDP) & !is.na(consumption) & !is.na(Population)],
+      na.rm = TRUE
+    ),
+    
+    population_total2 = sum(
+      Population[!is.na(GDP) & !is.na(consumption) & !is.na(Population)],
+      na.rm = TRUE
+    ),
     
     .groups = "drop"
   ) %>%
   arrange(TIME_PERIOD) %>%
   mutate(
-    gdp_total_pc = gdp_real_total / pop_gdp_total,
-    consumption_total_pc = consumption_real_total / pop_consumption_total
+    gdp_total_pc2 = gdp_total2 / population_total2,
+    consumption_total_pc2 = consumption_total2 / population_total2
   ) %>%
   mutate(
-    gdp_log_diff_total = log(gdp_total_pc) - log(dplyr::lag(gdp_total_pc)),
-    consumption_log_diff_total = log(consumption_total_pc) - log(dplyr::lag(consumption_total_pc))
+    gdp_log_diff_total2 =
+      log(gdp_total_pc2) - log(dplyr::lag(gdp_total_pc2)),
+    
+    consumption_log_diff_total2 =
+      log(consumption_total_pc2) - log(dplyr::lag(consumption_total_pc2))
   )
 
 
 # join the aggregate growth rates
 df_oecd <- df_oecd %>%
   left_join(
-    df_oecd_aggregate %>%
-      select(TIME_PERIOD, gdp_log_diff_total, consumption_log_diff_total),
+    df_oecd_aggregate2 %>%
+      select(TIME_PERIOD, gdp_log_diff_total2, consumption_log_diff_total2),
     by = "TIME_PERIOD"
   )
 
@@ -105,8 +102,8 @@ df_oecd <- df_oecd %>%
 # growth rate deviations
 df_oecd <- df_oecd %>%
   mutate(
-    gdp_dev = gdp_log_diff - gdp_log_diff_total,
-    consumption_dev = consumption_log_diff - consumption_log_diff_total
+    gdp_dev = gdp_log_diff - gdp_log_diff_total2,
+    consumption_dev = consumption_log_diff - consumption_log_diff_total2
   )
 
 
@@ -198,3 +195,4 @@ avg_consumption_risk_sharing <- 100 * (1 - h0)
 avg_consumption_risk_sharing
 
 write_csv(reg_df, "../data/reg_df.csv")
+
