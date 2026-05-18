@@ -383,13 +383,37 @@ write_csv(ehb_reg_no_aut_small, "../data/ehb_reg_no_aut_small.csv")
 # Crude EHB measure
 # ══════════════════════════════════════════════════════════════════════════════
 
+oecd_data <- read.csv("../data/gdp_gni_consumption_per_capita.csv")
+
+oecd_wide <- oecd_data |>
+  pivot_wider(
+    id_cols     = c(REF_AREA, TIME_PERIOD, Population),
+    names_from  = measure,
+    values_from = c(OBS_VALUE, OBS_VALUE_per_capita)
+  )
+
+oecd_wide <-oecd_wide |>
+  rename(iso=REF_AREA, year=TIME_PERIOD, pop=Population, cons=OBS_VALUE_consumption, gdp=OBS_VALUE_GDP, gni=OBS_VALUE_GNI, nni=OBS_VALUE_NNI,
+  cons_pc = OBS_VALUE_per_capita_consumption, gdp_pc=OBS_VALUE_per_capita_GDP, gni_pc=OBS_VALUE_per_capita_GNI, nni_pc=OBS_VALUE_per_capita_NNI)
+
+oecd_merge <- oecd_wide %>%
+    filter(year>1992, year<2004)%>%
+    select(iso, year, gdp, gdp_pc)
+
 # prepare second ehb measure for regression
 ehb_crude_raw <- df_full|>
   filter(year>1992, year<2004)
 
+ehb_crude_raw<-ehb_crude_raw |>
+  left_join(oecd_merge, by=c("iso", "year"))
+
 # create the "crude" EHB measure using foreign equity over GDP
 ehb_crude_reg <- ehb_crude_raw |>
-  mutate(ehb_crude = log((eq_assets+debt_assets+fdi_assets)/gdp))
+  mutate(ehb_crude = log((eq_assets+debt_assets+fdi_assets)/gdp.y))
+
+# create crude EHB with non ppp adjusted gdp from EWN
+ehb_crude_reg <- ehb_crude_reg |>
+  mutate(ehb_crude_non_ppp = log((eq_assets+debt_assets+fdi_assets)/gdp.x))
 
 # unweighted mean
 ehb_crude_reg <- ehb_crude_reg |>
@@ -399,26 +423,51 @@ ehb_crude_reg <- ehb_crude_reg |>
     n = sum(!is.na(ehb_crude))
   )
 
+# unweighted mean for no ppp
+ehb_crude_reg <- ehb_crude_reg |>
+  group_by(year) |>
+  mutate(
+    ehb_crude_mean_non_ppp = mean(ehb_crude_non_ppp, na.rm = TRUE),
+    n = sum(!is.na(ehb_crude_non_ppp))
+  )
+
 # deviation from the mean
 ehb_crude_reg <- ehb_crude_reg |>
   mutate(ehb_crude_dev = ehb_crude-ehb_crude_mean)
 
+# deviation from the mean for non ppp
+ehb_crude_reg <- ehb_crude_reg |>
+  mutate(ehb_crude_dev_non_ppp = ehb_crude_non_ppp-ehb_crude_mean_non_ppp)
+
+
 # plot mean time trend
 ehb_crude_mean_ts <- ehb_crude_reg |>
-  distinct(year, ehb_crude_mean)
+  distinct(year, ehb_crude_mean, ehb_crude_mean_non_ppp) |>
+  pivot_longer(
+    cols      = c(ehb_crude_mean, ehb_crude_mean_non_ppp),
+    names_to  = "measure",
+    values_to = "value"
+  ) |>
+  mutate(measure = recode(measure,
+    "ehb_crude_mean"         = "PPP-adjusted GDP",
+    "ehb_crude_mean_non_ppp" = "Non-PPP GDP"
+  ))
 
-ggplot(ehb_crude_mean_ts, aes(x = year, y = ehb_crude_mean)) +
+ggplot(ehb_crude_mean_ts, aes(x = year, y = value, color = measure)) +
   geom_line() +
   geom_point() +
   labs(
-    title = "Unweighted Cross-Country Mean of Crude EHB over Time",
-    x = "Year", y = "Mean log(eq_assets / GDP)"
+    title  = "Unweighted Cross-Country Mean of Crude EHB over Time",
+    x      = "Year",
+    y      = "Mean log(Foreign Assets / GDP)",
+    color  = NULL
   ) +
-  theme_minimal()
+  theme_minimal() +
+  theme(legend.position = "bottom")
 
-# very similar shape as in paper
-# different level probably due to different GDP data
-# !!! needs fixing still
+# using the non ppp adjusted data we obtain a very similar shape as in paper
+# different level probably due to different GDP data?
+# ppp adjusted gdp leads to strong deviation in the shape after 1999
 
 # plot mean deviation
 ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev, group = iso, color = iso)) +
@@ -432,17 +481,31 @@ ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev, group = iso, color = iso)
   ) +
   theme_minimal()
 
+# plot mean deviation for non ppp adjusted
+ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev_non_ppp, group = iso, color = iso)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Crude EHB Deviation from Yearly Mean by Country",
+    x = "Year", y = "ehb_crude - Year Mean",
+    color = "Country"
+  ) +
+  theme_minimal()
 
 
 ehb_crude_reg_small <- ehb_crude_reg |>
-  select(iso,year,ehb_crude_dev)
+  select(iso,year,ehb_crude_dev_non_ppp)
 
 write_csv(ehb_crude_reg_small, "../data/ehb_crude_reg_small.csv")
 
 
 
+
+
+
 #=====================================#
-##### Part II - Tables and Graphs #####
+##### Part II - Graphs and Checks #####
 #=====================================#
 
 
@@ -452,7 +515,7 @@ write_csv(ehb_crude_reg_small, "../data/ehb_crude_reg_small.csv")
 
 library(ggplot2)
 
-# 1a. EHB (one line per country)
+### 1a. EHB (one line per country) ###
 ggplot(ehb_reg, aes(x = year, y = EHB, group = iso, color = iso)) +
   geom_line() +
   geom_point() +
@@ -465,7 +528,7 @@ ggplot(ehb_reg, aes(x = year, y = EHB, group = iso, color = iso)) +
   theme(legend.position = "right")+
   guides(color = guide_legend(ncol = 2))
 
-# 1b. EHB without Austria (one line per country)
+### 1b. EHB without Austria (one line per country) ###
 ggplot(ehb_reg_no_aut, aes(x = year, y = EHB, group = iso, color = iso)) +
   geom_line() +
   geom_point() +
@@ -478,7 +541,7 @@ ggplot(ehb_reg_no_aut, aes(x = year, y = EHB, group = iso, color = iso)) +
   theme(legend.position = "right")+
   guides(color = guide_legend(ncol = 2))
 
-# 2a. EHB_dev (deviation from yearly mean, one line per country)
+### 2a. EHB_dev (deviation from yearly mean, one line per country) ###
 ggplot(ehb_reg, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
   geom_line() +
@@ -491,7 +554,7 @@ ggplot(ehb_reg, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
   theme_minimal()+
   guides(color = guide_legend(ncol = 2))
 
-# 2b. EHB_dev (deviation from yearly mean, one line per country)
+### 2b. EHB_dev (deviation from yearly mean, one line per country) ###
 ggplot(ehb_reg_no_aut, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
   geom_line() +
@@ -505,7 +568,9 @@ ggplot(ehb_reg_no_aut, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
   guides(color = guide_legend(ncol = 2))
 
 
-# 3a. EHB_mean (one observation per year — collapse first to avoid overplotting)
+### 3a. EHB_mean ###
+
+# one observation per year — collapse first to avoid overplotting
 ehb_mean_ts <- ehb_reg |>
   distinct(year, EHB_mean)
 
@@ -518,7 +583,8 @@ ggplot(ehb_mean_ts, aes(x = year, y = EHB_mean)) +
   ) +
   theme_minimal()
 
-# 3b. EHB_mean and EHB_mean without Austria (one observation per year — collapse first to avoid overplotting)
+### 3b. EHB_mean and EHB_mean without Austria ###
+
 ehb_mean_ts_no_aut <- ehb_reg_no_aut |>
   distinct(year, EHB_mean)
 
@@ -553,11 +619,54 @@ ggplot(ehb_mean_ts_long, aes(x = year, y = value, color = series, linetype = ser
   theme(legend.position = "bottom")
 
 
+### 4. ehb_crude (one line per country) ###
+ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude, group = iso, color = iso)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Crude EHB [log(Foreign Equity / GDP)] by Country",
+    x = "Year", y = "log(eq_assets / GDP)",
+    color = "Country"
+  ) +
+  theme_minimal()
 
-# furhter investigation of the variables on which EHB is built
+### 5. ehb_crude_dev (one line per country) ###
+ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev, group = iso, color = iso)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Crude EHB Deviation from Yearly Mean by Country",
+    x = "Year", y = "ehb_crude - Year Mean",
+    color = "Country"
+  ) +
+  theme_minimal()
+
+### 6. ehb_crude_mean (one observation per year) ###
+ehb_crude_mean_ts <- ehb_crude_reg |>
+  distinct(year, ehb_crude_mean)
+
+ggplot(ehb_crude_mean_ts, aes(x = year, y = ehb_crude_mean)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Unweighted Cross-Country Mean of Crude EHB over Time",
+    x = "Year", y = "Mean log(eq_assets / GDP)"
+  ) +
+  theme_minimal()
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# Investigate Data/Country Problems that occurred
+# ══════════════════════════════════════════════════════════════════════════════
+
+# furhter investigation of the variables on which EHB is built to spot outliers or discontinuities
+
+# get replication time period
 df_replication_years <- df_full %>%
   filter(year>1992, year<2004)
 
+## 1a. eq_assets
 ggplot(df_replication_years, aes(x = year, y = eq_assets, group = iso, color = iso)) +
   geom_line() +
   geom_point() +
@@ -570,6 +679,7 @@ ggplot(df_replication_years, aes(x = year, y = eq_assets, group = iso, color = i
   theme(legend.position = "right")+
   guides(color = guide_legend(ncol = 2))
 
+## 1b. logged eq_assets
 ggplot(df_replication_years, aes(x = year, y = log(eq_assets), group = iso, color = iso)) +
   geom_line() +
   geom_point() +
@@ -582,6 +692,7 @@ ggplot(df_replication_years, aes(x = year, y = log(eq_assets), group = iso, colo
   theme(legend.position = "right")+
   guides(color = guide_legend(ncol = 2))
 
+## 2a. eq_liab
 ggplot(df_replication_years, aes(x = year, y = eq_liab, group = iso, color = iso)) +
   geom_line() +
   geom_point() +
@@ -594,6 +705,7 @@ ggplot(df_replication_years, aes(x = year, y = eq_liab, group = iso, color = iso
   theme(legend.position = "right")+
   guides(color = guide_legend(ncol = 2))
 
+## 2b. logged eq_liab
 ggplot(df_replication_years, aes(x = year, y = log(eq_liab), group = iso, color = iso)) +
   geom_line() +
   geom_point() +
@@ -606,6 +718,7 @@ ggplot(df_replication_years, aes(x = year, y = log(eq_liab), group = iso, color 
   theme(legend.position = "right")+
   guides(color = guide_legend(ncol = 2))
 
+## 3a. mktcap
 ggplot(df_replication_years, aes(x = year, y = mktcap, group = iso, color = iso)) +
   geom_line() +
   geom_point() +
@@ -618,6 +731,7 @@ ggplot(df_replication_years, aes(x = year, y = mktcap, group = iso, color = iso)
   theme(legend.position = "right")+
   guides(color = guide_legend(ncol = 2))
 
+## 3b. logged mktcap
 ggplot(df_replication_years, aes(x = year, y = log(mktcap), group = iso, color = iso)) +
   geom_line() +
   geom_point() +
@@ -631,6 +745,7 @@ ggplot(df_replication_years, aes(x = year, y = log(mktcap), group = iso, color =
   guides(color = guide_legend(ncol = 2))
 
 
+## 4. aggregate mktcap trend
 market_cap_world_ts <- df_replication_years |>
   distinct(year, world_mktcap)
 
@@ -643,7 +758,8 @@ ggplot(market_cap_world_ts, aes(x = year, y = world_mktcap)) +
   ) +
   theme_minimal()
 
-# invstigation on Austria
+## invstigation on Austria specifically
+
 df_replication_years_aut <- df_replication_years %>%
   filter(iso=="AUT")
 
@@ -707,7 +823,7 @@ ggplot(df_replication_years_aut, aes(x = year, y = mktcap, group = iso, color = 
   theme(legend.position = "right")+
   guides(color = guide_legend(ncol = 2))
 
-# invstigation on Italy
+## invstigation on Italy specifically
 df_replication_years_ita <- df_replication_years %>%
   filter(iso=="ITA")
 
@@ -771,7 +887,7 @@ ggplot(df_replication_years_ita, aes(x = year, y = mktcap, group = iso, color = 
   theme(legend.position = "right")+
   guides(color = guide_legend(ncol = 2))
 
-# invstigation on France
+## invstigation on France specifically
 df_replication_years_fra <- df_replication_years %>%
   filter(iso=="FRA")
 
@@ -836,45 +952,11 @@ ggplot(df_replication_years_fra, aes(x = year, y = mktcap, group = iso, color = 
   guides(color = guide_legend(ncol = 2))
 
 
-# ── 4. ehb_crude (one line per country) ───────────────────────────────────────
-ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude, group = iso, color = iso)) +
-  geom_line() +
-  geom_point() +
-  labs(
-    title = "Crude EHB [log(Foreign Equity / GDP)] by Country",
-    x = "Year", y = "log(eq_assets / GDP)",
-    color = "Country"
-  ) +
-  theme_minimal()
-
-# ── 5. ehb_crude_dev (one line per country) ───────────────────────────────────
-ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev, group = iso, color = iso)) +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
-  geom_line() +
-  geom_point() +
-  labs(
-    title = "Crude EHB Deviation from Yearly Mean by Country",
-    x = "Year", y = "ehb_crude - Year Mean",
-    color = "Country"
-  ) +
-  theme_minimal()
-
-# ── 6. ehb_crude_mean (one observation per year) ──────────────────────────────
-ehb_crude_mean_ts <- ehb_crude_reg |>
-  distinct(year, ehb_crude_mean)
-
-ggplot(ehb_crude_mean_ts, aes(x = year, y = ehb_crude_mean)) +
-  geom_line() +
-  geom_point() +
-  labs(
-    title = "Unweighted Cross-Country Mean of Crude EHB over Time",
-    x = "Year", y = "Mean log(eq_assets / GDP)"
-  ) +
-  theme_minimal()
 
 
-
-
+#==========================================#
+##### Part III - Tables from the Paper #####
+#==========================================#
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1143,6 +1225,7 @@ extension_gaps |>
   footnote(general = "Only countries with at least one missing observation after 2003 are shown.",
            general_title = "Note.", footnote_as_chunk = TRUE) |>
   save_kable("../output/table_extension_gaps.tex")
+
 
 
 
