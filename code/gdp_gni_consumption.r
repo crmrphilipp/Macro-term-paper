@@ -139,7 +139,25 @@ final_data_cap <- final_data %>%
   # 2. Calculate the per capita value
   mutate(OBS_VALUE_per_capita = OBS_VALUE / Population)
 
+# Add aggregate values
+aggregate_rows <- final_data_cap %>%
+  group_by(TIME_PERIOD, measure) %>%
+  summarise(
+    # Calculate sum of population FOR WHICH THE MEASURE IS AVAILABLE in a given year
+    valid_pop_sum = sum(Population[!is.na(OBS_VALUE)], na.rm = TRUE), 
+
+    # Calculate sum ofgiven measure in a given year
+    OBS_VALUE = sum(OBS_VALUE, na.rm = TRUE), 
+
+    # Drop groups
+    .groups = "drop"
+  ) %>%
+  mutate(REF_AREA = "Aggregate",
+        Population = valid_pop_sum,
+        OBS_VALUE_per_capita = OBS_VALUE / valid_pop_sum) %>% 
+  select(REF_AREA, TIME_PERIOD, measure, OBS_VALUE, Population, OBS_VALUE_per_capita)
+
+final_data_cap <- bind_rows(final_data_cap, aggregate_rows)
+
 # Export the final dataset
 write_csv(final_data_cap, "../data/gdp_gni_consumption_per_capita.csv")
-
-
