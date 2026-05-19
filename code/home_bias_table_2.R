@@ -494,13 +494,41 @@ ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev_non_ppp, group = iso, colo
   theme_minimal()
 
 
+
+# crude EHB in different compositions
+ehb_crude_reg <- ehb_crude_reg |>
+  mutate(
+    eq_ehb_crude_non_ppp = log((eq_assets)/gdp.x),
+    debt_ehb_crude_non_ppp = log((debt_assets)/gdp.x),
+    fdi_ehb_crude_non_ppp = log((fdi_assets)/gdp.x),
+    eq_debt_ehb_crude_non_ppp = log((eq_assets+debt_assets)/gdp.x)
+    )
+
+
+# unweighted mean for no ppp
+ehb_crude_reg <- ehb_crude_reg |>
+  group_by(year) |>
+  mutate(
+    eq_ehb_crude_mean_non_ppp = mean(eq_ehb_crude_non_ppp, na.rm = TRUE),
+    debt_ehb_crude_mean_non_ppp = mean(debt_ehb_crude_non_ppp, na.rm = TRUE),
+    fdi_ehb_crude_mean_non_ppp = mean(fdi_ehb_crude_non_ppp, na.rm = TRUE),
+    eq_debt_ehb_crude_mean_non_ppp = mean(eq_debt_ehb_crude_non_ppp, na.rm = TRUE)
+  )
+
+# deviation from the mean for non ppp
+ehb_crude_reg <- ehb_crude_reg |>
+  mutate(
+    eq_ehb_crude_dev_non_ppp = eq_ehb_crude_non_ppp - eq_ehb_crude_mean_non_ppp,
+    debt_ehb_crude_dev_non_ppp = debt_ehb_crude_non_ppp - debt_ehb_crude_mean_non_ppp,
+    fdi_ehb_crude_dev_non_ppp = fdi_ehb_crude_non_ppp - fdi_ehb_crude_mean_non_ppp,
+    eq_debt_ehb_crude_dev_non_ppp = eq_debt_ehb_crude_non_ppp - eq_debt_ehb_crude_mean_non_ppp
+    )
+
+
 ehb_crude_reg_small <- ehb_crude_reg |>
-  select(iso,year,ehb_crude_dev_non_ppp)
+  select(iso,year,ehb_crude_dev_non_ppp, eq_ehb_crude_dev_non_ppp, debt_ehb_crude_dev_non_ppp, fdi_ehb_crude_dev_non_ppp, eq_debt_ehb_crude_dev_non_ppp)
 
 write_csv(ehb_crude_reg_small, "../data/ehb_crude_reg_small.csv")
-
-
-
 
 
 

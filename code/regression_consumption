@@ -196,3 +196,72 @@ avg_consumption_risk_sharing
 
 write_csv(reg_df, "../data/reg_df.csv")
 
+
+#### 2nd Regression with Crude EHB measure
+
+# clean estimation sample
+reg_crude_df <- merged_df %>%
+  filter(
+    !is.na(consumption_dev),
+    !is.na(gdp_dev),
+    !is.na(ehb_crude_dev),
+    !is.na(time)
+  ) %>%
+  arrange(iso, year)
+
+# Mexico 2 missings
+# Greece 2 missings
+# Turkye 5 missings
+
+# First step regression with country FE
+panel_crude_df <- pdata.frame(reg_crude_df, index = c("iso", "year"))
+
+reg_cons_crude_stage1 <- plm(
+  consumption_dev ~ gdp_dev + I(time * gdp_dev) + I(ehb_crude_dev * gdp_dev),
+  data   = panel_crude_df,
+  model  = "within",
+  effect = "individual"
+)
+
+
+# Error term SD
+reg_crude_df$resid_stage1 <- as.numeric(residuals(reg_cons_crude_stage1))
+
+sigma_crude_by_country <- reg_crude_df %>%
+  group_by(iso) %>%
+  summarise(
+    sigma_i = sd(resid_stage1, na.rm = TRUE),
+    n_resid = sum(!is.na(resid_stage1)),
+    .groups = "drop"
+  )
+
+
+# Creating country weights
+reg_crude_df_w <- reg_crude_df %>%
+  left_join(sigma_crude_by_country, by = "iso") %>%
+  mutate(weight_i = 1 / sigma_i)
+
+
+# Second step regression
+panel_crude_df_w <- pdata.frame(reg_crude_df_w, index = c("iso", "year"))
+
+reg_crude_cons_stage2 <- plm(
+  consumption_dev ~ gdp_dev + I(time * gdp_dev) + I(ehb_crude_dev * gdp_dev),
+  data    = panel_crude_df_w,
+  model   = "within",
+  effect  = "individual",
+  weights = weight_i
+)
+
+
+summary(reg_crude_cons_stage2)
+
+
+# Paper-style average consumption risk sharing
+h0 <- coef(reg_cons_stage2)["gdp_dev"]
+avg_consumption_risk_sharing <- 100 * (1 - h0)
+
+avg_consumption_risk_sharing
+
+write_csv(reg_df, "../data/reg_df.csv")
+
