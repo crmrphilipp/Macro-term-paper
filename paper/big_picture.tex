@@ -2,6 +2,8 @@
 \usepackage{booktabs}   
 \usepackage{geometry}
 \usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subcaption}
 \geometry{margin=1in}
 
 \title{The big picture: Research Proposal, main replication results and possible extensions}
@@ -31,6 +33,61 @@
     \item Show consumption risk sharing plot, crude EHB plot, nested regression
     \item Caveats/ choices: Skip GNI(data availability), skip EHB (partly wrong stock market capitalization data)
 \end{itemize}
+\noindent \underline{Cross-section risk sharing (regressions and) plots} \\
+\noindent A first look at the data shows that GDP and consumption data (per capita) are valid. (Note: Results for GNI are similar. Because data is less available, we focus on consumption.) \\
+\begin{figure}[htbp]
+    \centering
+    
+    % First Subfigure: GDP
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/gdp_per_capita.pdf}
+        \caption{GDP per capita}
+    \end{subfigure}
+    \hfill
+    % Second Subfigure: Consumption
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/consumption_per_capita.pdf}
+        \caption{Consumption per capita}
+    \end{subfigure}
+    
+    \caption{(Selected) GDP and consumption per capita}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    
+    % First Subfigure: GDP
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/gdp.pdf}
+        \caption{GDP}
+    \end{subfigure}
+    \hfill
+    % Second Subfigure: Consumption
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/consumption.pdf}
+        \caption{Consumption}
+    \end{subfigure}
+    
+    \caption{(Selected) GDP and consumption}
+\end{figure}
+
+\noindent However, the risk sharing plots are off: They show risk sharing in the chosen OECD countries \textbf{falls} over the period 1993 - 2003.\\
+Once this mistake is fixed, we can easily extend to pre-1993 and post-2003, focus on the Eurozone, ... . 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{../output/risk_sharing_plot_rep.pdf}
+    \caption{Risk Sharing over replication time period}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{../output/risk_sharing_plot_extended_93_24.pdf}
+    \caption{Risk Sharing over extended time period}
+\end{figure}
 
 \section{Possible extensions}
 \begin{itemize}
