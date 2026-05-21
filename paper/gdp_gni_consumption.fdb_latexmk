@@ -1,11 +1,10 @@
 # Fdb version 4
-["pdflatex"] 1779274173.41141 "c:/Users/felix/OneDrive/Dokumente/Felix/4_Studium/Master/Semester 2/Macroeconomics 3/Macro-term-paper/paper/big_picture.tex" "big_picture.pdf" "big_picture" 1779274174.05975 0
-  "../output/consumption.pdf" 1779273880 15008 5f85f39a0a5294d26ff5c23e782c1ca1 ""
-  "../output/consumption_per_capita.pdf" 1779271961 15086 d31aad89255c540851c586061a6855fd ""
-  "../output/gdp.pdf" 1779273880 14907 2375a59f34d8f26f8f9c158c61c9e043 ""
-  "../output/gdp_per_capita.pdf" 1779271961 15167 b1c433056da6749f9c2f086a27fa288a ""
-  "../output/risk_sharing_plot_extended_93_24.pdf" 1779274172 8250 65b59fd741a4dbe6848e74ceb924ee29 ""
-  "../output/risk_sharing_plot_rep.pdf" 1779273883 6251 dd5a00ac297494ebaa7534ec633a8100 ""
+["pdflatex"] 1779370695.45488 "c:/Users/felix/OneDrive/Dokumente/Felix/4_Studium/Master/Semester 2/Macroeconomics 3/Macro-term-paper/paper/gdp_gni_consumption.tex" "gdp_gni_consumption.pdf" "gdp_gni_consumption" 1779370696.10846 0
+  "../output/consumption_per_capita.pdf" 1779370587 8570 6399c3e0f119bbc5f8862d50d796352e ""
+  "../output/gdp_per_capita.pdf" 1779370587 8568 088f314a59bc091bab1de5218cd15923 ""
+  "../output/gni_per_capita.pdf" 1779370588 8567 15abbff25a945b28e9150b51b5bc8017 ""
+  "../output/risk_sharing_plot_extended_93_24.pdf" 1779368975 6174 41e4cb84b39b19e934111da773e3e1d5 ""
+  "../output/risk_sharing_plot_rep.pdf" 1779368970 6273 3997350f3ade22b11406a59017fe07c5 ""
   "C:/Users/felix/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1778835716 97090 e3f7dfdca4ade242dca3e019847d5386 ""
   "C:/Users/felix/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1779212486 11548 345ae531a632c315e48dd5af1c2eb769 ""
   "C:/Users/felix/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1778836059 13350272 a908e6dbac9b3d28c0f761e8ffef0153 ""
@@ -60,11 +59,11 @@
   "C:/Users/felix/AppData/Local/Programs/MiKTeX/tex/latex/graphics/keyval.sty" 1749322634 2671 d9941f4bf4750e9b0603c9a2ec54693b ""
   "C:/Users/felix/AppData/Local/Programs/MiKTeX/tex/latex/graphics/trig.sty" 1749322634 4023 e66acf578d6b564c4670fb57ff336a7a ""
   "C:/Users/felix/AppData/Local/Programs/MiKTeX/tex/latex/l3backend/l3backend-pdftex.def" 1774811737 30909 7dedb28cb21a1e79c47a35a35ae3c507 ""
-  "big_picture.aux" 1779274173 918 ea530963a151c7fa1beff4df867a9a8f "pdflatex"
-  "big_picture.tex" 1779273810 4829 310ea7cd1bc84260ee75da0386b75f09 ""
-  "c:/Users/felix/OneDrive/Dokumente/Felix/4_Studium/Master/Semester 2/Macroeconomics 3/Macro-term-paper/paper/big_picture.tex" 1779273810 4829 310ea7cd1bc84260ee75da0386b75f09 ""
+  "c:/Users/felix/OneDrive/Dokumente/Felix/4_Studium/Master/Semester 2/Macroeconomics 3/Macro-term-paper/paper/gdp_gni_consumption.tex" 1779370694 3728 f9ef73c81aa8dda35160e2371782b418 ""
+  "gdp_gni_consumption.aux" 1779370695 702 aabbaa37e8953fbc53f10cd127eb6eb1 "pdflatex"
+  "gdp_gni_consumption.tex" 1779370694 3728 f9ef73c81aa8dda35160e2371782b418 ""
   (generated)
-  "big_picture.aux"
-  "big_picture.log"
-  "big_picture.pdf"
+  "gdp_gni_consumption.aux"
+  "gdp_gni_consumption.log"
+  "gdp_gni_consumption.pdf"
   (rewritten before read)

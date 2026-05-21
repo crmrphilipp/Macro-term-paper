@@ -14,35 +14,6 @@ library(tidyr)
 ############### Consumption risk sharing regression and plot
 data <- read.csv("../data/data_cy.csv")
 
-### First look at the data
-# Setup static variables
-measures_to_plot <- c("GDP", "consumption")
-unit <- c("Aggregate", "USA", "DEU", "ITA", "ESP")
-per_capita <- FALSE
-
-# Determine column and text suffixes based on the per_capita flag
-y_column <- if (per_capita) "OBS_VALUE_per_capita" else "OBS_VALUE"
-label_suffix <- if (per_capita) " per capita" else ""
-file_suffix <- if (per_capita) "_per_capita" else ""
-
-# Loop through each measure
-for (measure_plot in measures_to_plot) {
-  
-  # Filter data, rename axis label and file
-  plot_data <- data %>%
-    filter(REF_AREA %in% unit, measure == measure_plot)
-  current_y_label <- paste0(measure_plot, label_suffix)
-  current_filename <- file.path("../output", paste0(tolower(measure_plot), file_suffix, ".pdf"))
-  
-  # Plot generation and saving
-  p <- ggplot(plot_data, aes(x = TIME_PERIOD, y = .data[[y_column]], color = REF_AREA, group = REF_AREA)) +
-    geom_line(linewidth = 1) +
-    geom_point(size = 2) +
-    labs(x = "Time", y = current_y_label) +
-    theme_minimal()
-  ggsave(current_filename, plot = p, width = 8, height = 6)
-}
-
 ## Isolate consumption and GDP and reshape to wide format
 data_wide <- data %>%
   select(TIME_PERIOD, REF_AREA, measure, OBS_VALUE_per_capita) %>%
@@ -103,7 +74,7 @@ smoothed_risk <- ksmooth(
   x = df$TIME_PERIOD, 
   y = df$risk_shared, 
   kernel = "normal", 
-  bandwidth = 2,
+  bandwidth = 2 * (qnorm(0.75) * 4),
   x.points = df$TIME_PERIOD
 )
 
@@ -124,8 +95,8 @@ p1 <- ggplot(df_restricted, aes(x = TIME_PERIOD)) +
   
   # Axes and Labels
   scale_y_continuous(labels = function(x) sprintf("%.1f%%", x),
-                     limits = c(0, 60),
-                     breaks = seq(0, 60, by = 10),
+                     limits = c(0, 70),
+                     breaks = seq(0, 70, by = 10),
                      expand = c(0, 0)) +
   scale_x_continuous(breaks = seq(min(df$TIME_PERIOD), max(df$TIME_PERIOD), by = 1),
                      expand = c(0.02, 0.02)) +
@@ -164,7 +135,7 @@ p2 <- ggplot(df, aes(x = TIME_PERIOD)) +
   # Axes and Labels
   scale_y_continuous(labels = function(x) sprintf("%.1f%%", x),
                      limits = c(0, 100),
-                     breaks = seq(0, 60, by = 10),
+                     breaks = seq(0, 100, by = 10),
                      expand = c(0, 0)) +
   scale_x_continuous(breaks = seq(min(df$TIME_PERIOD), max(df$TIME_PERIOD), by = 5),
                      expand = c(0.02, 0.02)) +
@@ -193,8 +164,3 @@ ggsave("../output/risk_sharing_plot_extended_93_24.pdf", plot = p2, width = 8, h
 ############ Income risk sharing regression and plot
 # to be completed
 
-
-########
-# Plot GDP, deviations, ...
-# Replicate other paper
-# Look at working paper version

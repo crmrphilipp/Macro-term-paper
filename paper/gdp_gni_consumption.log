@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.15)  20 MAY 2026 12:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.15)  21 MAY 2026 15:38
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"c:/Users/felix/OneDrive/Dokumente/Felix/4_Studium/Master/Semester 2/Macroeconomics 3/Macro-term-paper/paper/big_picture.tex"
-(c:/Users/felix/OneDrive/Dokumente/Felix/4_Studium/Master/Semester 2/Macroeconomics 3/Macro-term-paper/paper/big_picture.tex
+**"c:/Users/felix/OneDrive/Dokumente/Felix/4_Studium/Master/Semester 2/Macroeconomics 3/Macro-term-paper/paper/gdp_gni_consumption.tex"
+(c:/Users/felix/OneDrive/Dokumente/Felix/4_Studium/Master/Semester 2/Macroeconomics 3/Macro-term-paper/paper/gdp_gni_consumption.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
 (C:\Users\felix\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
@@ -169,8 +169,8 @@ Package caption Info: New subtype `subtable' on input line 238.
 ) (C:\Users\felix\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2026-02-18 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count306
-) (big_picture.aux)
-\openout1 = `big_picture.aux'.
+) (gdp_gni_consumption.aux)
+\openout1 = `gdp_gni_consumption.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
 LaTeX Font Info:    ... okay on input line 12.
@@ -245,60 +245,55 @@ Package caption Info: End \AtBeginDocument code.
 <../output/gdp_per_capita.pdf, id=1, 578.16pt x 433.62pt>
 File: ../output/gdp_per_capita.pdf Graphic file (type pdf)
 <use ../output/gdp_per_capita.pdf>
-Package pdftex.def Info: ../output/gdp_per_capita.pdf  used on input line 44.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
+Package pdftex.def Info: ../output/gdp_per_capita.pdf  used on input line 23.
+(pdftex.def)             Requested size: 140.92793pt x 105.69196pt.
 <../output/consumption_per_capita.pdf, id=2, 578.16pt x 433.62pt>
 File: ../output/consumption_per_capita.pdf Graphic file (type pdf)
 <use ../output/consumption_per_capita.pdf>
-Package pdftex.def Info: ../output/consumption_per_capita.pdf  used on input line 51.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/gdp.pdf, id=3, 578.16pt x 433.62pt>
-File: ../output/gdp.pdf Graphic file (type pdf)
-<use ../output/gdp.pdf>
-Package pdftex.def Info: ../output/gdp.pdf  used on input line 64.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/consumption.pdf, id=4, 578.16pt x 433.62pt>
-File: ../output/consumption.pdf Graphic file (type pdf)
-<use ../output/consumption.pdf>
-Package pdftex.def Info: ../output/consumption.pdf  used on input line 71.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/risk_sharing_plot_rep.pdf, id=5, 578.16pt x 433.62pt>
+Package pdftex.def Info: ../output/consumption_per_capita.pdf  used on input line 30.
+(pdftex.def)             Requested size: 140.92793pt x 105.69196pt.
+<../output/gni_per_capita.pdf, id=3, 578.16pt x 433.62pt>
+File: ../output/gni_per_capita.pdf Graphic file (type pdf)
+<use ../output/gni_per_capita.pdf>
+Package pdftex.def Info: ../output/gni_per_capita.pdf  used on input line 37.
+(pdftex.def)             Requested size: 140.92793pt x 105.69196pt.
+<../output/risk_sharing_plot_rep.pdf, id=4, 578.16pt x 433.62pt>
 File: ../output/risk_sharing_plot_rep.pdf Graphic file (type pdf)
 <use ../output/risk_sharing_plot_rep.pdf>
-Package pdftex.def Info: ../output/risk_sharing_plot_rep.pdf  used on input line 82.
+Package pdftex.def Info: ../output/risk_sharing_plot_rep.pdf  used on input line 46.
 (pdftex.def)             Requested size: 469.75502pt x 352.31538pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../output/risk_sharing_plot_extended_93_24.pdf, id=6, 578.16pt x 433.62pt>
+<../output/risk_sharing_plot_extended_93_24.pdf, id=5, 578.16pt x 433.62pt>
 File: ../output/risk_sharing_plot_extended_93_24.pdf Graphic file (type pdf)
 <use ../output/risk_sharing_plot_extended_93_24.pdf>
-Package pdftex.def Info: ../output/risk_sharing_plot_extended_93_24.pdf  used on input line 88.
+Package pdftex.def Info: ../output/risk_sharing_plot_extended_93_24.pdf  used on input line 52.
 (pdftex.def)             Requested size: 469.75502pt x 352.31538pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [1
 
-{C:/Users/felix/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] [2 <../output/gdp_per_capita.pdf> <../output/consumption_per_capita.pdf> <../output/gdp.pdf> <../output/consumption.pdf>] [3 <../output/risk_sharing_plot_rep.pdf>] [4 <../output/risk_sharing_plot_extended_93_24.pdf>] (big_picture.aux)
+{C:/Users/felix/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map} <../output/gdp_per_capita.pdf> <../output/consumption_per_capita.pdf> <../output/gni_per_capita.pdf>] [2 <../output/risk_sharing_plot_rep.pdf>] [3 <../output/risk_sharing_plot_extended_93_24.pdf>] (gdp_gni_consumption.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 4171 strings out of 467691
- 71515 string characters out of 5414987
- 487968 words of memory out of 5000000
- 33220 multiletter control sequences out of 15000+600000
+ 4164 strings out of 467691
+ 71449 string characters out of 5414987
+ 484971 words of memory out of 5000000
+ 33213 multiletter control sequences out of 15000+600000
  633431 words of font info for 60 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 67i,9n,77p,454b,510s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 67i,9n,77p,489b,508s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\felix\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on big_picture.pdf (4 pages, 197928 bytes).
+Output written on gdp_gni_consumption.pdf (3 pages, 160897 bytes).
 PDF statistics:
- 109 PDF objects out of 1000 (max. 8388607)
+ 100 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 31 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 

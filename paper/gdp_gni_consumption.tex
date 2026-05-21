@@ -1,0 +1,76 @@
+\documentclass{article}
+\usepackage{booktabs}   
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\geometry{margin=1in}
+
+\title{Final notes on GDP/ GNI/ consumption data - first attempt at extensions}
+\author{Philipp Cremer, Jannis Stagge, Felix Westerhoff}
+
+\begin{document}
+\maketitle
+
+\section{Cross-section risk sharing regression plots}
+\noindent \underline{A first look at the data during the replication period} \\
+\begin{figure}[htbp]
+    \centering
+    
+    % First Subfigure: GDP
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/gdp_per_capita.pdf}
+        \caption{GDP per capita}
+    \end{subfigure}
+    \hfill
+    % Second Subfigure: Consumption
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/consumption_per_capita.pdf}
+        \caption{Consumption per capita}
+    \end{subfigure}
+    \hfill
+    % Third Subfigure: GNI
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/gni_per_capita.pdf}
+        \caption{GNI per capita}
+    \end{subfigure}
+    
+    \caption{(Selected) GDP, consumption and GNI per capita}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{../output/risk_sharing_plot_rep.pdf}
+    \caption{Risk Sharing over replication time period}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{../output/risk_sharing_plot_extended_93_24.pdf}
+    \caption{Risk Sharing over extended time period}
+\end{figure}
+
+\noindent \underline{Risk sharing plots} \\
+Start with consumption and income risk sharing during replication period (potential code adjustments?) //
+Then, extend to only post-2003 and afterwards also pre-1992 (for both)
+
+\section{Research Proposal}
+\noindent \underline{Replication}
+\begin{itemize}
+    \item We can confirm the negative correlation between Home Bias and risk sharing. \textbf{Within the reference paper selction of OECD countries, a lower Home Bias since the 1990s is associated with higher risk sharing.}
+    \item We focus on the main specification of the reference paper, that is: Consumption and income (GNI) risk sharing as well as Home Bias measured as the share of foreign assets over GDP ("crude Home Bias") and the equity Home Bias ("EHB"). We do not replicate
+    \item The main output is a plot showing the evolution of rolling risk sharing estimates against Home Bias measures as well as an extended Panel risk sharing regression, specifying for the risk sharing parameter $\kappa$: $\kappa = \kappa_0 + \kappa_1 (t-\bar{t}) + \kappa_2 (\text{Home Bias deviation})$
+    \item We omit further Home Bias measures and robustness checks of the reference paper to focus on extensions.
+\end{itemize}
+
+\noindent \underline{Extensions}
+\begin{itemize}
+    \item We extend time and observations both to pre-1993 and post-2003, analyzing to what extent the negative correlation between Home Bias and risk sharing holds in a larger population and time horizon. [Main tool: Nested regression]
+    \item We show plots and nested regression for i) Eurozone members against non-Eurozone members and would expect the Home Bias to decrease stronger for the former since 1999 and ii) define the Eurozone Home Bias analogously and would expect the Eurozone Home Bias to increase after 1999.
+    \item If these expectations hold, the lower insurance against idiosyncratic shocks means the cost of a single monetary authority is higher than without this (endogenous) adjustment.
+\end{itemize}
+
+\end{document}
