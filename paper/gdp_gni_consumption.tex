@@ -41,21 +41,143 @@
     \caption{(Selected) GDP, consumption and GNI per capita}
 \end{figure}
 
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=\textwidth]{../output/risk_sharing_plot_rep.pdf}
-    \caption{Risk Sharing over replication time period}
-\end{figure}
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=\textwidth]{../output/risk_sharing_plot_extended_93_24.pdf}
-    \caption{Risk Sharing over extended time period}
-\end{figure}
-
 \noindent \underline{Risk sharing plots} \\
 Start with consumption and income risk sharing during replication period (potential code adjustments?) //
 Then, extend to only post-2003 and afterwards also pre-1992 (for both)
+
+\begin{figure}[htbp]
+    \centering
+    
+    % First Subfigure: Consumption Risk sharing
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/rs_cs_rep_c.pdf}
+        \caption{Consumption Risk Sharing}
+    \end{subfigure}
+    \hfill
+    % Second Subfigure: GNI
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/rs_cs_rep_i.pdf}
+        \caption{Income Risk Sharing}
+    \end{subfigure}
+    
+    \caption{Replication of cross-section risk sharing plots}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    
+    % First Subfigure: Consumption Risk sharing
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/rs_cs_ext_1_c.pdf}
+        \caption{Consumption Risk Sharing}
+    \end{subfigure}
+    \hfill
+    % Second Subfigure: GNI
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/rs_cs_ext_1_i.pdf}
+        \caption{Income Risk Sharing}
+    \end{subfigure}
+    
+    \caption{Cross-section risk sharing plots: Replication country sample, 1993-2019}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    
+    % First Subfigure: Consumption Risk sharing
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/rs_cs_ext_2_c.pdf}
+        \caption{Consumption Risk Sharing}
+    \end{subfigure}
+    \hfill
+    % Second Subfigure: GNI
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/rs_cs_ext_2_i.pdf}
+        \caption{Income Risk Sharing}
+    \end{subfigure}
+    
+    \caption{Cross-section risk sharing plots: All OECD countries, 1993-2019}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    
+    % First Subfigure: Consumption Risk sharing
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/rs_cs_ext_3_c.pdf}
+        \caption{Consumption Risk Sharing}
+    \end{subfigure}
+    \hfill
+    % Second Subfigure: GNI
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/rs_cs_ext_3_i.pdf}
+        \caption{Income Risk Sharing}
+    \end{subfigure}
+    
+    \caption{Cross-section risk sharing plots: All OECD countries, 1970-2019}
+\end{figure}
+
+\section{The Eurozone Extension}
+\indent We might be interested in how risk sharing and Home Bias developed in the Eurozone:
+\begin{figure}[htbp]
+    \centering
+    
+    % First Subfigure: Consumption Risk sharing, Eurozone
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/rs_cs_ext_4a_c.pdf}
+        \caption{Eurozone}
+    \end{subfigure}
+    \hfill
+    % Second Subfigure: Consumption Risk sharing, Not Eurozone, but OECD (with EU)
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/rs_cs_ext_4b_c.pdf}
+        \caption{OECD, w/o Euro w EU}
+    \end{subfigure}
+    \hfill
+    % Third Subfigure: Consumption Risk sharing, Not Eurozone, but OECD (without EU)
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/rs_cs_ext_4c_c.pdf}
+        \caption{OECD, w/o Euro \& EU}
+    \end{subfigure}   
+    \caption{Cross-section consumption risk sharing plots: 1970-2019}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    
+    % First Subfigure: Income Risk sharing, Eurozone
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/rs_cs_ext_4a_i.pdf}
+        \caption{Eurozone}
+    \end{subfigure}
+    \hfill
+    % Second Subfigure: Income Risk sharing, Not Eurozone, but OECD (with EU)
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/rs_cs_ext_4b_i.pdf}
+        \caption{OECD, w/o Euro w EU}
+    \end{subfigure}
+    \hfill
+    % Third Subfigure: Income Risk sharing, Not Eurozone, but OECD (without EU)
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/rs_cs_ext_4c_i.pdf}
+        \caption{OECD, w/o Euro \& EU}
+    \end{subfigure}   
+    \caption{Cross-section income risk sharing plots: 1970-2019}
+\end{figure}
 
 \section{Research Proposal}
 \noindent \underline{Replication}

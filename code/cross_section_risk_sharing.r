@@ -11,8 +11,10 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 
-############### Consumption risk sharing regression and plot
-data <- read.csv("../data/data_cy.csv")
+########################### Define plot generating function
+plot_function <- function(data, consumption, limits, seq=1){
+
+value <- ifelse(consumption, "consumption", "GNI")  
 
 ## Isolate consumption and GDP and reshape to wide format
 data_wide <- data %>%
@@ -24,7 +26,7 @@ aggregate_data <- data_wide %>%
   filter(REF_AREA == "Aggregate") %>%
   arrange(TIME_PERIOD) %>%
   mutate(
-    dlog_C_agg = log(consumption) - log(dplyr::lag(consumption)),
+    dlog_C_agg = log(.data[[value]]) - log(dplyr::lag(.data[[value]])),
     dlog_GDP_agg = log(GDP) - log(dplyr::lag(GDP))
   ) %>%
   select(TIME_PERIOD, dlog_C_agg, dlog_GDP_agg)
@@ -35,7 +37,7 @@ country_data <- data_wide %>%
   group_by(REF_AREA) %>%
   arrange(TIME_PERIOD) %>%
   mutate(
-    dlog_C_it = log(consumption) - log(dplyr::lag(consumption)),
+    dlog_C_it = log(.data[[value]]) - log(dplyr::lag(.data[[value]])),
     dlog_GDP_it = log(GDP) - log(dplyr::lag(GDP))
   ) %>%
   ungroup() %>%
@@ -80,11 +82,8 @@ smoothed_risk <- ksmooth(
 
 df$smoothed_risk <- smoothed_risk$y
 
-#################### Plot 1: Years 1993 to 2003
-df_restricted <- df %>%
-  filter(TIME_PERIOD >= 1993 & TIME_PERIOD <= 2003)
-
-p1 <- ggplot(df_restricted, aes(x = TIME_PERIOD)) +
+#################### Plot
+p1 <- ggplot(df, aes(x = TIME_PERIOD)) +
   # Original estimates
   geom_line(aes(y = risk_shared, color="Original Estimates"), linewidth = 0.5, alpha = 0.6) +
   geom_point(aes(y = risk_shared, color = "Original Estimates"), size = 2) +
@@ -95,10 +94,10 @@ p1 <- ggplot(df_restricted, aes(x = TIME_PERIOD)) +
   
   # Axes and Labels
   scale_y_continuous(labels = function(x) sprintf("%.1f%%", x),
-                     limits = c(0, 70),
-                     breaks = seq(0, 70, by = 10),
+                     limits = c(limits[1], limits[2]),
+                     breaks = seq(limits[1], limits[2], by = 10),
                      expand = c(0, 0)) +
-  scale_x_continuous(breaks = seq(min(df$TIME_PERIOD), max(df$TIME_PERIOD), by = 1),
+  scale_x_continuous(breaks = seq(min(df$TIME_PERIOD), max(df$TIME_PERIOD), by = seq),
                      expand = c(0.02, 0.02)) +
   labs(y = "Percent of Risk Shared", x = "Year") +
 
@@ -120,47 +119,82 @@ p1 <- ggplot(df_restricted, aes(x = TIME_PERIOD)) +
     axis.text.y = element_text(margin = margin(r = 8))  
   )
 
-ggsave("../output/risk_sharing_plot_rep.pdf", plot = p1, width = 8, height = 6)
+return(p1)
 
-#################### Plot 1: Years 1993 to 2024
-p2 <- ggplot(df, aes(x = TIME_PERIOD)) +
-  # Original estimates
-  geom_line(aes(y = risk_shared, color="Original Estimates"), linewidth = 0.5, alpha = 0.6) +
-  geom_point(aes(y = risk_shared, color = "Original Estimates"), size = 2) +
-  
-  # Smoothed line
-  geom_line(aes(y = smoothed_risk, color = "Smoothed Estimates"), linewidth = 0.8) +
-  geom_point(aes(y = smoothed_risk, color = "Smoothed Estimates"), shape = 15, size = 3) +
-  
-  # Axes and Labels
-  scale_y_continuous(labels = function(x) sprintf("%.1f%%", x),
-                     limits = c(0, 100),
-                     breaks = seq(0, 100, by = 10),
-                     expand = c(0, 0)) +
-  scale_x_continuous(breaks = seq(min(df$TIME_PERIOD), max(df$TIME_PERIOD), by = 5),
-                     expand = c(0.02, 0.02)) +
-  labs(y = "Percent of Risk Shared", x = "Year") +
+}
 
-  scale_color_manual(
-    name = "Estimate Type",
-    values = c("Original Estimates" = "lightblue", "Smoothed Estimates" = "blue")
-  ) +
-  
-  # Styling
-  theme_classic() +
-  theme(
-    text = element_text(family = "serif"),
-    panel.border = element_rect(colour = "black", fill = NA, linewidth = 1),
-    axis.text = element_text(color = "black", size = 12),
-    axis.title.y = element_text(face = "bold", size = 14, margin = margin(r = 10)),
-    axis.title.x = element_text(face = "bold", size = 14, margin = margin(t = 10)),
-    axis.ticks.length = unit(-0.15, "cm"),
-    axis.text.x = element_text(margin = margin(t = 8)), 
-    axis.text.y = element_text(margin = margin(r = 8))  
-  )
+############################# Generate plots
+### REPLICATION
+# Consumption risk sharing
+data <- read.csv("../data/data_cy_rep.csv")
+plot_replication_consumption <- plot_function(data = data, consumption = TRUE, limits = c(0,70))
+ggsave("../output/rs_cs_rep_c.pdf", plot = plot_replication_consumption, width = 8, height = 6)
 
-ggsave("../output/risk_sharing_plot_extended_93_24.pdf", plot = p2, width = 8, height = 6)
+# Income risk sharing
+data <- read.csv("../data/data_iy_rep.csv")
+plot_replication_gni <- plot_function(data = data, consumption = FALSE, limits = c(-20,70))
+ggsave("../output/rs_cs_rep_i.pdf", plot = plot_replication_gni, width = 8, height = 6)
 
-############ Income risk sharing regression and plot
-# to be completed
+### EXTENSION 1: Same countries, larger time sample (1993 - 2019)
+# Consumption risk sharing
+data <- read.csv("../data/data_cy_ext_1.csv")
+plot_replication_consumption <- plot_function(data = data, consumption = TRUE, limits = c(0,100), seq = 5)
+ggsave("../output/rs_cs_ext_1_c.pdf", plot = plot_replication_consumption, width = 8, height = 6)
 
+# Income risk sharing
+data <- read.csv("../data/data_iy_ext_1.csv")
+plot_replication_gni <- plot_function(data = data, consumption = FALSE, limits = c(-20,70), seq = 5)
+ggsave("../output/rs_cs_ext_1_i.pdf", plot = plot_replication_gni, width = 8, height = 6)
+
+### EXTENSION 2: All OECD countries, larger time sample (1993 - 2019)
+# Consumption risk sharing
+data <- read.csv("../data/data_cy_ext_2.csv")
+plot_replication_consumption <- plot_function(data = data, consumption = TRUE, limits = c(0,100), seq = 5)
+ggsave("../output/rs_cs_ext_2_c.pdf", plot = plot_replication_consumption, width = 8, height = 6)
+
+# Income risk sharing
+data <- read.csv("../data/data_iy_ext_2.csv")
+plot_replication_gni <- plot_function(data = data, consumption = FALSE, limits = c(-40,70), seq = 5)
+ggsave("../output/rs_cs_ext_2_i.pdf", plot = plot_replication_gni, width = 8, height = 6)
+
+# EXTENSION 3: All OECD countries, largest time sample (1970 - 2019)
+# Consumption risk sharing
+data <- read.csv("../data/data_cy_ext_3.csv")
+plot_replication_consumption <- plot_function(data = data, consumption = TRUE, limits = c(0,100), seq = 5)
+ggsave("../output/rs_cs_ext_3_c.pdf", plot = plot_replication_consumption, width = 8, height = 6)
+
+# Income risk sharing
+data <- read.csv("../data/data_iy_ext_3.csv")
+plot_replication_gni <- plot_function(data = data, consumption = FALSE, limits = c(-80,100), seq = 5)
+ggsave("../output/rs_cs_ext_3_i.pdf", plot = plot_replication_gni, width = 8, height = 6)
+
+# EXTENSION 4: Largest time sample, Eurozone vs. non-Eurozone OECD countries
+# Consumption risk sharing Eurozone
+data <- read.csv("../data/data_cy_ext_4a.csv")
+plot_replication_consumption <- plot_function(data = data, consumption = TRUE, limits = c(-40,100), seq = 5)
+ggsave("../output/rs_cs_ext_4a_c.pdf", plot = plot_replication_consumption, width = 8, height = 6)
+
+# Income risk sharing Eurozone
+data <- read.csv("../data/data_iy_ext_4a.csv")
+plot_replication_gni <- plot_function(data = data, consumption = FALSE, limits = c(-130,190), seq = 5)
+ggsave("../output/rs_cs_ext_4a_i.pdf", plot = plot_replication_gni, width = 8, height = 6)
+
+# Consumption risk sharing Non-Eurozone, but OECD (with EU)
+data <- read.csv("../data/data_cy_ext_4b.csv")
+plot_replication_consumption <- plot_function(data = data, consumption = TRUE, limits = c(-40,100), seq = 5)
+ggsave("../output/rs_cs_ext_4b_c.pdf", plot = plot_replication_consumption, width = 8, height = 6)
+ 
+# Income risk sharing Non-Eurozone, but OECD (with EU)
+data <- read.csv("../data/data_iy_ext_4b.csv")
+plot_replication_gni <- plot_function(data = data, consumption = FALSE, limits = c(-130,190), seq = 5)
+ggsave("../output/rs_cs_ext_4b_i.pdf", plot = plot_replication_gni, width = 8, height = 6)
+
+# Consumption risk sharing Non-Eurozone, but OECD (not EU)
+data <- read.csv("../data/data_cy_ext_4c.csv")
+plot_replication_consumption <- plot_function(data = data, consumption = TRUE, limits = c(-40,100), seq = 5)
+ggsave("../output/rs_cs_ext_4c_c.pdf", plot = plot_replication_consumption, width = 8, height = 6)
+ 
+# Income risk sharing Non-Eurozone, but OECD (not EU)
+data <- read.csv("../data/data_iy_ext_4c.csv")
+plot_replication_gni <- plot_function(data = data, consumption = FALSE, limits = c(-130,190), seq = 5)
+ggsave("../output/rs_cs_ext_4c_i.pdf", plot = plot_replication_gni, width = 8, height = 6)
