@@ -303,6 +303,41 @@ ggplot(ehb_mean_ts, aes(x = year, y = EHB_mean)) +
 # looks similar to the plot from Soresen but not identical
 # starts on roughly the same level but declines slightly more
 
+# plot in paper style
+p <- ggplot(ehb_mean_ts, aes(x = year, y = EHB_mean)) +
+  geom_line(color = "#f472c7", linewidth = 0.8) +
+  geom_point(color = "#f472c7", shape = 15, size = 2.5) +  # shape 15 = filled square
+  scale_x_continuous(
+    breaks = 1993:2003,
+    limits = c(1993, 2003)
+  ) +
+  scale_y_continuous(
+    breaks = seq(0, 1, by = 0.1),
+    limits = c(0, 1)
+  ) +
+  labs(
+    x       = "Year",
+    y       = "Home Bias Index",
+    caption = "Note: Cross-sectional mean for 22 OECD countries."
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.x  = element_text(angle = 0, size = 9),
+    axis.text.y  = element_text(size = 9),
+    axis.title   = element_text(size = 10),
+    plot.caption = element_text(hjust = 0, size = 8),
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5)
+  )
+p
+
+ggsave(
+  filename = "../output/equity_home_bias.png",
+  plot     = p,
+  width    = 5,      # inches — adjust to taste
+  height   = 3.5,
+  dpi      = 300
+)
+
 
 # plot mean deviation
 ggplot(ehb_reg, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
@@ -322,6 +357,59 @@ ggplot(ehb_reg, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
   # goes to 0.2 in 2000 and slowly increases back to 0.4 in 2003 (where the 2003 value is the same as in the paper)
   # we should do one version without Austria
 
+# plot in paper style
+
+library(ggrepel)
+
+# label data: last observation per country
+ehb_labels <- ehb_reg |>
+  group_by(iso) |>
+  filter(year == max(year)) |>
+  ungroup()
+
+p2 <- ggplot(ehb_reg, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50", linewidth = 0.4) +
+  geom_line(linewidth = 0.5, show.legend = FALSE) +
+  geom_point(shape = 15, size = 1.8, show.legend = FALSE) +
+  geom_text_repel(
+    data          = ehb_labels,
+    aes(label     = iso),
+    size          = 2.5,
+    nudge_x       = 0.4,          # push labels to the right of 2003
+    direction     = "y",          # only repel vertically
+    hjust         = 0,
+    segment.size  = 0.3,
+    segment.color = "grey70",
+    show.legend   = FALSE
+  ) +
+  scale_x_continuous(
+    breaks = 1993:2003,
+    limits = c(1993, 2006)        # extra room on the right for labels
+  ) +
+  labs(
+    x       = "Year",
+    y       = "EHB Deviation from Yearly Mean",
+    caption = "Note: Deviation of country-level equity home bias from the unweighted cross-country mean."
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.x  = element_text(size = 9),
+    axis.text.y  = element_text(size = 9),
+    axis.title   = element_text(size = 10),
+    plot.caption = element_text(hjust = 0, size = 8),
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5)
+  )
+
+ggsave(
+  filename = "../output/ehb_deviation_by_country.png",
+  plot     = p2,
+  width    = 6,
+  height   = 4,
+  dpi      = 300
+)
+
+
+# export data
 ehb_reg_small <- ehb_reg |>
   select(iso,year,EHB_dev)
 
@@ -469,6 +557,68 @@ ggplot(ehb_crude_mean_ts, aes(x = year, y = value, color = measure)) +
 # different level probably due to different GDP data?
 # ppp adjusted gdp leads to strong deviation in the shape after 1999
 
+# plot in paper style
+nonppp_label <- "Non-PPP GDP"  
+ppp_label    <- "PPP-adjusted GDP"      
+
+p3 <- ggplot(ehb_crude_mean_ts, aes(x = year, y = value, color = measure, shape = measure)) +
+  geom_line(linewidth = 0.8) +
+  geom_point(size = 2.5) +
+  scale_color_manual(
+    values = setNames(
+      c("#7df101", "#888888"),
+      c(nonppp_label, ppp_label)
+    ),
+    labels = c(
+      nonppp_label = "Non-PPP adjusted GDP (used in replication)",
+      ppp_label    = "PPP adjusted GDP"
+    )
+  ) +
+  scale_shape_manual(
+    values = setNames(
+      c(17L, 16L),              # 17 = filled triangle, 16 = filled circle
+      c(nonppp_label, ppp_label)
+    ),
+    labels = c(
+      nonppp_label = "Non-PPP adjusted GDP (used in replication)",
+      ppp_label    = "PPP adjusted GDP"
+    )
+  ) +
+  scale_x_continuous(
+    breaks = 1993:2003,
+    limits = c(1993, 2003)
+  ) +
+  labs(
+    x       = "Year",
+    y       = "Mean of log(Foreign Assets / GDP)",
+    color   = NULL,
+    shape   = NULL,
+    caption = paste0(
+      "Note: Cross-sectional mean of log(foreign equity + debt + FDI / GDP) for 24 OECD countries.\n",
+      "Figure 2 in Sørensen et al. (2006) plots this series on the right axis with PPP-adjusted GDP.\n",
+      "The non-PPP adjusted series (green) is used in our replication as it aligns more closely with the paper."
+    )
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.x     = element_text(size = 9),
+    axis.text.y     = element_text(size = 9),
+    axis.title      = element_text(size = 10),
+    legend.position = "bottom",
+    legend.text     = element_text(size = 9),
+    plot.caption    = element_text(hjust = 0, size = 8, color = "grey30"),
+    panel.border    = element_rect(color = "black", fill = NA, linewidth = 0.5)
+  )
+
+ggsave(
+  filename = "../output/crude_ehb_mean_ppp_comparison.png",
+  plot     = p3,
+  width    = 6,
+  height   = 4,
+  dpi      = 300
+)
+
+
 # plot mean deviation
 ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev, group = iso, color = iso)) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
@@ -493,6 +643,52 @@ ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev_non_ppp, group = iso, colo
   ) +
   theme_minimal()
 
+# paper stlye
+ehb_crude_labels <- ehb_crude_reg |>
+  group_by(iso) |>
+  filter(year == max(year)) |>
+  ungroup()
+
+p4 <- ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev_non_ppp, group = iso, color = iso)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50", linewidth = 0.4) +
+  geom_line(linewidth = 0.5, show.legend = FALSE) +
+  geom_point(shape = 15, size = 1.8, show.legend = FALSE) +
+  geom_text_repel(
+    data         = ehb_crude_labels,
+    aes(label    = iso),
+    size         = 2.5,
+    nudge_x      = 0.4,
+    direction    = "y",
+    hjust        = 0,
+    segment.size = 0.3,
+    segment.color = "grey70",
+    show.legend  = FALSE
+  ) +
+  scale_x_continuous(
+    breaks = 1993:2003,
+    limits = c(1993, 2006)
+  ) +
+  labs(
+    x       = "Year",
+    y       = "Crude EHB Deviation from Yearly Mean",
+    caption = "Note: Deviation of country-level crude equity home bias from the unweighted cross-country mean. Non-PPP adjusted GDP."
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.x  = element_text(size = 9),
+    axis.text.y  = element_text(size = 9),
+    axis.title   = element_text(size = 10),
+    plot.caption = element_text(hjust = 0, size = 8, color = "grey30"),
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5)
+  )
+
+ggsave(
+  filename = "../output/crude_ehb_deviation_by_country.png",
+  plot     = p4,
+  width    = 6,
+  height   = 4,
+  dpi      = 300
+)
 
 
 # crude EHB in different compositions

@@ -1,0 +1,28 @@
+\begin{table}[htbp]
+\centering
+\caption{Risk Sharing and Equity Home Bias: OECD 1993--2003}
+\label{tab:table5_cons}
+\begin{tabular}{lcccc}
+\toprule
+ & & \multicolumn{3}{c}{Interaction terms with GDP} \\
+\cmidrule(lr){3-5}
+ & Average & & Equity \\
+ & Risk Sharing & Trend & Home Bias \\
+\midrule
+\textit{Consumption Smoothing} & & & \\[4pt]
+\quad With country fixed effects
+  & 20   & -3   & -12   \\
+  & (21.70)   & (2.09)   & (0.46)   \\[4pt]
+\bottomrule
+\end{tabular}
+\begin{minipage}{\linewidth}
+\smallskip
+\footnotesize
+\textit{Notes.} Country-fixed effects included. Rows present $100 \times (1 - \hat{\kappa}_0)$,
+$100 \times (-\hat{\kappa}_1)$, and $100 \times (-\hat{\kappa}_2)$, estimated from
+$$\Delta \log C_{it} - \Delta \log C_t = \text{const} + \kappa\,(\Delta \log
+\text{GDP}_{it} - \Delta \log \text{GDP}_t) + \varepsilon_{it}$$
+where $\kappa = \kappa_0 + \kappa_1(t - \bar{t}) + \kappa_2(\text{EHB}_{it} -
+\overline{\text{EHB}}_t)$. $t$-values in parentheses.
+\end{minipage}
+\end{table}
