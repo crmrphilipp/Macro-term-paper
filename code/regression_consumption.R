@@ -6,7 +6,7 @@ library(purrr)
 library(plm)
 
 # load data
-oecd_data <- read.csv("../data/gdp_gni_consumption_per_capita.csv")
+oecd_data <- read.csv("../data/data_cy_rep.csv")
 
 # right format
 df_oecd <- oecd_data %>%
@@ -19,12 +19,8 @@ df_oecd <- oecd_data %>%
   rename(
     consumption = consumption_OBS_VALUE,
     GDP = GDP_OBS_VALUE,
-    GNI = GNI_OBS_VALUE,
-    NNI = NNI_OBS_VALUE,
     consumption_pc = consumption_OBS_VALUE_per_capita,
     GDP_pc = GDP_OBS_VALUE_per_capita,
-    GNI_pc = GNI_OBS_VALUE_per_capita,
-    NNI_pc = NNI_OBS_VALUE_per_capita
   )
 
 ### Creating deviation variables 
@@ -185,14 +181,155 @@ reg_cons_stage2 <- plm(
 )
 
 
+##############################
+#### Creating the tables
+##############################
 summary(reg_cons_stage2)
 
+library(stargazer)
 
-# Paper-style average consumption risk sharing
-h0 <- coef(reg_cons_stage2)["gdp_dev"]
-avg_consumption_risk_sharing <- 100 * (1 - h0)
+output_dir <- "../output"
 
-avg_consumption_risk_sharing
+if (!dir.exists(output_dir)) {
+  stop("The output folder does not exist. Please check your working directory with getwd().")
+}
 
-write_csv(reg_df, "../data/reg_df.csv")
+stargazer(
+  reg_cons_stage2,
+  type = "latex",
+  out = file.path(output_dir, "reg_consumption_risk_sharing.tex"),
+  title = "Consumption Risk Sharing and Equity Home Bias",
+  dep.var.labels = "Consumption Growth Deviation",
+  column.labels = c("EHB"),
+  covariate.labels = c(
+    "GDP Growth Deviation",
+    "Time $\\times$ GDP Growth Deviation",
+    "Home Bias $\\times$ GDP Growth Deviation"
+  ),
+  omit.stat = c("f", "ser"),
+  digits = 3,
+  no.space = TRUE,
+  header = FALSE
+)
 
+file.exists(file.path(output_dir, "reg_consumption_risk_sharing.tex"))
+
+############################################################
+#### Table 5-style regressions: Foreign assets / GDP
+############################################################
+
+estimate_table5_cons <- function(data, asset_var) {
+  
+  # Clean estimation sample for this specific asset variable
+  reg_df_tmp <- data %>%
+    mutate(asset_dev = .data[[asset_var]]) %>%
+    filter(
+      is.finite(consumption_dev),
+      is.finite(gdp_dev),
+      is.finite(asset_dev),
+      is.finite(time)
+    ) %>%
+    arrange(iso, year)
+  
+  # First-stage country FE regression
+  panel_df_tmp <- pdata.frame(reg_df_tmp, index = c("iso", "year"))
+  
+  reg_stage1_tmp <- plm(
+    consumption_dev ~ gdp_dev + I(time * gdp_dev) + I(asset_dev * gdp_dev),
+    data   = panel_df_tmp,
+    model  = "within",
+    effect = "individual"
+  )
+  
+  # Country-specific residual standard deviation
+  reg_df_tmp$resid_stage1 <- as.numeric(residuals(reg_stage1_tmp))
+  
+  sigma_by_country_tmp <- reg_df_tmp %>%
+    group_by(iso) %>%
+    summarise(
+      sigma_i = sd(resid_stage1, na.rm = TRUE),
+      n_resid = sum(is.finite(resid_stage1)),
+      .groups = "drop"
+    )
+  
+  # Second-stage weights
+  reg_df_tmp_w <- reg_df_tmp %>%
+    left_join(sigma_by_country_tmp, by = "iso") %>%
+    mutate(weight_i = 1 / sigma_i) %>%
+    filter(
+      is.finite(weight_i),
+      weight_i > 0
+    )
+  
+  # Second-stage weighted country FE regression
+  panel_df_tmp_w <- pdata.frame(reg_df_tmp_w, index = c("iso", "year"))
+  
+  reg_stage2_tmp <- plm(
+    consumption_dev ~ gdp_dev + I(time * gdp_dev) + I(asset_dev * gdp_dev),
+    data    = panel_df_tmp_w,
+    model   = "within",
+    effect  = "individual",
+    weights = weight_i
+  )
+  
+  return(reg_stage2_tmp)
+}
+############################################################
+#### Estimate the five Table 5-style regressions
+############################################################
+
+reg_cons_eq_assets <- estimate_table5_cons(
+  merged_df,
+  "eq_ehb_crude_dev_non_ppp"
+)
+
+reg_cons_debt_assets <- estimate_table5_cons(
+  merged_df,
+  "debt_ehb_crude_dev_non_ppp"
+)
+
+reg_cons_fdi_assets <- estimate_table5_cons(
+  merged_df,
+  "fdi_ehb_crude_dev_non_ppp"
+)
+
+reg_cons_eq_debt_assets <- estimate_table5_cons(
+  merged_df,
+  "eq_debt_ehb_crude_dev_non_ppp"
+)
+
+reg_cons_all_assets <- estimate_table5_cons(
+  merged_df,
+  "ehb_crude_dev_non_ppp"
+)
+
+##############################
+#### Export regression table
+##############################
+
+library(stargazer)
+
+output_dir <- "../output"
+
+if (!dir.exists(output_dir)) {
+  stop("The output folder does not exist. Please check your working directory with getwd().")
+}
+
+stargazer(
+  reg_cons_stage2,
+  type = "latex",
+  out = file.path(output_dir, "table_5_consumption_risk_sharing.tex"),
+  title = "Risk Sharing and Equity Home Bias",
+  dep.var.labels = "Consumption Growth Deviation",
+  column.labels = c("EHB"),
+  covariate.labels = c(
+    "GDP Growth Deviation",
+    "Time $\\times$ GDP Growth Deviation",
+    "Home Bias $\\times$ GDP Growth Deviation"
+  ),
+  omit.stat = c("f", "ser"),
+  digits = 3,
+  no.space = TRUE
+)
+
+file.exists(file.path(output_dir, "table_5_consumption_risk_sharing.tex"))

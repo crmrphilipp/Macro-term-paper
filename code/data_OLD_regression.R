@@ -189,11 +189,3 @@ reg_cons_stage2 <- plm(
 summary(reg_cons_stage2)
 summary(reg_cons_stage1)
 
-# Paper-style average consumption risk sharing
-h0 <- coef(reg_cons_stage2)["gdp_dev"]
-avg_consumption_risk_sharing <- 100 * (1 - h0)
-
-avg_consumption_risk_sharing
-
-write_csv(reg_df, "../data/reg_df.csv")
-
