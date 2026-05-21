@@ -192,3 +192,9 @@ ggsave("../output/risk_sharing_plot_extended_93_24.pdf", plot = p2, width = 8, h
 
 ############ Income risk sharing regression and plot
 # to be completed
+
+
+########
+# Plot GDP, deviations, ...
+# Replicate other paper
+# Look at working paper version
