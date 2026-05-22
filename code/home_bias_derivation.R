@@ -821,7 +821,7 @@ ggplot(ehb_mean_ts_long, aes(x = year, y = value, color = series, linetype = ser
 
 
 ### 4. ehb_crude (one line per country) ###
-ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude, group = iso, color = iso)) +
+ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_non_ppp, group = iso, color = iso)) +
   geom_line() +
   geom_point() +
   labs(
@@ -832,7 +832,7 @@ ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude, group = iso, color = iso)) +
   theme_minimal()
 
 ### 5. ehb_crude_dev (one line per country) ###
-ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev, group = iso, color = iso)) +
+ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev_non_ppp, group = iso, color = iso)) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
   geom_line() +
   geom_point() +
@@ -845,9 +845,9 @@ ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev, group = iso, color = iso)
 
 ### 6. ehb_crude_mean (one observation per year) ###
 ehb_crude_mean_ts <- ehb_crude_reg |>
-  distinct(year, ehb_crude_mean)
+  distinct(year, ehb_crude_mean_non_ppp)
 
-ggplot(ehb_crude_mean_ts, aes(x = year, y = ehb_crude_mean)) +
+ggplot(ehb_crude_mean_ts, aes(x = year, y = ehb_crude_mean_non_ppp)) +
   geom_line() +
   geom_point() +
   labs(
@@ -1426,6 +1426,7 @@ extension_gaps |>
   footnote(general = "Only countries with at least one missing observation after 2003 are shown.",
            general_title = "Note.", footnote_as_chunk = TRUE) |>
   save_kable("../output/table_extension_gaps.tex")
+
 
 
 
