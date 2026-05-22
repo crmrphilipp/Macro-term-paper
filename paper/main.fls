@@ -21,6 +21,9 @@ INPUT /usr/local/texlive/2026/texmf-dist/tex/generic/iftex/iftex.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/generic/iftex/iftex.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+INPUT ./main.aux
+INPUT ./main.aux
+INPUT main.aux
 OUTPUT main.aux
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmr17.tfm
@@ -66,6 +69,15 @@ INPUT ../output/table_extension_gaps.tex
 INPUT ../output/reg_risk_sharing.tex
 INPUT ../output/reg_risk_sharing.tex
 INPUT ../output/reg_risk_sharing.tex
+INPUT ../output/table_5_consumption_risk_sharing.tex
+INPUT ../output/table_5_consumption_risk_sharing.tex
+INPUT ../output/table_5_consumption_risk_sharing.tex
+INPUT ../output/reg_consumption_risk_sharing.tex
+INPUT ../output/reg_consumption_risk_sharing.tex
+INPUT ../output/reg_consumption_risk_sharing.tex
+INPUT ../output/reg_gni_risk_sharing.tex
+INPUT ../output/reg_gni_risk_sharing.tex
+INPUT ../output/reg_gni_risk_sharing.tex
 INPUT main.aux
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb

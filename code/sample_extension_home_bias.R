@@ -475,6 +475,8 @@ ggsave(
   dpi      = 300
 )
 
+##### Extended Time and Sample #####
+
 ehb_top60_restr <-ehb_top60 |>
     filter(iso!="IRL", iso!="FIN", iso!="SWE", iso!="TWN", iso!="CYP", iso!="MLT", iso!="LTU", iso!="LTA", iso!="EST")
 
@@ -618,8 +620,6 @@ ehb_top60_restr <- ehb_top60_restr |>
     )
 
 
-
-
 ehb_top60_restr_small <- ehb_top60_restr |>
   select(iso,year,EHB_dev, ehb_crude_dev, eq_ehb_crude_dev,debt_ehb_crude_dev,fdi_ehb_crude_dev,eq_debt_ehb_crude_dev)
 
@@ -741,5 +741,431 @@ ggplot(ehb_top60_restr, aes(x = year, y = ehb_crude_dev, group = iso, color = is
   theme(legend.position = "none")
 
 
+##### Extended Time Original Sample #####
 
+countries_iso3 <- c("AUS","AUT","BEL","CAN","DNK","FIN","FRA","DEU","GRC","ISL",
+                    "IRL","ITA","JPN","MEX","NLD","NZL","NOR","PRT","ESP","SWE",
+                    "CHE","TUR","GBR","USA")
+
+
+ehb_long_orig <-ehb_top60 |>
+    filter(iso %in% countries_iso3)
+
+# unweighted EHB mean
+ehb_long_orig <- ehb_long_orig |>
+  group_by(year) |>
+  mutate(
+    EHB_mean = mean(EHB, na.rm = TRUE),
+    n = sum(!is.na(EHB))
+  )
+
+# deviation from the mean
+ehb_long_orig <- ehb_long_orig |>
+  mutate(EHB_dev = EHB-EHB_mean)
+
+# plot mean trend
+ehb_long_orig_mean_ts <- ehb_long_orig |>
+  distinct(year, EHB_mean)
+
+ggplot(ehb_long_orig_mean_ts, aes(x = year, y = EHB_mean)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Unweighted Cross-Country Mean EHB over Time",
+    x = "Year", y = "Mean EHB"
+  ) +
+  theme_minimal()
+
+# clearly declinign pattern
+
+p7 <- ggplot(ehb_long_orig_mean_ts, aes(x = year, y = EHB_mean)) +
+  geom_line(color = "#E07080", linewidth = 0.8) +
+  geom_point(color = "#E07080", shape = 15, size = 2.5) +
+  scale_x_continuous(
+    breaks = seq(1975, 2024, by = 5),
+    limits = c(1975, 2024)
+  ) +
+  scale_y_continuous(
+    breaks = seq(0, 1, by = 0.1),
+    limits = c(0, 1)
+  ) +
+  labs(
+    x       = "Year",
+    y       = "Home Bias Index",
+    caption = "Note: Unweighted cross-country mean equity home bias index."
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.x  = element_text(size = 9),
+    axis.text.y  = element_text(size = 9),
+    axis.title   = element_text(size = 10),
+    plot.caption = element_text(hjust = 0, size = 8, color = "grey30"),
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5)
+  )
+
+ggsave(
+  filename = "../output/ehb_orig_sample_1975_2024.png",
+  plot     = p5,
+  width    = 6,
+  height   = 4,
+  dpi      = 300
+)
+
+# plot mean deviation
+ggplot(ehb_long_orig, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "EHB Deviation from Yearly Mean by Country",
+    x = "Year", y = "EHB - Year Mean",
+    color = "Country"
+  ) +
+  theme_minimal()+
+  guides(color = guide_legend(ncol = 2))
+
+
+# get last point per country for labels
+last_points_orig <- ehb_long_orig |>
+  group_by(iso) |>
+  filter(year == max(year))
+
+ggplot(ehb_long_orig, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
+  geom_line() +
+  geom_point() +
+  geom_text_repel(
+    data = last_points,
+    aes(label = iso),
+    nudge_x     = 0.5,
+    direction   = "y",
+    hjust       = 0,
+    size        = 2.5,
+    segment.size = 0.3
+  ) +
+  scale_x_continuous(expand = expansion(mult = c(0.05, 0.15))) +  # make room on the right
+  labs(
+    title = "EHB Deviation from Yearly Mean by Country",
+    x = "Year", y = "EHB - Year Mean"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+
+
+# crude EHB in different compositions
+ehb_long_orig <- ehb_long_orig |>
+  mutate(
+    ehb_crude         = log((eq_assets + debt_assets + fdi_assets) / gdp),
+    eq_ehb_crude      = log((eq_assets) / gdp),
+    debt_ehb_crude    = log((debt_assets) / gdp),
+    fdi_ehb_crude     = log((fdi_assets) / gdp),
+    eq_debt_ehb_crude = log((eq_assets + debt_assets) / gdp)
+  ) |>
+  mutate(across(c(ehb_crude, eq_ehb_crude, debt_ehb_crude, 
+                  fdi_ehb_crude, eq_debt_ehb_crude),
+                ~ ifelse(is.infinite(.), NA, .)))
+
+
+# unweighted mean
+ehb_long_orig <- ehb_long_orig |>
+  group_by(year) |>
+  mutate(
+    ehb_crude_mean = mean(ehb_crude, na.rm=TRUE),
+    eq_ehb_crude_mean = mean(eq_ehb_crude, na.rm = TRUE),
+    debt_ehb_crude_mean = mean(debt_ehb_crude, na.rm = TRUE),
+    fdi_ehb_crude_mean = mean(fdi_ehb_crude, na.rm = TRUE),
+    eq_debt_ehb_crude_mean = mean(eq_debt_ehb_crude, na.rm = TRUE)
+  )
+
+# deviation from the mean
+ehb_long_orig <- ehb_long_orig |>
+  mutate(
+    ehb_crude_dev = ehb_crude - ehb_crude_mean,
+    eq_ehb_crude_dev = eq_ehb_crude - eq_ehb_crude_mean,
+    debt_ehb_crude_dev = debt_ehb_crude - debt_ehb_crude_mean,
+    fdi_ehb_crude_dev = fdi_ehb_crude - fdi_ehb_crude_mean,
+    eq_debt_ehb_crude_dev = eq_debt_ehb_crude - eq_debt_ehb_crude_mean
+    )
+
+
+ehb_long_orig_small <- ehb_long_orig |>
+  select(iso,year,EHB_dev, ehb_crude_dev, eq_ehb_crude_dev,debt_ehb_crude_dev,fdi_ehb_crude_dev,eq_debt_ehb_crude_dev)
+
+write_csv(ehb_long_orig_small, "../data/ehb_long_orig_small.csv")
+
+
+# --- Plot 1: all means as time series ---
+
+means_long_orig <- ehb_long_orig |>
+  ungroup() |>
+  distinct(year, ehb_crude_mean, eq_ehb_crude_mean, debt_ehb_crude_mean,
+           fdi_ehb_crude_mean, eq_debt_ehb_crude_mean) |>
+  pivot_longer(-year, names_to = "variable", values_to = "value") |>
+  mutate(variable = str_remove(variable, "_mean"))
+
+ggplot(means_long, aes(x = year, y = value, color = variable)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Yearly Means of Crude EHB Measures",
+       x = "Year", y = "Mean (log)", color = NULL) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+# paper style
+# variable names after str_remove: "ehb_crude", "eq_ehb_crude",
+# "debt_ehb_crude", "fdi_ehb_crude", "eq_debt_ehb_crude"
+# confirm with: unique(means_long$variable)
+
+var_labels <- c(
+  "ehb_crude"          = "Total (Eq. + Debt + FDI)",
+  "eq_ehb_crude"       = "Equity",
+  "debt_ehb_crude"     = "Debt",
+  "fdi_ehb_crude"      = "FDI",
+  "eq_debt_ehb_crude"  = "Equity + Debt"
+)
+
+var_colors <- c(
+  "ehb_crude"          = "#6A9E6A",   # green — mirrors Figure 2 total assets line
+  "eq_ehb_crude"       = "#E07080",   # pink — consistent with Figure 1 equity color
+  "debt_ehb_crude"     = "#6A8DBE",   # blue
+  "fdi_ehb_crude"      = "#C8963E",   # orange
+  "eq_debt_ehb_crude"  = "#7B6BA8"    # purple
+)
+
+var_shapes <- c(
+  "ehb_crude"          = 15L,   # filled square
+  "eq_ehb_crude"       = 17L,   # filled triangle
+  "debt_ehb_crude"     = 16L,   # filled circle
+  "fdi_ehb_crude"      = 18L,   # filled diamond
+  "eq_debt_ehb_crude"  = 8L     # asterisk
+)
+
+p8 <- ggplot(means_long_orig, aes(x = year, y = value, color = variable, shape = variable)) +
+  geom_line(linewidth = 0.7) +
+  geom_point(size = 2.2) +
+  scale_color_manual(values = var_colors, labels = var_labels) +
+  scale_shape_manual(values = var_shapes, labels = var_labels) +
+  scale_x_continuous(
+    breaks = seq(1975, 2024, by = 5),
+    limits = c(1975, 2024)
+  ) +
+  labs(
+    x       = "Year",
+    y       = "Mean of log(Foreign Assets / GDP)",
+    color   = NULL,
+    shape   = NULL,
+    caption = paste0(
+      "Note: Unweighted cross-country means of crude equity home bias measures.\n",
+      "Sample restricted to original sample countries. Non-PPP adjusted GDP."
+    )
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.x     = element_text(size = 9),
+    axis.text.y     = element_text(size = 9),
+    axis.title      = element_text(size = 10),
+    legend.position = "bottom",
+    legend.text     = element_text(size = 9),
+    legend.key.width = unit(1.5, "cm"),    # wider legend keys so line style is visible
+    plot.caption    = element_text(hjust = 0, size = 8, color = "grey30"),
+    panel.border    = element_rect(color = "black", fill = NA, linewidth = 0.5)
+  ) +
+  guides(
+    color = guide_legend(nrow = 2),   # wrap legend to 2 rows if needed
+    shape = guide_legend(nrow = 2)
+  )
+
+ggsave(
+  filename = "../output/crude_ehb_means_orig_long_1975_2024.png",
+  plot     = p6,
+  width    = 7,
+  height   = 4.5,
+  dpi      = 300
+)
+
+# --- Plot 2: ehb_crude_dev with country labels ---
+
+last_points_orig <- ehb_long_orig |>
+  group_by(iso) |>
+  filter(year == max(year[!is.na(ehb_crude_dev)]))
+
+ggplot(ehb_long_orig, aes(x = year, y = ehb_crude_dev, group = iso, color = iso)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
+  geom_line() +
+  geom_point() +
+  geom_text_repel(
+    data        = last_points,
+    aes(label   = iso),
+    nudge_x     = 0.5,
+    direction   = "y",
+    hjust       = 0,
+    size        = 2.5,
+    segment.size = 0.3
+  ) +
+  scale_x_continuous(expand = expansion(mult = c(0.05, 0.15))) +
+  labs(title = "EHB Crude Deviation from Yearly Mean by Country",
+       x = "Year", y = "ehb_crude - Year Mean") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+
+###### Euro Area ######
+
+# Euro Area Countries
+ea_iso3 <- c("AUT","BEL","CYP","EST","FIN","FRA","DEU","GRC","IRL","ITA",
+             "LVA","LTU","LUX","MLT","NLD","PRT","SVK","SVN","ESP")
+
+# ── Build two iso lists ───────────────────────────────────────────────────
+
+# Sample 1: top 50 + EU, drop EA members
+top_n_iso <- ewn |>
+  filter(!is.na(gdp), !is.na(iso)) |>
+  group_by(iso, country) |>
+  summarise(avg_gdp = mean(gdp, na.rm = TRUE), .groups = "drop") |>
+  slice_max(avg_gdp, n = 50) |>
+  pull(iso)
+
+sample_iso_ea <- union(top_n_iso, eu_iso3) |>
+  setdiff(ea_iso3)
+
+# Sample 2: countries_iso3, drop EA members
+sample_iso_ea_orig <- setdiff(countries_iso3, ea_iso3)
+
+# ── ewn ───────────────────────────────────────────────────────────────────────
+
+ewn_ea <- ewn |>
+  filter(iso %in% sample_iso_ea   | country == "Euro Area", year>1997)
+
+ewn_ea_orig <- ewn |>
+  filter(iso %in% sample_iso_ea_orig  | country == "Euro Area", year>1997)
+
+# ── wdi_world ─────────────────────────────────────────────────────────────────
+
+wdi_ea <- wdi_world |>
+  filter(iso %in% sample_iso_ea   | country == "Euro area", year>1997)
+
+wdi_ea_orig <- wdi_world |>
+  filter(iso %in% sample_iso_ea_orig  | country == "Euro area", year>1997)
+
+
+# give new ISO code EUR 
+ewn_ea <- ewn_ea |>
+  mutate(iso = if_else(country == "Euro Area", "EUR", iso))
+
+ewn_ea_orig <- ewn_ea_orig |>
+  mutate(iso = if_else(country == "Euro Area", "EUR", iso))
+
+wdi_ea <- wdi_ea |>
+  mutate(iso = if_else(country == "Euro area", "EUR", iso))
+
+wdi_ea_orig <- wdi_ea_orig |>
+  mutate(iso = if_else(country == "Euro area", "EUR", iso))
+
+# Merge
+# WDI data is in absolute dollars, EWN in millions, WDI is thus converted
+
+# full sample
+df_ea <- ewn_ea |>
+  left_join(wdi_ea,       by = c("iso", "year")) |>
+  left_join(wdi_world_agg, by = "year") |>
+  mutate(
+    mktcap       = mktcap       / 1e6,
+    world_mktcap = world_mktcap / 1e6
+  ) 
+
+# original sample
+df_ea_orig <- ewn_ea_orig |>
+  left_join(wdi_ea_orig,       by = c("iso", "year")) |>
+  left_join(wdi_world_agg, by = "year") |>
+  mutate(
+    mktcap       = mktcap       / 1e6,
+    world_mktcap = world_mktcap / 1e6
+  ) 
+
+
+# ── Compute Equity Home Bias ──────────────────────────────────────────────────
+
+# full sample
+df_ea <-df_ea |>
+  mutate(
+    # Total equity portfolio = domestic market cap + foreign equity held - equity held by foreigners
+    total_eq_portfolio = mktcap + eq_assets - eq_liab,
+    
+    # Share of foreign equity in total portfolio (column 1 in Table 2, as %)
+    share_foreign_eq   = eq_assets / total_eq_portfolio,
+    
+    # Country share of world market cap
+    A                  = mktcap / world_mktcap,
+    
+    # Equity Home Bias (column 2 in Table 2)
+    EHB                = 1 - share_foreign_eq / (1 - A)
+  )
+
+# original sample
+df_ea_orig <-df_ea_orig |>
+  mutate(
+    # Total equity portfolio = domestic market cap + foreign equity held - equity held by foreigners
+    total_eq_portfolio = mktcap + eq_assets - eq_liab,
+    
+    # Share of foreign equity in total portfolio (column 1 in Table 2, as %)
+    share_foreign_eq   = eq_assets / total_eq_portfolio,
+    
+    # Country share of world market cap
+    A                  = mktcap / world_mktcap,
+    
+    # Equity Home Bias (column 2 in Table 2)
+    EHB                = 1 - share_foreign_eq / (1 - A)
+  )
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# Check and Clean EHB data
+# ══════════════════════════════════════════════════════════════════════════════
+
+### full sample ###
+
+ehb_ea <- df_ea
+
+# Exclude negative total equity portfolio values
+# see log book for further discussion
+sum(ehb_ea$total_eq_portfolio<0, na.rm = TRUE)
+    # 4 observations
+
+sum(ehb_ea$EHB>1, na.rm=TRUE)
+    # 1 observations
+
+negative_portfolio_ea <- ehb_ea |>
+    filter(!is.na(total_eq_portfolio), !is.na(EHB)) |>
+    filter(total_eq_portfolio < 0 | EHB > 1)
+
+    # the difference from 4 to 1 comes from 4 observations with EHB=1 where eq_assets=0 (Bulgaria 1996, Romania 1998-2000)
+    # Bulgaria 2001
+
+ehb_ea <- ehb_ea |>
+  filter(is.na(total_eq_portfolio) | !total_eq_portfolio<0)
+  
+
+# look for negative EHB values
+sum(ehb_ea$EHB<0, na.rm = TRUE)
+    # 4
+
+negative_ehb_ea <-ehb_ea|>
+    filter(!is.na(EHB)) |>
+    filter(EHB < 0)
+    # Euro Area has negative EHB for 2015-2018
+    # many large Euro countries drop out of mktcap in 2015
+
+
+ehb_ea |>
+  filter(iso == "EUR") |>
+  select(year, eq_assets, eq_liab, mktcap) |>
+  pivot_longer(cols = c(eq_assets, eq_liab, mktcap),
+               names_to = "variable",
+               values_to = "value") |>
+  ggplot(aes(x = year, y = value, color = variable)) +
+  geom_line() +
+  labs(title = "Netherlands: Equity Assets, Liabilities & Market Cap",
+       x = "Year", y = "Value", color = "Variable") +
+  theme_minimal()
 
