@@ -157,18 +157,18 @@ data <- read.csv("../data/data_iy_ext_2.csv")
 plot_replication_gni <- plot_function(data = data, consumption = FALSE, limits = c(-40,70), seq = 5)
 ggsave("../output/rs_cs_ext_2_i.pdf", plot = plot_replication_gni, width = 8, height = 6)
 
-# EXTENSION 3: All OECD countries, largest time sample (1970 - 2019)
-# Consumption risk sharing
-data <- read.csv("../data/data_cy_ext_3.csv")
-plot_replication_consumption <- plot_function(data = data, consumption = TRUE, limits = c(0,100), seq = 5)
-ggsave("../output/rs_cs_ext_3_c.pdf", plot = plot_replication_consumption, width = 8, height = 6)
+# ### EXTENSION 3: All OECD countries, largest time sample (1970 - 2019)
+# # Consumption risk sharing
+# data <- read.csv("../data/data_cy_ext_3.csv")
+# plot_replication_consumption <- plot_function(data = data, consumption = TRUE, limits = c(0,100), seq = 5)
+# ggsave("../output/rs_cs_ext_3_c.pdf", plot = plot_replication_consumption, width = 8, height = 6)
 
-# Income risk sharing
-data <- read.csv("../data/data_iy_ext_3.csv")
-plot_replication_gni <- plot_function(data = data, consumption = FALSE, limits = c(-80,100), seq = 5)
-ggsave("../output/rs_cs_ext_3_i.pdf", plot = plot_replication_gni, width = 8, height = 6)
+# # Income risk sharing
+# data <- read.csv("../data/data_iy_ext_3.csv")
+# plot_replication_gni <- plot_function(data = data, consumption = FALSE, limits = c(-80,100), seq = 5)
+# ggsave("../output/rs_cs_ext_3_i.pdf", plot = plot_replication_gni, width = 8, height = 6)
 
-# EXTENSION 4: Largest time sample, Eurozone vs. non-Eurozone OECD countries
+### EXTENSION 4: Largest time sample, Eurozone vs. non-Eurozone OECD countries
 # Consumption risk sharing Eurozone
 data <- read.csv("../data/data_cy_ext_4a.csv")
 plot_replication_consumption <- plot_function(data = data, consumption = TRUE, limits = c(-40,100), seq = 5)
@@ -189,12 +189,50 @@ data <- read.csv("../data/data_iy_ext_4b.csv")
 plot_replication_gni <- plot_function(data = data, consumption = FALSE, limits = c(-130,190), seq = 5)
 ggsave("../output/rs_cs_ext_4b_i.pdf", plot = plot_replication_gni, width = 8, height = 6)
 
-# Consumption risk sharing Non-Eurozone, but OECD (not EU)
+# Consumption risk sharing Non-Eurozone, entire available sample
 data <- read.csv("../data/data_cy_ext_4c.csv")
 plot_replication_consumption <- plot_function(data = data, consumption = TRUE, limits = c(-40,100), seq = 5)
 ggsave("../output/rs_cs_ext_4c_c.pdf", plot = plot_replication_consumption, width = 8, height = 6)
  
-# Income risk sharing Non-Eurozone, but OECD (not EU)
+# Income risk sharing Non-Eurozone, entire available sample
 data <- read.csv("../data/data_iy_ext_4c.csv")
 plot_replication_gni <- plot_function(data = data, consumption = FALSE, limits = c(-130,190), seq = 5)
 ggsave("../output/rs_cs_ext_4c_i.pdf", plot = plot_replication_gni, width = 8, height = 6)
+
+### EXTENSION 5: Eurozone as own observation
+# Consumption risk sharing Eurozone
+data <- read.csv("../data/data_cy_ext_5a.csv")
+plot_replication_consumption <- plot_function(data = data, consumption = TRUE, limits = c(-10,100), seq = 5)
+ggsave("../output/rs_cs_ext_5a_c.pdf", plot = plot_replication_consumption, width = 8, height = 6)
+
+# Income risk sharing Eurozone
+data <- read.csv("../data/data_iy_ext_5a.csv")
+plot_replication_gni <- plot_function(data = data, consumption = FALSE, limits = c(-30,70), seq = 5)
+ggsave("../output/rs_cs_ext_5a_i.pdf", plot = plot_replication_gni, width = 8, height = 6)
+
+# Consumption risk sharing Eurozone
+data <- read.csv("../data/data_cy_ext_5b.csv")
+plot_replication_consumption <- plot_function(data = data, consumption = TRUE, limits = c(-10,100), seq = 5)
+ggsave("../output/rs_cs_ext_5b_c.pdf", plot = plot_replication_consumption, width = 8, height = 6)
+
+# Income risk sharing Eurozone
+data <- read.csv("../data/data_iy_ext_5b.csv")
+plot_replication_gni <- plot_function(data = data, consumption = FALSE, limits = c(-30,70), seq = 5)
+ggsave("../output/rs_cs_ext_5b_i.pdf", plot = plot_replication_gni, width = 8, height = 6)
+
+### SANITY CHECK
+# Consumption risk sharing
+data <- read.csv("../data/data_cy_sanity.csv")
+plot_replication_consumption <- plot_function(data = data, consumption = TRUE, limits = c(-20,70))
+ggsave("../output/rs_cs_sanity_c.pdf", plot = plot_replication_consumption, width = 8, height = 6)
+
+# Income risk sharing
+data <- read.csv("../data/data_iy_sanity.csv")
+plot_replication_gni <- plot_function(data = data, consumption = FALSE, limits = c(-20,70))
+ggsave("../output/rs_cs_sanity_i.pdf", plot = plot_replication_gni, width = 8, height = 6)
+
+### SANITY CHECK 2
+# Consumption risk sharing
+data <- read.csv("../data/data_cy_sanity_2.csv")
+plot_replication_consumption <- plot_function(data = data, consumption = TRUE, limits = c(-20,70))
+ggsave("../output/rs_cs_sanity_c_2.pdf", plot = plot_replication_consumption, width = 8, height = 6)
