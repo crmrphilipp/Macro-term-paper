@@ -86,7 +86,7 @@ ewn <- ewn_raw |>
     year        = Year,
     eq_assets   = `Portfolio equity assets (stock)`,
     eq_liab     = `Portfolio equity liabilities (stock)`,
-    debt_assets = `Portfolio debt assets`,
+    debt_assets = `Debt assets (stock)`,
     debt_liab   = `Portfolio debt liabilities`,
     fdi_assets  = `FDI assets (stock)`,
     fdi_liab    = `FDI liabilities (stock)`,
@@ -102,7 +102,7 @@ ewn_full <- ewn_raw |>
     year        = Year,
     eq_assets   = `Portfolio equity assets (stock)`,
     eq_liab     = `Portfolio equity liabilities (stock)`,
-    debt_assets = `Portfolio debt assets`,
+    debt_assets = `Debt assets (stock)`,
     debt_liab   = `Portfolio debt liabilities`,
     fdi_assets  = `FDI assets (stock)`,
     fdi_liab    = `FDI liabilities (stock)`,
@@ -471,44 +471,47 @@ write_csv(ehb_reg_no_aut_small, "../data/ehb_reg_no_aut_small.csv")
 # Crude EHB measure
 # ══════════════════════════════════════════════════════════════════════════════
 
-oecd_data <- read.csv("../data/gdp_gni_consumption_per_capita.csv")
+#oecd_data <- read.csv("../data/gdp_gni_consumption_per_capita.csv")
 
-oecd_wide <- oecd_data |>
-  pivot_wider(
-    id_cols     = c(REF_AREA, TIME_PERIOD, Population),
-    names_from  = measure,
-    values_from = c(OBS_VALUE, OBS_VALUE_per_capita)
+#oecd_wide <- oecd_data |>
+#  pivot_wider(
+#    id_cols     = c(REF_AREA, TIME_PERIOD, Population),
+#    names_from  = measure,
+#    values_from = c(OBS_VALUE, OBS_VALUE_per_capita)
   )
 
-oecd_wide <-oecd_wide |>
-  rename(iso=REF_AREA, year=TIME_PERIOD, pop=Population, cons=OBS_VALUE_consumption, gdp=OBS_VALUE_GDP, gni=OBS_VALUE_GNI, nni=OBS_VALUE_NNI,
-  cons_pc = OBS_VALUE_per_capita_consumption, gdp_pc=OBS_VALUE_per_capita_GDP, gni_pc=OBS_VALUE_per_capita_GNI, nni_pc=OBS_VALUE_per_capita_NNI)
+#oecd_wide <-oecd_wide |>
+#  rename(iso=REF_AREA, year=TIME_PERIOD, pop=Population, cons=OBS_VALUE_consumption, gdp=OBS_VALUE_GDP, gni=OBS_VALUE_GNI, nni=OBS_VALUE_NNI,
+#  cons_pc = OBS_VALUE_per_capita_consumption, gdp_pc=OBS_VALUE_per_capita_GDP, gni_pc=OBS_VALUE_per_capita_GNI, nni_pc=OBS_VALUE_per_capita_NNI)
 
-oecd_merge <- oecd_wide %>%
-    filter(year>1992, year<2004)%>%
-    select(iso, year, gdp, gdp_pc)
+#oecd_merge <- oecd_wide %>%
+#    filter(year>1992, year<2004)%>%
+#    select(iso, year, gdp, gdp_pc)
 
 # prepare second ehb measure for regression
 ehb_crude_raw <- df_full|>
   filter(year>1992, year<2004)
 
-ehb_crude_raw<-ehb_crude_raw |>
-  left_join(oecd_merge, by=c("iso", "year"))
+#ehb_crude_raw<-ehb_crude_raw |>
+#  left_join(oecd_merge, by=c("iso", "year"))
 
 # create the "crude" EHB measure using foreign equity over GDP
-ehb_crude_reg <- ehb_crude_raw |>
-  mutate(ehb_crude = log((eq_assets+debt_assets+fdi_assets)/gdp.y))
+#ehb_crude_reg <- ehb_crude_raw |>
+#  mutate(ehb_crude = log((eq_assets+debt_assets+fdi_assets)/gdp.y))
 
 # create crude EHB with non ppp adjusted gdp from EWN
+ehb_crude_reg <- ehb_crude_raw |>
+  mutate(ehb_crude_non_ppp = log((eq_assets+debt_assets+fdi_assets)/gdp))
+
 ehb_crude_reg <- ehb_crude_reg |>
-  mutate(ehb_crude_non_ppp = log((eq_assets+debt_assets+fdi_assets)/gdp.x))
+  mutate(ehb_crude_non_ppp_tryout = log((eq_assets+debt_assets+fdi_assets)/(gdp/10)))
 
 # unweighted mean
-ehb_crude_reg <- ehb_crude_reg |>
-  group_by(year) |>
-  mutate(
-    ehb_crude_mean = mean(ehb_crude, na.rm = TRUE),
-    n = sum(!is.na(ehb_crude))
+#ehb_crude_reg <- ehb_crude_reg |>
+#  group_by(year) |>
+#  mutate(
+#    ehb_crude_mean = mean(ehb_crude, na.rm = TRUE),
+#    n = sum(!is.na(ehb_crude))
   )
 
 # unweighted mean for no ppp
@@ -520,8 +523,8 @@ ehb_crude_reg <- ehb_crude_reg |>
   )
 
 # deviation from the mean
-ehb_crude_reg <- ehb_crude_reg |>
-  mutate(ehb_crude_dev = ehb_crude-ehb_crude_mean)
+#ehb_crude_reg <- ehb_crude_reg |>
+#  mutate(ehb_crude_dev = ehb_crude-ehb_crude_mean)
 
 # deviation from the mean for non ppp
 ehb_crude_reg <- ehb_crude_reg |>
@@ -530,14 +533,13 @@ ehb_crude_reg <- ehb_crude_reg |>
 
 # plot mean time trend
 ehb_crude_mean_ts <- ehb_crude_reg |>
-  distinct(year, ehb_crude_mean, ehb_crude_mean_non_ppp) |>
+  distinct(year, ehb_crude_mean_non_ppp) |>
   pivot_longer(
-    cols      = c(ehb_crude_mean, ehb_crude_mean_non_ppp),
+    cols      = c(ehb_crude_mean_non_ppp),
     names_to  = "measure",
     values_to = "value"
   ) |>
   mutate(measure = recode(measure,
-    "ehb_crude_mean"         = "PPP-adjusted GDP",
     "ehb_crude_mean_non_ppp" = "Non-PPP GDP"
   ))
 
@@ -557,32 +559,12 @@ ggplot(ehb_crude_mean_ts, aes(x = year, y = value, color = measure)) +
 # different level probably due to different GDP data?
 # ppp adjusted gdp leads to strong deviation in the shape after 1999
 
-# plot in paper style
-nonppp_label <- "Non-PPP GDP"  
-ppp_label    <- "PPP-adjusted GDP"      
-
-p3 <- ggplot(ehb_crude_mean_ts, aes(x = year, y = value, color = measure, shape = measure)) +
-  geom_line(linewidth = 0.8) +
-  geom_point(size = 2.5) +
-  scale_color_manual(
-    values = setNames(
-      c("#7df101", "#888888"),
-      c(nonppp_label, ppp_label)
-    ),
-    labels = c(
-      nonppp_label = "Non-PPP adjusted GDP (used in replication)",
-      ppp_label    = "PPP adjusted GDP"
-    )
-  ) +
-  scale_shape_manual(
-    values = setNames(
-      c(17L, 16L),              # 17 = filled triangle, 16 = filled circle
-      c(nonppp_label, ppp_label)
-    ),
-    labels = c(
-      nonppp_label = "Non-PPP adjusted GDP (used in replication)",
-      ppp_label    = "PPP adjusted GDP"
-    )
+p3 <- ggplot(ehb_crude_mean_ts, aes(x = year, y = value)) +
+  geom_line(linewidth = 0.8, color = "#7df101") +
+  geom_point(size = 2.5, shape = 17L, color = "#7df101") +
+  scale_y_continuous(
+    breaks = seq(-0.8, 0.4, by = 0.2),
+    limits = c(-0.8, 0.4)
   ) +
   scale_x_continuous(
     breaks = 1993:2003,
@@ -591,27 +573,22 @@ p3 <- ggplot(ehb_crude_mean_ts, aes(x = year, y = value, color = measure, shape 
   labs(
     x       = "Year",
     y       = "Mean of log(Foreign Assets / GDP)",
-    color   = NULL,
-    shape   = NULL,
     caption = paste0(
       "Note: Cross-sectional mean of log(foreign equity + debt + FDI / GDP) for 24 OECD countries.\n",
-      "Figure 2 in Sørensen et al. (2006) plots this series on the right axis with PPP-adjusted GDP.\n",
-      "The non-PPP adjusted series (green) is used in our replication as it aligns more closely with the paper."
+      "Replicates the right-axis series in Figure 2 of Sørensen et al. (2006) using non-PPP adjusted GDP."
     )
   ) +
   theme_classic() +
   theme(
-    axis.text.x     = element_text(size = 9),
-    axis.text.y     = element_text(size = 9),
-    axis.title      = element_text(size = 10),
-    legend.position = "bottom",
-    legend.text     = element_text(size = 9),
-    plot.caption    = element_text(hjust = 0, size = 8, color = "grey30"),
-    panel.border    = element_rect(color = "black", fill = NA, linewidth = 0.5)
+    axis.text.x  = element_text(size = 9),
+    axis.text.y  = element_text(size = 9),
+    axis.title   = element_text(size = 10),
+    plot.caption = element_text(hjust = 0, size = 8, color = "grey30"),
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5)
   )
 
 ggsave(
-  filename = "../output/crude_ehb_mean_ppp_comparison.png",
+  filename = "../output/crude_ehb_mean.png",
   plot     = p3,
   width    = 6,
   height   = 4,
@@ -620,16 +597,16 @@ ggsave(
 
 
 # plot mean deviation
-ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev, group = iso, color = iso)) +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
-  geom_line() +
-  geom_point() +
-  labs(
-    title = "Crude EHB Deviation from Yearly Mean by Country",
-    x = "Year", y = "ehb_crude - Year Mean",
-    color = "Country"
-  ) +
-  theme_minimal()
+#ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev, group = iso, color = iso)) +
+#  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
+#  geom_line() +
+#  geom_point() +
+#  labs(
+#    title = "Crude EHB Deviation from Yearly Mean by Country",
+#    x = "Year", y = "ehb_crude - Year Mean",
+#    color = "Country"
+#  ) +
+#  theme_minimal()
 
 # plot mean deviation for non ppp adjusted
 ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev_non_ppp, group = iso, color = iso)) +
@@ -694,10 +671,10 @@ ggsave(
 # crude EHB in different compositions
 ehb_crude_reg <- ehb_crude_reg |>
   mutate(
-    eq_ehb_crude_non_ppp = log((eq_assets)/gdp.x),
-    debt_ehb_crude_non_ppp = log((debt_assets)/gdp.x),
-    fdi_ehb_crude_non_ppp = log((fdi_assets)/gdp.x),
-    eq_debt_ehb_crude_non_ppp = log((eq_assets+debt_assets)/gdp.x)
+    eq_ehb_crude_non_ppp = log((eq_assets)/gdp),
+    debt_ehb_crude_non_ppp = log((debt_assets)/gdp),
+    fdi_ehb_crude_non_ppp = log((fdi_assets)/gdp),
+    eq_debt_ehb_crude_non_ppp = log((eq_assets+debt_assets)/gdp)
     )
 
 

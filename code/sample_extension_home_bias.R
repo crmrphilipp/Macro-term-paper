@@ -620,6 +620,11 @@ ehb_top60_restr <- ehb_top60_restr |>
     )
 
 
+countries_ext_panel <- unique(ehb_top60_restr$iso)
+
+countries_ext_panel
+
+
 ehb_top60_restr_small <- ehb_top60_restr |>
   select(iso,year,EHB_dev, ehb_crude_dev, eq_ehb_crude_dev,debt_ehb_crude_dev,fdi_ehb_crude_dev,eq_debt_ehb_crude_dev)
 
