@@ -1,9 +1,13 @@
-#### The main regression: Consumption Risk Sharing
+# ============================================
+#The main regression: Consumption Risk Sharing
+#Table 3 in the paper
+#=============================================
 rm(list = ls())
 library(dplyr)
 library(tidyr)
 library(purrr)
 library(plm)
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 # load data
 oecd_data <- read.csv("../data/data_cy_rep.csv")
@@ -274,9 +278,15 @@ estimate_table5_cons <- function(data, asset_var) {
   
   return(reg_stage2_tmp)
 }
-############################################################
+#==========================================================
 #### Estimate the five Table 5-style regressions
-############################################################
+#Note:
+# eq_ehb_crude_dev_non_ppp        <- Equity assets / GDP deviation
+# debt_ehb_crude_dev_non_ppp      <- Debt assets / GDP deviation
+# fdi_ehb_crude_dev_non_ppp       <- FDI assets / GDP deviation
+# eq_debt_ehb_crude_dev_non_ppp   <- Equity + Debt assets / GDP deviation
+# ehb_crude_dev_non_ppp           <- All assets deviation
+#==========================================================
 
 reg_cons_eq_assets <- estimate_table5_cons(
   merged_df,
@@ -303,9 +313,15 @@ reg_cons_all_assets <- estimate_table5_cons(
   "ehb_crude_dev_non_ppp"
 )
 
-##############################
+summary(reg_cons_eq_assets)
+summary(reg_cons_debt_assets)
+summary(reg_cons_fdi_assets)
+summary(reg_cons_eq_debt_assets)
+summary(reg_cons_all_assets)
+
+#=============================
 #### Export regression table
-##############################
+#=============================
 
 library(stargazer)
 

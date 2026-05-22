@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.14)  22 MAY 2026 08:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.22)  22 MAY 2026 19:59
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/Users/philippcremer/Macro-term-paper/paper/main.tex
-(/Users/philippcremer/Macro-term-paper/paper/main.tex
+**"/Users/jannis/Desktop/Semester 2/macro 3/Macro-term-paper/paper/main.tex"
+(/Users/jannis/Desktop/Semester 2/macro 3/Macro-term-paper/paper/main.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
 (/usr/local/texlive/2026/texmf-dist/tex/latex/base/article.cls
@@ -67,7 +67,8 @@ Package: iftex 2024/12/12 v1.0g TeX engine tests
 ) (/usr/local/texlive/2026/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count290
-) (./main.aux)
+)
+No file main.aux.
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
@@ -84,7 +85,6 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
-
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -351,7 +351,7 @@ Overfull \hbox (188.60765pt too wide) in paragraph at lines 5--29
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-) (../output/reg_risk_sharing.tex) (../output/table_5_consumption_risk_sharing.tex) (../output/reg_consumption_risk_sharing.tex) (../output/reg_gni_risk_sharing.tex) [2] [3] [4] [5] [6] (./main.aux)
+) (../output/reg_risk_sharing.tex) (../output/pdf_table_3_consumption_estimates_se.tex) (../output/pdf_table_3_gni_estimates_se.tex) (../output/table5_consumption_point_estimates.tex) (../output/table5_gni_point_estimates.tex) [2] [3] [4] [5] [6] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -362,15 +362,15 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
- 1202 strings out of 467525
- 21125 string characters out of 5418982
- 484756 words of memory out of 5000000
- 30135 multiletter control sequences out of 15000+600000
+ 1207 strings out of 467525
+ 21561 string characters out of 5418982
+ 485756 words of memory out of 5000000
+ 30139 multiletter control sequences out of 15000+600000
  631707 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,12n,65p,290b,298s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 57i,12n,65p,312b,298s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on main.pdf (6 pages, 115770 bytes).
+Output written on main.pdf (6 pages, 115512 bytes).
 PDF statistics:
  68 PDF objects out of 1000 (max. 8388607)
  41 compressed objects within 1 object stream
