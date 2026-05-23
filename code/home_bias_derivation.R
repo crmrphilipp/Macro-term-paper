@@ -75,6 +75,8 @@ ewn_raw <- read_excel(ewn_file, sheet = "Dataset")
 
 # Investigate data structure
 head(ewn_raw)
+colnames(ewn_raw)
+
 
 # Filter countries, years and variables as needed for the table recreation
 ewn <- ewn_raw |>
@@ -512,7 +514,7 @@ ehb_crude_reg <- ehb_crude_reg |>
 #  mutate(
 #    ehb_crude_mean = mean(ehb_crude, na.rm = TRUE),
 #    n = sum(!is.na(ehb_crude))
-  )
+#  )
 
 # unweighted mean for no ppp
 ehb_crude_reg <- ehb_crude_reg |>
