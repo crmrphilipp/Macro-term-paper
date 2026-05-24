@@ -20,6 +20,7 @@ library(WDI)
 library(readxl)
 library(kableExtra)
 library(countrycode)
+library(ggplot2)
 
 
 
@@ -286,7 +287,7 @@ wdi_top60 <- wdi_world|>
     filter(iso %in% sample_iso)
 
 
-# Merge for table recreation
+# Merge 
 # WDI data is in absolute dollars, EWN in millions, WDI is thus converted
 df_top60 <- ewn_top60 |>
   left_join(wdi_top60,       by = c("iso", "year")) |>
@@ -361,8 +362,6 @@ negative_ehb<-ehb_top60|>
     # Cyprus 2011-2017, 2019-2023 #12
     # Malta 2008-2014, 2017-2024 #15
     # Netherlands 2015-2017 #3
-
-library(ggplot2)
 
 ehb_top60 |>
   filter(iso == "NLD") |>
@@ -451,7 +450,7 @@ ehb_top60 |>
   theme_minimal(base_size = 9) +
   theme(axis.text.y = element_text(size = 7))
 
-p4 <- ehb_top60 |>
+ehb_coverage <- ehb_top60 |>
   filter(year>1993) |>
   mutate(
     has_data = !is.na(EHB),
@@ -469,7 +468,7 @@ p4 <- ehb_top60 |>
 
 ggsave(
   filename = "../output/ehb_coverage.png",
-  plot     = p4,
+  plot     = ehb_coverage,
   width    = 6,
   height   = 12,
   dpi      = 300
@@ -478,7 +477,7 @@ ggsave(
 ##### Extended Time and Sample #####
 
 ehb_top60_restr <-ehb_top60 |>
-    filter(iso!="IRL", iso!="FIN", iso!="SWE", iso!="TWN", iso!="CYP", iso!="MLT", iso!="LTU", iso!="LTA", iso!="EST")
+    filter(iso!="IRL", iso!="FIN", iso!="TWN", iso!="CYP", iso!="MLT", iso!="LTU", iso!="LTA", iso!="EST")
 
 # unweighted EHB mean
 ehb_top60_restr <- ehb_top60_restr |>
@@ -507,7 +506,7 @@ ggplot(ehb_top60_mean_ts, aes(x = year, y = EHB_mean)) +
 
 # clearly declinign pattern
 
-p5 <- ggplot(ehb_top60_mean_ts, aes(x = year, y = EHB_mean)) +
+broad_sample_ehb_mean <- ggplot(ehb_top60_mean_ts, aes(x = year, y = EHB_mean)) +
   geom_line(color = "#E07080", linewidth = 0.8) +
   geom_point(color = "#E07080", shape = 15, size = 2.5) +
   scale_x_continuous(
@@ -516,7 +515,7 @@ p5 <- ggplot(ehb_top60_mean_ts, aes(x = year, y = EHB_mean)) +
   ) +
   scale_y_continuous(
     breaks = seq(0, 1, by = 0.1),
-    limits = c(0, 1)
+    limits = c(0.5, 1)
   ) +
   labs(
     x       = "Year",
@@ -534,7 +533,7 @@ p5 <- ggplot(ehb_top60_mean_ts, aes(x = year, y = EHB_mean)) +
 
 ggsave(
   filename = "../output/ehb_mean_extended_1975_2024.png",
-  plot     = p5,
+  plot     = broad_sample_ehb_mean,
   width    = 6,
   height   = 4,
   dpi      = 300
@@ -552,30 +551,36 @@ euro_area_iso <- c(
 
 # Tag each country
 ehb_top60_restr <- ehb_top60_restr |>
-  mutate(group = if_else(iso %in% euro_area_iso, "Euro Area", "Non-Euro Area"))
+  mutate(group_bin = if_else(iso %in% euro_area_iso, "Euro Area", "Non-Euro Area"))
 
 # Unweighted group means by year
+#ehb_top60_restr <- ehb_top60_restr |>
+#  group_by(year, group) |>
+#  mutate(
+#    EHB_mean = mean(EHB, na.rm = TRUE),
+#    n        = sum(!is.na(EHB))
+#  ) |>
+#  ungroup()
+
+# weighted group means by year
 ehb_top60_restr <- ehb_top60_restr |>
-  group_by(year, group) |>
+  group_by(year, group_bin) |>
   mutate(
-    EHB_mean = mean(EHB, na.rm = TRUE),
+    EHB_mean = weighted.mean(EHB, w = total_eq_portfolio, na.rm = TRUE),
     n        = sum(!is.na(EHB))
   ) |>
   ungroup()
 
-# Deviation from group mean
-ehb_top60_restr <- ehb_top60_restr |>
-  mutate(EHB_dev = EHB - EHB_mean)
 
 # One row per year × group for plotting
 ehb_top60_group_mean_ts <- ehb_top60_restr |>
-  distinct(year, group, EHB_mean)
+  distinct(year, group_bin, EHB_mean)
 
 # Palette
 group_colors <- c("Euro Area" = "#E07080", "Non-Euro Area" = "#5B8DB8")
 
-p5_euro_vs <- ggplot(ehb_top60_group_mean_ts, aes(x = year, y = EHB_mean,
-                                            color = group, shape = group)) +
+broad_ehb_euro_vs <- ggplot(ehb_top60_group_mean_ts, aes(x = year, y = EHB_mean,
+                                            color = group_bin, shape = group_bin)) +
   geom_line(linewidth = 0.8) +
   geom_point(size = 2.5) +
   scale_color_manual(values = group_colors) +
@@ -593,7 +598,7 @@ p5_euro_vs <- ggplot(ehb_top60_group_mean_ts, aes(x = year, y = EHB_mean,
     y       = "Home Bias Index",
     color   = NULL,
     shape   = NULL,
-    caption = "Note: Unweighted cross-country mean equity home bias index by country group."
+    caption = "Note: Total Equity Protfolio weighted cross-country mean equity home bias index by country group."
   ) +
   theme_classic() +
   theme(
@@ -609,8 +614,8 @@ p5_euro_vs <- ggplot(ehb_top60_group_mean_ts, aes(x = year, y = EHB_mean,
 
 
 ggsave(
-  filename = "../output/ehb_mean_extended_1975_2024_groups.png",
-  plot     = p5_euro_vs,
+  filename = "../output_final/ehb_mean_extended_1975_2024_2groups.png",
+  plot     = broad_ehb_euro_vs,
   width    = 6,
   height   = 4,
   dpi      = 300
@@ -632,7 +637,7 @@ euro_periphery_iso <- c(
 
 # Tag each country into one of four groups
 ehb_top60_restr <- ehb_top60_restr |>
-  mutate(group = case_when(
+  mutate(group_4 = case_when(
     iso %in% euro_core_iso       ~ "Eurozone Core",
     iso %in% euro_periphery_iso  ~ "Eurozone Periphery",
     iso == "USA"                 ~ "United States",
@@ -641,9 +646,9 @@ ehb_top60_restr <- ehb_top60_restr |>
 
 # Unweighted group means by year
 ehb_top60_restr <- ehb_top60_restr |>
-  group_by(year, group) |>
+  group_by(year, group_4) |>
   mutate(
-    EHB_mean = mean(EHB, na.rm = TRUE),
+    EHB_mean = weighted.mean(EHB, w = total_eq_portfolio, na.rm = TRUE),
     n        = sum(!is.na(EHB))
   ) |>
   ungroup()
@@ -651,17 +656,17 @@ ehb_top60_restr <- ehb_top60_restr |>
 
 # One row per year × group for plotting
 ehb_top60_group_mean_ts <- ehb_top60_restr |>
-  distinct(year, group, EHB_mean)
+  distinct(year, group_4, EHB_mean)
 
 # Palette and shape mapping
-group_colors <- c(
+group_colors_4 <- c(
   "Eurozone Core"      = "#E07080",
   "Eurozone Periphery" = "#F0A830",
   "United States"      = "#5B8DB8",
   "Rest of Sample"     = "#6DBF8A"
 )
 
-group_shapes <- c(
+group_shapes_4 <- c(
   "Eurozone Core"      = 15,   # filled square
   "Eurozone Periphery" = 17,   # filled triangle
   "United States"      = 18,   # filled diamond
@@ -670,23 +675,23 @@ group_shapes <- c(
 
 # Fix legend order
 ehb_top60_group_mean_ts <- ehb_top60_group_mean_ts |>
-  mutate(group = factor(group, levels = c(
+  mutate(group_4 = factor(group_4, levels = c(
     "Eurozone Core", "Eurozone Periphery", "United States", "Rest of Sample"
   )))
 
-p5_euro_groups <- ggplot(ehb_top60_group_mean_ts, aes(x = year, y = EHB_mean,
-                                            color = group, shape = group)) +
+broad_ehb_euro_groups <- ggplot(ehb_top60_group_mean_ts, aes(x = year, y = EHB_mean,
+                                            color = group_4, shape = group_4)) +
   geom_line(linewidth = 0.8) +
   geom_point(size = 2.5) +
-  scale_color_manual(values = group_colors) +
-  scale_shape_manual(values = group_shapes) +
+  scale_color_manual(values = group_colors_4) +
+  scale_shape_manual(values = group_shapes_4) +
   scale_x_continuous(
     breaks = seq(1975, 2024, by = 5),
     limits = c(1975, 2024)
   ) +
   scale_y_continuous(
     breaks = seq(0, 1, by = 0.1),
-    limits = c(0, 1)
+    limits = c(0.2, 1)
   ) +
   labs(
     x       = "Year",
@@ -694,7 +699,7 @@ p5_euro_groups <- ggplot(ehb_top60_group_mean_ts, aes(x = year, y = EHB_mean,
     color   = NULL,
     shape   = NULL,
     caption = paste(
-      "Note: Unweighted cross-country mean equity home bias index by country group.",
+      "Note: Total Equity Protfolio weighted cross-country mean equity home bias index by country group.",
       "Eurozone Core = founding 1999 members; Eurozone Periphery = countries that joined 2001–2015."
     )
   ) +
@@ -705,15 +710,14 @@ p5_euro_groups <- ggplot(ehb_top60_group_mean_ts, aes(x = year, y = EHB_mean,
     axis.title       = element_text(size = 10),
     plot.caption     = element_text(hjust = 0, size = 8, color = "grey30"),
     panel.border     = element_rect(color = "black", fill = NA, linewidth = 0.5),
-    legend.position  = c(0.80, 0.82),
+    legend.position  = c(0.20, 0.2),
     legend.text      = element_text(size = 9),
     legend.key.width = unit(1.2, "cm")
   )
-p5_euro_groups
 
 ggsave(
-  filename = "../output/ehb_mean_extended_1975_2024_4groups.png",
-  plot     = p5_euro_groups,
+  filename = "../output_final/ehb_mean_extended_1975_2024_4groups.png",
+  plot     = broad_ehb_euro_groups,
   width    = 7,
   height   = 4.5,
   dpi      = 300
@@ -875,8 +879,8 @@ p6 <- ggplot(means_long, aes(x = year, y = value, color = variable, shape = vari
     color   = NULL,
     shape   = NULL,
     caption = paste0(
-      "Note: Unweighted cross-country means of crude equity home bias measures.\n",
-      "Sample restricted to top 60 countries. Non-PPP adjusted GDP."
+      "Note: Unweighted cross-country means of equity assets over GDP.\n",
+      "Sample restricted to top 60 countries."
     )
   ) +
   theme_classic() +
@@ -896,7 +900,7 @@ p6 <- ggplot(means_long, aes(x = year, y = value, color = variable, shape = vari
   )
 
 ggsave(
-  filename = "../output/crude_ehb_means_extended_1975_2024.png",
+  filename = "../output_final/crude_ehb_means_extended_1975_2024.png",
   plot     = p6,
   width    = 7,
   height   = 4.5,
@@ -966,7 +970,7 @@ ggplot(ehb_long_orig_mean_ts, aes(x = year, y = EHB_mean)) +
 
 # clearly declinign pattern
 
-p7 <- ggplot(ehb_long_orig_mean_ts, aes(x = year, y = EHB_mean)) +
+ehb_orig_sample_1975_2024 <- ggplot(ehb_long_orig_mean_ts, aes(x = year, y = EHB_mean)) +
   geom_line(color = "#E07080", linewidth = 0.8) +
   geom_point(color = "#E07080", shape = 15, size = 2.5) +
   scale_x_continuous(
@@ -975,7 +979,7 @@ p7 <- ggplot(ehb_long_orig_mean_ts, aes(x = year, y = EHB_mean)) +
   ) +
   scale_y_continuous(
     breaks = seq(0, 1, by = 0.1),
-    limits = c(0, 1)
+    limits = c(0.5, 1)
   ) +
   labs(
     x       = "Year",
@@ -992,8 +996,8 @@ p7 <- ggplot(ehb_long_orig_mean_ts, aes(x = year, y = EHB_mean)) +
   )
 
 ggsave(
-  filename = "../output/ehb_orig_sample_1975_2024.png",
-  plot     = p5,
+  filename = "../output_final/ehb_orig_sample_1975_2024.png",
+  plot     = ehb_orig_sample_1975_2024,
   width    = 6,
   height   = 4,
   dpi      = 300
@@ -1016,7 +1020,7 @@ ehb_long_orig <- ehb_long_orig |>
 ehb_long_orig <- ehb_long_orig |>
   group_by(year, group) |>
   mutate(
-    EHB_mean = mean(EHB, na.rm = TRUE),
+    EHB_mean = weighted.mean(EHB, w = total_eq_portfolio, na.rm = TRUE),
     n        = sum(!is.na(EHB))
   ) |>
   ungroup()
@@ -1032,7 +1036,7 @@ ehb_group_mean_ts <- ehb_long_orig |>
 # Palette
 group_colors <- c("Euro Area" = "#E07080", "Non-Euro Area" = "#5B8DB8")
 
-p7_euro_vs <- ggplot(ehb_group_mean_ts, aes(x = year, y = EHB_mean,
+long_orig_euro_vs <- ggplot(ehb_group_mean_ts, aes(x = year, y = EHB_mean,
                                      color = group, shape = group)) +
   geom_line(linewidth = 0.8) +
   geom_point(size = 2.5) +
@@ -1051,7 +1055,7 @@ p7_euro_vs <- ggplot(ehb_group_mean_ts, aes(x = year, y = EHB_mean,
     y       = "Home Bias Index",
     color   = NULL,
     shape   = NULL,
-    caption = "Note: Unweighted cross-country mean equity home bias index by country group."
+    caption = "Note: Total Equity Protfolio weighted cross-country mean equity home bias index by country group."
   ) +
   theme_classic() +
   theme(
@@ -1066,8 +1070,8 @@ p7_euro_vs <- ggplot(ehb_group_mean_ts, aes(x = year, y = EHB_mean,
   )
 
 ggsave(
-  filename = "../output/ehb_orig_sample_1975_2024_groups.png",
-  plot     = p7_euro_vs,
+  filename = "../output_final/ehb_orig_sample_1975_2024_groups.png",
+  plot     = long_orig_euro_vs,
   width    = 6,
   height   = 4,
   dpi      = 300
@@ -1223,8 +1227,8 @@ p8 <- ggplot(means_long_orig, aes(x = year, y = value, color = variable, shape =
     color   = NULL,
     shape   = NULL,
     caption = paste0(
-      "Note: Unweighted cross-country means of crude equity home bias measures.\n",
-      "Sample restricted to original sample countries. Non-PPP adjusted GDP."
+      "Note: Unweighted cross-country means of equity assets over GDP.\n",
+      "Sample restricted to original sample countries."
     )
   ) +
   theme_classic() +
@@ -1244,8 +1248,8 @@ p8 <- ggplot(means_long_orig, aes(x = year, y = value, color = variable, shape =
   )
 
 ggsave(
-  filename = "../output/crude_ehb_means_orig_long_1975_2024.png",
-  plot     = p6,
+  filename = "../output_final/crude_ehb_means_orig_long_1975_2024.png",
+  plot     = p8,
   width    = 7,
   height   = 4.5,
   dpi      = 300
@@ -1616,13 +1620,13 @@ df_ea_test <-df_ea_test |>
 ehb_plot_data <- bind_rows(
   ehb_ea_cap %>%
     group_by(year) %>%
-    summarise(EHB_mean = mean(EHB, na.rm = TRUE)) %>%
+    summarise(EHB_mean = weighted.mean(EHB, w = total_eq_portfolio, na.rm = TRUE)) %>%
     mutate(group = "All countries"),
 
   ehb_ea_cap %>%
     filter(iso != "EUR") %>%
     group_by(year) %>%
-    summarise(EHB_mean = mean(EHB, na.rm = TRUE)) %>%
+    summarise(EHB_mean = weighted.mean(EHB, w = total_eq_portfolio, na.rm = TRUE)) %>%
     mutate(group = "Excl. Euro Area"),
 
   ehb_ea_cap %>%
@@ -1655,13 +1659,13 @@ p_ea_full <- ggplot(ehb_plot_data, aes(x = year, y = EHB_mean,
   ) +
   scale_y_continuous(
     breaks = seq(0, 1, by = 0.1),
-    limits = c(0, 1)
+    limits = c(0.1, 1)
   ) +
   labs(
     x       = "Year",
     y       = "Home Bias Index",
     color   = NULL,
-    caption = "Note: Unweighted cross-sectional means."
+    caption = "Note: Total Equity Portfolio weighted cross-sectional means."
   ) +
   theme_classic() +
   theme(
@@ -1687,18 +1691,18 @@ ggsave(
 
 
 ### same but now also USA separate
-# Compute the five series
+# Compute the three series
 ehb_plot_data_usa <- bind_rows(
-  ehb_ea_cap %>%
-    group_by(year) %>%
-    summarise(EHB_mean = mean(EHB, na.rm = TRUE)) %>%
-    mutate(group = "All countries"),
+  #ehb_ea_cap %>%
+  #  group_by(year) %>%
+  #  summarise(EHB_mean = weighted.mean(EHB, w = total_eq_portfolio, na.rm = TRUE)) %>%
+  #  mutate(group = "All countries"),
 
-  ehb_ea_cap %>%
-    filter(iso != "EUR") %>%
-    group_by(year) %>%
-    summarise(EHB_mean = mean(EHB, na.rm = TRUE)) %>%
-    mutate(group = "Excl. Euro Area"),
+  #ehb_ea_cap %>%
+  #  filter(iso != "EUR") %>%
+  #  group_by(year) %>%
+  #  summarise(EHB_mean = weighted.mean(EHB, w = total_eq_portfolio, na.rm = TRUE)) %>%
+  #  mutate(group = "Excl. Euro Area"),
 
   ehb_ea_cap %>%
     filter(iso == "EUR") %>%
@@ -1715,23 +1719,24 @@ ehb_plot_data_usa <- bind_rows(
   ehb_ea_cap %>%
     filter(!iso %in% c("EUR", "USA")) %>%
     group_by(year) %>%
-    summarise(EHB_mean = mean(EHB, na.rm = TRUE)) %>%
+    summarise(EHB_mean = weighted.mean(EHB, w = total_eq_portfolio, na.rm = TRUE)) %>%
     mutate(group = "Excl. Euro Area & USA")
 ) %>%
   mutate(group = factor(group,
-                        levels = c("All countries",
-                                   "Excl. Euro Area",
+                        levels = c(
+   #                                "All countries",
+   #                                "Excl. Euro Area",
                                    "Excl. Euro Area & USA",
                                    "Euro Area only",
                                    "USA only")))
 
 # Colours
 group_colors_usa <- c(
-  "All countries"         = "#f472c7",  # pink
-  "Excl. Euro Area"       = "#7c3aed",  # purple
-  "Excl. Euro Area & USA" = "#a855f7",  # light purple
-  "Euro Area only"        = "#3b82f6",  # blue
-  "USA only"              = "#0ea5e9"   # light blue
+  #"All countries"         = "#f472c7",  
+  # "Excl. Euro Area"       = "#7c3aed",  
+  "Excl. Euro Area & USA" = "#a855f7", 
+  "Euro Area only"        = "#f472c7", 
+  "USA only"              = "#0ea5e9"  
 )
 
 # Plot
@@ -1746,13 +1751,13 @@ p_ea_full_usa <- ggplot(ehb_plot_data_usa, aes(x = year, y = EHB_mean,
   ) +
   scale_y_continuous(
     breaks = seq(0, 1, by = 0.1),
-    limits = c(0, 1)
+    limits = c(0.1, 1)
   ) +
   labs(
     x       = "Year",
     y       = "Home Bias Index",
     color   = NULL,
-    caption = "Note: Unweighted cross-sectional means."
+    caption = "Note: Total equity portfolio weighted cross-sectional means."
   ) +
   theme_classic() +
   theme(
@@ -1769,7 +1774,7 @@ p_ea_full_usa <- ggplot(ehb_plot_data_usa, aes(x = year, y = EHB_mean,
 p_ea_full_usa
 
 ggsave(
-  filename = "../output/equity_home_bias_five_series.png",
+  filename = "../output_final/equity_home_bias_three_series.png",
   plot     = p_ea_full_usa,
   width    = 6,
   height   = 3.5,
@@ -1781,14 +1786,15 @@ ggsave(
 # Compute the three series
 crude_ehb_plot_data <- bind_rows(
   ehb_ea_cap %>%
+    filter(!is.na(ehb_crude), !is.na(total_eq_portfolio)) %>%   # <-- add this
     group_by(year) %>%
-    summarise(crude_ehb_mean = mean(ehb_crude, na.rm = TRUE)) %>%
+    summarise(crude_ehb_mean = weighted.mean(ehb_crude, w = total_eq_portfolio)) %>%
     mutate(group = "All countries"),
 
   ehb_ea_cap %>%
-    filter(iso != "EUR") %>%
+    filter(iso != "EUR", !is.na(ehb_crude), !is.na(total_eq_portfolio)) %>%  # <--
     group_by(year) %>%
-    summarise(crude_ehb_mean = mean(ehb_crude, na.rm = TRUE)) %>%
+    summarise(crude_ehb_mean = weighted.mean(ehb_crude, w = total_eq_portfolio)) %>%
     mutate(group = "Excl. Euro Area"),
 
   ehb_ea_cap %>%
@@ -1797,10 +1803,7 @@ crude_ehb_plot_data <- bind_rows(
     summarise(crude_ehb_mean = mean(ehb_crude, na.rm = TRUE)) %>%
     mutate(group = "Euro Area only")
 ) %>%
-  mutate(group = factor(group,
-                        levels = c("All countries",
-                                   "Excl. Euro Area",
-                                   "Euro Area only")))
+  mutate(group = factor(group, levels = c("All countries", "Excl. Euro Area", "Euro Area only")))
 
 # Colours
 group_colors <- c(
@@ -1821,7 +1824,7 @@ crude_p_ea_full <- ggplot(crude_ehb_plot_data, aes(x = year, y = crude_ehb_mean,
   ) +
   scale_y_continuous(
     breaks = seq(-1.4, 0.8, by = 0.2),
-    limits = c(-1.4, 0.8)
+    limits = c(-0.5, 0.7)
   ) +
   labs(
     x       = "Year",
@@ -1855,48 +1858,50 @@ ggsave(
 ### same but now also USA separate
 # Compute the five series
 crude_ehb_plot_data_usa <- bind_rows(
-  ehb_ea_cap %>%
-    group_by(year) %>%
-    summarise(crude_ehb_mean = mean(ehb_crude, na.rm = TRUE)) %>%
-    mutate(group = "All countries"),
+  #ehb_ea_cap %>%
+  #  filter(!is.na(ehb_crude)) %>%
+  #  group_by(year) %>%
+  #  summarise(crude_ehb_mean = mean(ehb_crude)) %>%
+  #  mutate(group = "All countries"),
+
+  #ehb_ea_cap %>%
+  #  filter(iso != "EUR", !is.na(ehb_crude)) %>%
+  #  group_by(year) %>%
+  #  summarise(crude_ehb_mean = mean(ehb_crude)) %>%
+  #  mutate(group = "Excl. Euro Area"),
 
   ehb_ea_cap %>%
-    filter(iso != "EUR") %>%
+    filter(iso == "EUR", !is.na(ehb_crude)) %>%
     group_by(year) %>%
-    summarise(crude_ehb_mean = mean(ehb_crude, na.rm = TRUE)) %>%
-    mutate(group = "Excl. Euro Area"),
-
-  ehb_ea_cap %>%
-    filter(iso == "EUR") %>%
-    group_by(year) %>%
-    summarise(crude_ehb_mean = mean(ehb_crude, na.rm = TRUE)) %>%
+    summarise(crude_ehb_mean = mean(ehb_crude)) %>%
     mutate(group = "Euro Area only"),
 
   ehb_ea_cap %>%
-    filter(iso == "USA") %>%
+    filter(iso == "USA", !is.na(ehb_crude)) %>%
     group_by(year) %>%
-    summarise(crude_ehb_mean = mean(ehb_crude, na.rm = TRUE)) %>%
+    summarise(crude_ehb_mean = mean(ehb_crude)) %>%
     mutate(group = "USA only"),
 
   ehb_ea_cap %>%
-    filter(!iso %in% c("EUR", "USA")) %>%
+    filter(!iso %in% c("EUR", "USA"), !is.na(ehb_crude)) %>%
     group_by(year) %>%
-    summarise(crude_ehb_mean = mean(ehb_crude, na.rm = TRUE)) %>%
+    summarise(crude_ehb_mean = mean(ehb_crude)) %>%
     mutate(group = "Excl. Euro Area & USA")
 ) %>%
   mutate(group = factor(group,
-                        levels = c("All countries",
-                                   "Excl. Euro Area",
+                        levels = c(
+     #                              "All countries",
+     #                              "Excl. Euro Area",
                                    "Excl. Euro Area & USA",
                                    "Euro Area only",
                                    "USA only")))
 
 # Colours
 group_colors_usa <- c(
-  "All countries"         = "#f472c7",  # pink
-  "Excl. Euro Area"       = "#7c3aed",  # purple
+  #"All countries"         = "#f472c7",  # pink
+  #"Excl. Euro Area"       = "#7c3aed",  # purple
   "Excl. Euro Area & USA" = "#a855f7",  # light purple
-  "Euro Area only"        = "#3b82f6",  # blue
+  "Euro Area only"        = "#f472c7",  # blue
   "USA only"              = "#0ea5e9"   # light blue
 )
 
@@ -1912,13 +1917,13 @@ crude_p_ea_full_usa <- ggplot(crude_ehb_plot_data_usa, aes(x = year, y = crude_e
   ) +
   scale_y_continuous(
     breaks = seq(-1.4, 0.8, by = 0.2),
-    limits = c(-1.4, 0.8)
+    limits = c(-1.3, 0.7)
   ) +
   labs(
     x       = "Year",
-    y       = "Home Bias Index",
+    y       = "Equity Assets over GDP",
     color   = NULL,
-    caption = "Note: Unweighted cross-sectional means."
+    caption = "Note: Total equity portfolio weighted cross-sectional means."
   ) +
   theme_classic() +
   theme(
@@ -1935,7 +1940,7 @@ crude_p_ea_full_usa <- ggplot(crude_ehb_plot_data_usa, aes(x = year, y = crude_e
 crude_p_ea_full_usa
 
 ggsave(
-  filename = "../output/crude_equity_home_bias_five_series.png",
+  filename = "../output_final/crude_equity_home_bias_five_series.png",
   plot     = crude_p_ea_full_usa,
   width    = 6,
   height   = 3.5,
