@@ -198,7 +198,7 @@ for (type in names(raw_datasets)) {
   # CPI Adjust
   real_data <- filtered_data %>%
     left_join(cpi_data, by = c("REF_AREA", "TIME_PERIOD")) %>%
-    mutate(real_OBS_VALUE = OBS_VALUE / CPI) %>%
+    mutate(real_OBS_VALUE = OBS_VALUE / (CPI/100)) %>%
     select(REF_AREA, TIME_PERIOD, all_of(toupper(gdp_col)), real_OBS_VALUE)
   
   # PPP Adjust
