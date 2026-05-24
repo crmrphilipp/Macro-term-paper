@@ -117,10 +117,10 @@ cons_ext2 <- cons_ext2 %>%
 
 # keep regression period
 cons_ext2 <- cons_ext2 %>%
-  filter(TIME_PERIOD >= 1970, TIME_PERIOD < 2020)
+  filter(TIME_PERIOD > 1984, TIME_PERIOD < 2020)
 
 ehb_data <- ehb_data %>%
-    filter(year >= 1970, year < 2020)
+    filter(year > 1984, year < 2020)
 
 # rename identifiers
 cons_ext2 <- cons_ext2 %>%
@@ -138,7 +138,7 @@ merged_df <- list(cons_ext2, ehb_data) %>%
   reduce(left_join, by = c("iso", "year"))
 
 merged_df <- merged_df %>%
-  mutate(time = year - 1997)
+  mutate(time = year - 2002)
 
 # clean estimation sample
 reg_cons_df <- merged_df %>%

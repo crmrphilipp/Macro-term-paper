@@ -121,7 +121,7 @@ gni_rep <- gni_rep %>%
 
 # keep regression period
 gni_rep <- gni_rep %>%
-  filter(TIME_PERIOD > 1970, TIME_PERIOD < 2020)
+  filter(TIME_PERIOD > 1984, TIME_PERIOD < 2020)
 
 # rename identifiers
 gni_rep <- gni_rep %>%
@@ -135,7 +135,7 @@ merged_df <- list(gni_rep, ehb_data) %>%
   reduce(left_join, by = c("iso", "year"))
 
 merged_df <- merged_df %>%
-  mutate(time = year - 1997)
+  mutate(time = year - 2002)
 
 # clean estimation sample
 reg_gni_df <- merged_df %>%

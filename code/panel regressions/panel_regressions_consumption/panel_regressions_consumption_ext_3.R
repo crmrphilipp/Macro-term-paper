@@ -240,7 +240,7 @@ print(table3_t)
 stargazer(
   reg_cons_stage2,
   type = "latex",
-  out = file.path(output_dir, "3panel_reg_cons_ext_1.tex"),
+  out = file.path(output_dir, "3panel_reg_cons_ext_3.tex"),
   title = "Ext-1 Consumption Risk Sharing and Equity Home Bias",
   dep.var.labels = "Consumption Risk Sharing",
   column.labels = c("Consumption"),
@@ -259,7 +259,7 @@ stargazer(
   header = FALSE
 )
 
-file.exists(file.path(output_dir, "3panel_reg_cons_ext_1.tex"))
+file.exists(file.path(output_dir, "3panel_reg_cons_ext_3.tex"))
 
 # ============================================
 # Table 5 regression results
