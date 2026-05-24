@@ -152,9 +152,9 @@ lux_fund_ownership_levels <- ggplot(fcs_grouped,
   guides(fill = guide_legend(nrow = 2))
 
 # Save both
-ggsave("../output/lux_fund_ownership_shares.png", 
+ggsave("../output_final/lux_fund_ownership_shares.png", 
        lux_fund_ownership_shares, width = 7, height = 4.5, dpi = 300)
-ggsave("../output/lux_fund_ownership_levels.png", 
+ggsave("../output_final/lux_fund_ownership_levels.png", 
        lux_fund_ownership_levels, width = 7, height = 4.5, dpi = 300)
 
 
@@ -288,6 +288,71 @@ ggsave("../output/irl_lux_fund_ownership_levels.png",
 
 
 
+
+# ── Ireland-only: filter and aggregate ──
+fcs_irl <- fcs_long |>
+  filter(fund_domicile == "Ireland") |>
+  group_by(year, holder_group) |>
+  summarise(holdings = sum(holdings, na.rm = TRUE), .groups = "drop") |>
+  group_by(year) |>
+  mutate(share = holdings / sum(holdings)) |>
+  ungroup() |>
+  mutate(holder_group = factor(holder_group, levels = group_order_panel))
+
+# ── Share plot ──
+irl_fund_ownership_shares <- ggplot(fcs_irl, 
+       aes(x = year, y = share, fill = holder_group)) +
+  geom_area() +
+  scale_fill_manual(values = group_colors_panel) +
+  scale_x_continuous(breaks = seq(2014, 2021, by = 1)) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs(
+    x       = "Year",
+    y       = "Share of Irish Fund Assets",
+    fill    = NULL,
+    caption = "Note: Ownership shares of Irish-domiciled fund shares by immediate counterparty country.\n'Domestic' = Irish investors. Source: Central Bank of Ireland via Beck et al. (2024)."
+  ) +
+  theme_classic() +
+  theme(
+    axis.text       = element_text(size = 9),
+    axis.title      = element_text(size = 10),
+    legend.position = "bottom",
+    legend.text     = element_text(size = 9),
+    plot.caption    = element_text(hjust = 0, size = 8, color = "grey30"),
+    panel.border    = element_rect(color = "black", fill = NA, linewidth = 0.5)
+  ) +
+  guides(fill = guide_legend(nrow = 2))
+
+ggsave("../output_final/irl_fund_ownership_shares.png",
+       irl_fund_ownership_shares, width = 7, height = 4.5, dpi = 300)
+
+# ── Absolute amounts plot ──
+irl_fund_ownership_levels <- ggplot(fcs_irl, 
+       aes(x = year, y = holdings, fill = holder_group)) +
+  geom_area() +
+  scale_fill_manual(values = group_colors_panel) +
+  scale_x_continuous(breaks = seq(2014, 2021, by = 1)) +
+  labs(
+    x       = "Year",
+    y       = "Holdings of Irish Fund Shares (EUR bn)",
+    fill    = NULL,
+    caption = "Note: Holdings of Irish-domiciled fund shares by immediate counterparty country.\n'Domestic' = Irish investors. Source: Central Bank of Ireland via Beck et al. (2024)."
+  ) +
+  theme_classic() +
+  theme(
+    axis.text       = element_text(size = 9),
+    axis.title      = element_text(size = 10),
+    legend.position = "bottom",
+    legend.text     = element_text(size = 9),
+    plot.caption    = element_text(hjust = 0, size = 8, color = "grey30"),
+    panel.border    = element_rect(color = "black", fill = NA, linewidth = 0.5)
+  ) +
+  guides(fill = guide_legend(nrow = 2))
+
+ggsave("../output_final/irl_fund_ownership_levels.png",
+       irl_fund_ownership_levels, width = 7, height = 4.5, dpi = 300)
+
+
 #=====================================================#
 ##### The Round Tripping Problem (FRA, DEU, BEL) #####
 #=====================================================#
@@ -406,10 +471,10 @@ realloc_bel <- plot_reallocation(shs_equity, "BEL")
 realloc_ita <- plot_reallocation(shs_equity, "ITA")
 
 
-ggsave("../output/reallocation_deu.png", realloc_deu, width = 7, height = 4.5, dpi = 300)
-ggsave("../output/reallocation_fra.png", realloc_fra, width = 7, height = 4.5, dpi = 300)
-ggsave("../output/reallocation_bel.png", realloc_bel, width = 7, height = 4.5, dpi = 300)
-ggsave("../output/reallocation_ita.png", realloc_ita, width = 7, height = 4.5, dpi = 300)
+ggsave("../output_final/reallocation_deu.png", realloc_deu, width = 7, height = 4.5, dpi = 300)
+ggsave("../output_final/reallocation_fra.png", realloc_fra, width = 7, height = 4.5, dpi = 300)
+ggsave("../output_final/reallocation_bel.png", realloc_bel, width = 7, height = 4.5, dpi = 300)
+ggsave("../output_final/reallocation_ita.png", realloc_ita, width = 7, height = 4.5, dpi = 300)
 
 
 #### now we go to the round trippng part by looking at changes of the position ####
@@ -476,10 +541,10 @@ net_realloc_bel <- plot_net_reallocation(shs_equity, "BEL")
 net_realloc_ita <- plot_net_reallocation(shs_equity, "ITA")
 
 
-ggsave("../output/net_reallocation_deu.png", net_realloc_deu, width = 7, height = 4.5, dpi = 300)
-ggsave("../output/net_reallocation_fra.png", net_realloc_fra, width = 7, height = 4.5, dpi = 300)
-ggsave("../output/net_reallocation_bel.png", net_realloc_bel, width = 7, height = 4.5, dpi = 300)
-ggsave("../output/net_reallocation_ita.png", net_realloc_bel, width = 7, height = 4.5, dpi = 300)
+ggsave("../output_final/net_reallocation_deu.png", net_realloc_deu, width = 7, height = 4.5, dpi = 300)
+ggsave("../output_final/net_reallocation_fra.png", net_realloc_fra, width = 7, height = 4.5, dpi = 300)
+ggsave("../output_final/net_reallocation_bel.png", net_realloc_bel, width = 7, height = 4.5, dpi = 300)
+ggsave("../output_final/net_reallocation_ita.png", net_realloc_bel, width = 7, height = 4.5, dpi = 300)
 
 
 #=====================================================#
@@ -564,7 +629,7 @@ foreign_share_ea_avg <- ggplot(ea_avg, aes(x = year)) +
     panel.border     = element_rect(color = "black", fill = NA, linewidth = 0.5)
   )
 
-ggsave("../output/foreign_share_ea_avg.png", 
+ggsave("../output_final/foreign_share_ea_avg.png", 
        foreign_share_ea_avg, width = 7, height = 4.5, dpi = 300)
 
 # Plot 2: Country-level panels
@@ -611,7 +676,7 @@ foreign_share_by_country <- ggplot(country_data,
     panel.border     = element_rect(color = "black", fill = NA, linewidth = 0.5)
   )
 
-ggsave("../output/foreign_share_by_country.png",
+ggsave("../output_final/foreign_share_by_country.png",
        foreign_share_by_country, width = 10, height = 7, dpi = 300)
 
 
@@ -672,7 +737,7 @@ foreign_share_ea_aggregate <- ggplot(ea_aggregate, aes(x = year)) +
     panel.border     = element_rect(color = "black", fill = NA, linewidth = 0.5)
   )
 
-ggsave("../output/foreign_share_ea_aggregate.png",
+ggsave("../output_final/foreign_share_ea_aggregate.png",
        foreign_share_ea_aggregate, width = 7, height = 4.5, dpi = 300)
 
 
@@ -756,5 +821,5 @@ foreign_share_ea_comparison <- ggplot(ea_comparison, aes(x = year)) +
   ) +
   guides(color = guide_legend(nrow = 2))
 
-ggsave("../output/foreign_share_ea_comparison.png",
-       foreign_share_ea_comparison, width = 9, height = 4.5, dpi = 300)
+ggsave("../output_final/foreign_share_ea_comparison.png",
+       foreign_share_ea_comparison, width = 9, height = 9, dpi = 300)

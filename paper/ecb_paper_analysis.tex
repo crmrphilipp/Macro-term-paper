@@ -308,6 +308,164 @@ euros---explaining why the Euro Area aggregate EHB declined so
 dramatically in the EWN data despite the consolidation of intra-EA 
 positions.
 
+\subsection{Corrected Foreign Equity Portfolio Shares}
+
+To quantify the distortion directly, we use the SHS-based restated 
+bilateral portfolio data to compute the foreign equity portfolio share 
+$\omega_{j,t} = \text{Foreign Equity}_{j,t} / (\text{Foreign Equity}_{j,t} 
++ \text{Domestic Equity}_{j,t})$ for each EA country under both the 
+residency-based and the fund-unwind-adjusted methodology. This share 
+constitutes the key input to the equity home bias measure: the EHB is a 
+monotone decreasing function of $\omega$ for a given market capitalization 
+weight. While we cannot compute the full EHB from the SHS data alone 
+(which would require reliable market capitalization data that is 
+unavailable for recent years), comparing $\omega$ across methodologies 
+reveals the direction and magnitude of the bias.
+
+Figure~\ref{fig:foreign_share_countries} displays the two series for 
+each EA country (excluding OOFCs) over 2014--2023. The gap between the 
+residency-based and fund-unwind-adjusted foreign share varies 
+substantially across countries, with Belgium exhibiting the largest 
+distortion and smaller or newer EA members showing more modest 
+differences. This heterogeneity reflects differences in the extent to 
+which each country's investors rely on OOFC-domiciled funds.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{../output/foreign_share_by_country.png}
+    \caption{Foreign equity portfolio share by EA country, 2014--2023. 
+    Residency-based vs.\ fund-unwind adjusted. EA countries excluding 
+    Luxembourg, Ireland, and the Netherlands.}
+    \label{fig:foreign_share_countries}
+\end{figure}
+
+Figure~\ref{fig:foreign_share_comparison} presents the central comparison 
+of this analysis. The left panel shows the foreign equity portfolio share 
+of the Euro Area treated as a single entity, where intra-EA cross-border 
+holdings are classified as domestic. The right panel shows the 
+portfolio-weighted average across individual EA countries, including the 
+OOFCs. In both panels, the shaded area represents the overstatement of 
+foreign equity exposure attributable to fund intermediation.
+
+Two features are noteworthy. First, the level of the corrected foreign 
+share (blue line) is substantially lower in the aggregate panel than in 
+the country average panel---approximately 26\% versus 34\% in 2023. This 
+difference reflects genuine intra-EA cross-border equity holdings that 
+count as foreign at the country level but become domestic at the aggregate 
+level, consistent with financial integration within the currency union.
+
+Second, the overstatement from fund intermediation operates through 
+different channels in the two panels. For the country average, the gap 
+between the residency-based and corrected series is driven primarily by 
+the inclusion of OOFCs in the weighted average: under residency-based 
+accounting, Luxembourg and Ireland carry disproportionate portfolio 
+weights and near-complete foreign shares, inflating the average. The 
+dashed grey line, which shows the residency-based average excluding 
+OOFCs, confirms that the distortion affecting non-OOFC countries 
+individually is more limited. For the Euro Area aggregate, the 
+overstatement arises from a different source: non-EA investors' 
+holdings of OOFC fund shares that invest in non-EA equities, which 
+are spuriously counted as the Euro Area's foreign claims on the rest 
+of the world.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{../output/foreign_share_ea_comparison.png}
+    \caption{Foreign equity portfolio share: EA aggregate vs.\ 
+    portfolio-weighted EA country average, 2014--2023. Shaded areas 
+    show overstatement from fund intermediation. Dashed grey line shows 
+    residency-based average excluding OOFCs.}
+    \label{fig:foreign_share_comparison}
+\end{figure}
+
+\subsection{Revisiting the Hypothesis}
+
+We return to the puzzle motivating this analysis. Our initial hypothesis 
+was that the introduction of the euro facilitated financial integration 
+among member states, reducing equity home bias primarily through 
+increased intra-EA cross-border investment. This implied that while 
+individual EA countries' EHB should decline more rapidly than that of 
+non-EA economies, the Euro Area aggregate EHB---where intra-EA 
+positions are consolidated as domestic---should not. The EWN data 
+appeared to contradict this prediction, showing a strong decline in the 
+aggregate as well.
+
+The analysis presented in this section resolves this tension. The 
+apparently anomalous decline in the Euro Area aggregate EHB is 
+substantially driven by the spurious attribution of rest-of-world 
+investors' fund holdings to the Euro Area. After correcting for fund 
+intermediation, the overstatement of the aggregate's foreign equity 
+share is reduced, as shown in the left panel of 
+Figure~\ref{fig:foreign_share_comparison}. At the same time, the 
+strong decline observed for individual EA countries in the EWN data 
+is partly---though not entirely---an artifact: the round-tripping 
+channel biases individual countries' EHB downward, and any 
+portfolio-weighted average that includes the OOFCs is further inflated 
+by their extreme residency-based values.
+
+The corrected data does lend some support to the integration hypothesis, 
+though in a more nuanced form than originally proposed. The level 
+difference between the corrected foreign equity shares in the two panels 
+of Figure~\ref{fig:foreign_share_comparison}---approximately 8 
+percentage points in 2023---represents genuine intra-EA equity holdings 
+that are foreign from individual countries' perspective but domestic 
+from the aggregate's. Moreover, this level difference implies a 
+systematically higher EHB for the Euro Area aggregate than for the 
+average of its member states, since the home bias measure 
+$\text{EHB} = 1 - \omega / (1 - A)$ is affected by both a lower 
+foreign share $\omega$ at the aggregate level and a larger market 
+capitalization weight $A$ in the denominator: the Euro Area as a 
+whole constitutes a substantially larger share of world equity market 
+capitalization than any individual member state, so $(1 - A_{\text{EA}})$ 
+is smaller than $(1 - A_j)$ for any country $j$. Both effects push 
+the aggregate EHB above the country average, consistent with what 
+intra-area integration would predict.
+
+However, two important caveats apply. First, the SHS-based corrected 
+data is only available from 2014 onward, well after the introduction 
+of the euro in 1999. The corrected foreign equity shares in both panels 
+follow roughly parallel upward trends over 2014--2023, offering no 
+direct evidence that the level gap between the aggregate and the 
+country average widened as a consequence of monetary integration. The 
+observed level difference is equally consistent with gravity-based 
+explanations: countries that are geographically and culturally 
+proximate tend to invest more in each other's equity markets regardless 
+of currency arrangements. Without corrected data from the pre-euro 
+period, we cannot disentangle the euro's causal contribution from a 
+proximity effect that may have existed prior to 1999.
+
+Second, \cite{beck2024} demonstrate that after applying the full set 
+of corrections---fund unwind and nationality adjustment---to the 
+standard equity home bias measure, the average EHB of Euro Area 
+countries follows a trajectory comparable to that of the United States 
+and other non-EA developed economies (their Figure 9). The apparent 
+excess decline in EA equity home bias, which featured prominently in 
+earlier assessments of European financial integration, largely 
+disappears. In this sense, the euro does not appear to have generated 
+an exceptional reduction in equity home bias relative to the global 
+trend.
+
+The picture is markedly different for bond markets. \cite{beck2024} 
+show that the fund intermediation distortion primarily affects equity 
+positions, because fund shares are classified as equity instruments 
+under the Balance of Payments Manual (BPM6) accounting framework. 
+Holdings of OOFC-domiciled fund shares therefore enter the equity 
+portfolio but not the bond portfolio, regardless of the fund's 
+underlying asset allocation. After applying their corrections to bond 
+home bias, the authors find that the Euro Area still exhibits a 
+genuine excess decline relative to other developed economies---from 
+approximately 0.8 in the mid-1990s to around 0.35 by 2020, compared 
+to a decline from 0.9 to 0.8 for the United States over the same 
+period. This is consistent with the elimination of currency risk in 
+bond markets being a particularly powerful driver of financial 
+integration, as currency risk represents a more salient barrier for 
+fixed-income investors than for equity investors. The hypothesis that 
+the euro facilitated intra-area financial integration thus finds its 
+strongest support not in equity markets, where measurement distortions 
+cloud the picture, but in bond markets, where the data are less 
+affected by OOFC intermediation and the integration gains are 
+unambiguous.
+
 This asymmetry between debt and equity integration carries implications 
 beyond the measurement debate. In the framework of \cite{sorensen2007}, 
 it is equity diversification---not debt---that drives income risk sharing 
@@ -328,3 +486,5 @@ cross-border equity investment, and that deeper capital market
 integration may require the kind of institutional reforms currently 
 under discussion, including elements of a banking union and harmonized 
 insolvency and securities regulation.
+
+\end{document}

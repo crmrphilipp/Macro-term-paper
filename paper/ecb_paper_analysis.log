@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.14)  23 MAY 2026 19:37
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.14)  24 MAY 2026 12:07
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -386,25 +386,128 @@ LaTeX Warning: Reference `fig:net_realloc_deu' on page 7 undefined on input line
 
 LaTeX Warning: Reference `fig:lux_ownership' on page 8 undefined on input line 303.
 
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 315.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 315.
+/Users/philippcremer/Macro-term-paper/paper/ecb_paper_analysis.tex:315: Undefined control sequence.
+l.315 $\omega_{j,t} = \text
+                           {Foreign Equity}_{j,t} / (\text{Foreign Equity}_{...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-LaTeX Warning: Citation `sorensen2007' on page 8 undefined on input line 312.
+/Users/philippcremer/Macro-term-paper/paper/ecb_paper_analysis.tex:315: Undefined control sequence.
+l.315 ...t} = \text{Foreign Equity}_{j,t} / (\text
+                                                  {Foreign Equity}_{j,t}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/philippcremer/Macro-term-paper/paper/ecb_paper_analysis.tex:316: Undefined control sequence.
+l.316 + \text
+             {Domestic Equity}_{j,t})$ for each EA country under both the
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[8 <../output/net_reallocation_fra.png>]
+
+LaTeX Warning: Reference `fig:foreign_share_countries' on page 9 undefined on input line 325.
+
+<../output/foreign_share_by_country.png, id=78, 722.7pt x 505.89pt>
+File: ../output/foreign_share_by_country.png Graphic file (type png)
+<use ../output/foreign_share_by_country.png>
+Package pdftex.def Info: ../output/foreign_share_by_country.png  used on input line 335.
+(pdftex.def)             Requested size: 446.26582pt x 312.3903pt.
+
+LaTeX Warning: Reference `fig:foreign_share_comparison' on page 9 undefined on input line 342.
+
+[9 <../output/foreign_share_by_country.png>]
+<../output/foreign_share_ea_comparison.png, id=84, 650.43pt x 650.43pt>
+File: ../output/foreign_share_ea_comparison.png Graphic file (type png)
+<use ../output/foreign_share_ea_comparison.png>
+Package pdftex.def Info: ../output/foreign_share_ea_comparison.png  used on input line 373.
+(pdftex.def)             Requested size: 446.26582pt x 446.27629pt.
+ [10 <../output/foreign_share_ea_comparison.png>]
+
+LaTeX Warning: Reference `fig:foreign_share_comparison' on page 11 undefined on input line 399.
 
 
-LaTeX Warning: Citation `draghi2024' on page 8 undefined on input line 321.
+LaTeX Warning: Reference `fig:foreign_share_comparison' on page 11 undefined on input line 409.
 
-)
-! Emergency stop.
-<*> ...cro-term-paper/paper/ecb_paper_analysis.tex
-                                                  
-*** (job aborted, no legal \end found)
+/Users/philippcremer/Macro-term-paper/paper/ecb_paper_analysis.tex:415: Undefined control sequence.
+<recently read> \text 
+                      
+l.415 $\text
+            {EHB} = 1 - \omega / (1 - A)$ is affected by both a lower
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
- 
+/Users/philippcremer/Macro-term-paper/paper/ecb_paper_analysis.tex:419: Undefined control sequence.
+l.419 ...ndividual member state, so $(1 - A_{\text
+                                                  {EA}})$
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+LaTeX Warning: Citation `beck2024' on page 11 undefined on input line 437.
+
+
+LaTeX Warning: Citation `beck2024' on page 11 undefined on input line 448.
+
+
+LaTeX Warning: Citation `sorensen2007' on page 11 undefined on input line 470.
+
+
+LaTeX Warning: Citation `draghi2024' on page 11 undefined on input line 479.
+
+[11] [12] (./ecb_paper_analysis.aux)
+ ***********
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+ ***********
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `ecb_paper_analysis.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `ecb_paper_analysis.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  D8E8A03003C94ACD70D796C6580EF8B9;1959.
+ ) 
 Here is how much of TeX's memory you used:
- 9115 strings out of 467525
- 143229 string characters out of 5418982
+ 9150 strings out of 467525
+ 144194 string characters out of 5418982
  567990 words of memory out of 5000000
- 37929 multiletter control sequences out of 15000+600000
+ 37951 multiletter control sequences out of 15000+600000
  632439 words of font info for 56 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,6n,79p,309b,448s stack positions out of 10000i,1000n,20000p,200000b,200000s
-!  ==> Fatal error occurred, no output PDF file produced!
+ 75i,6n,79p,430b,448s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb>
+Output written on ecb_paper_analysis.pdf (12 pages, 1688590 bytes).
+PDF statistics:
+ 155 PDF objects out of 1000 (max. 8388607)
+ 107 compressed objects within 2 object streams
+ 37 named destinations out of 1000 (max. 500000)
+ 61 words of extra memory for PDF output out of 10000 (max. 10000000)
+

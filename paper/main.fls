@@ -1,8 +1,8 @@
-PWD /Users/jannis/Desktop/Semester 2/macro 3/Macro-term-paper/paper
+PWD /Users/philippcremer/Macro-term-paper/paper
 INPUT /usr/local/texlive/2026/texmf.cnf
 INPUT /usr/local/texlive/2026/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT /Users/jannis/Desktop/Semester 2/macro 3/Macro-term-paper/paper/main.tex
+INPUT /Users/philippcremer/Macro-term-paper/paper/main.tex
 OUTPUT main.log
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/base/article.cls
@@ -46,16 +46,16 @@ INPUT ../output/year_coverage.tex
 INPUT ../output/year_coverage.tex
 INPUT ../output/year_coverage.tex
 INPUT ../output/year_coverage.tex
-INPUT ../output/table1.tex
-INPUT ../output/table1.tex
-INPUT ../output/table1.tex
-INPUT ../output/table1.tex
-INPUT ../output/table1.tex
-INPUT ../output/table2.tex
-INPUT ../output/table2.tex
-INPUT ../output/table2.tex
-INPUT ../output/table2.tex
-INPUT ../output/table2.tex
+INPUT ../output_final/table1.tex
+INPUT ../output_final/table1.tex
+INPUT ../output_final/table1.tex
+INPUT ../output_final/table1.tex
+INPUT ../output_final/table1.tex
+INPUT ../output_final/table2.tex
+INPUT ../output_final/table2.tex
+INPUT ../output_final/table2.tex
+INPUT ../output_final/table2.tex
+INPUT ../output_final/table2.tex
 OUTPUT main.pdf
 INPUT /usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 INPUT ../output/table_extension_gaps.tex

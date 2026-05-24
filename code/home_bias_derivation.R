@@ -20,6 +20,8 @@ library(readr)
 library(WDI)
 library(readxl)
 library(kableExtra)
+library(ggrepel)
+library(ggplot2)
 
 
 
@@ -95,7 +97,7 @@ ewn <- ewn_raw |>
     gdp         = `GDP (US$)`
   )
 
-# Filter countries, years and variables as needed for the extension of time covered
+# Filter countries, years and variables as needed for replication
 ewn_full <- ewn_raw |>
   filter(IFS_Code %in% ifs_codes) |>
   left_join(ifs_to_iso3, by = "IFS_Code") |>
@@ -302,11 +304,9 @@ ggplot(ehb_mean_ts, aes(x = year, y = EHB_mean)) +
   ) +
   theme_minimal()
 
-# looks similar to the plot from Soresen but not identical
-# starts on roughly the same level but declines slightly more
 
 # plot in paper style
-p <- ggplot(ehb_mean_ts, aes(x = year, y = EHB_mean)) +
+trend_home_bias_paper <- ggplot(ehb_mean_ts, aes(x = year, y = EHB_mean)) +
   geom_line(color = "#f472c7", linewidth = 0.8) +
   geom_point(color = "#f472c7", shape = 15, size = 2.5) +  # shape 15 = filled square
   scale_x_continuous(
@@ -333,9 +333,9 @@ p <- ggplot(ehb_mean_ts, aes(x = year, y = EHB_mean)) +
 p
 
 ggsave(
-  filename = "../output/equity_home_bias.png",
-  plot     = p,
-  width    = 5,      # inches — adjust to taste
+  filename = "../output_final/equity_home_bias.png",
+  plot     = trend_home_bias_paper,
+  width    = 5,      
   height   = 3.5,
   dpi      = 300
 )
@@ -361,15 +361,13 @@ ggplot(ehb_reg, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
 
 # plot in paper style
 
-library(ggrepel)
-
 # label data: last observation per country
 ehb_labels <- ehb_reg |>
   group_by(iso) |>
   filter(year == max(year)) |>
   ungroup()
 
-p2 <- ggplot(ehb_reg, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
+ehb_deviation_by_country <- ggplot(ehb_reg, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "grey50", linewidth = 0.4) +
   geom_line(linewidth = 0.5, show.legend = FALSE) +
   geom_point(shape = 15, size = 1.8, show.legend = FALSE) +
@@ -404,7 +402,7 @@ p2 <- ggplot(ehb_reg, aes(x = year, y = EHB_dev, group = iso, color = iso)) +
 
 ggsave(
   filename = "../output/ehb_deviation_by_country.png",
-  plot     = p2,
+  plot     = ehb_deviation_by_country,
   width    = 6,
   height   = 4,
   dpi      = 300
@@ -473,50 +471,17 @@ write_csv(ehb_reg_no_aut_small, "../data/ehb_reg_no_aut_small.csv")
 # Crude EHB measure
 # ══════════════════════════════════════════════════════════════════════════════
 
-#oecd_data <- read.csv("../data/gdp_gni_consumption_per_capita.csv")
-
-#oecd_wide <- oecd_data |>
-#  pivot_wider(
-#    id_cols     = c(REF_AREA, TIME_PERIOD, Population),
-#    names_from  = measure,
-#    values_from = c(OBS_VALUE, OBS_VALUE_per_capita)
-  )
-
-#oecd_wide <-oecd_wide |>
-#  rename(iso=REF_AREA, year=TIME_PERIOD, pop=Population, cons=OBS_VALUE_consumption, gdp=OBS_VALUE_GDP, gni=OBS_VALUE_GNI, nni=OBS_VALUE_NNI,
-#  cons_pc = OBS_VALUE_per_capita_consumption, gdp_pc=OBS_VALUE_per_capita_GDP, gni_pc=OBS_VALUE_per_capita_GNI, nni_pc=OBS_VALUE_per_capita_NNI)
-
-#oecd_merge <- oecd_wide %>%
-#    filter(year>1992, year<2004)%>%
-#    select(iso, year, gdp, gdp_pc)
-
 # prepare second ehb measure for regression
 ehb_crude_raw <- df_full|>
   filter(year>1992, year<2004)
 
-#ehb_crude_raw<-ehb_crude_raw |>
-#  left_join(oecd_merge, by=c("iso", "year"))
-
 # create the "crude" EHB measure using foreign equity over GDP
-#ehb_crude_reg <- ehb_crude_raw |>
-#  mutate(ehb_crude = log((eq_assets+debt_assets+fdi_assets)/gdp.y))
 
 # create crude EHB with non ppp adjusted gdp from EWN
 ehb_crude_reg <- ehb_crude_raw |>
   mutate(ehb_crude_non_ppp = log((eq_assets+debt_assets+fdi_assets)/gdp))
 
-ehb_crude_reg <- ehb_crude_reg |>
-  mutate(ehb_crude_non_ppp_tryout = log((eq_assets+debt_assets+fdi_assets)/(gdp/10)))
-
-# unweighted mean
-#ehb_crude_reg <- ehb_crude_reg |>
-#  group_by(year) |>
-#  mutate(
-#    ehb_crude_mean = mean(ehb_crude, na.rm = TRUE),
-#    n = sum(!is.na(ehb_crude))
-#  )
-
-# unweighted mean for no ppp
+# unweighted mean 
 ehb_crude_reg <- ehb_crude_reg |>
   group_by(year) |>
   mutate(
@@ -525,10 +490,6 @@ ehb_crude_reg <- ehb_crude_reg |>
   )
 
 # deviation from the mean
-#ehb_crude_reg <- ehb_crude_reg |>
-#  mutate(ehb_crude_dev = ehb_crude-ehb_crude_mean)
-
-# deviation from the mean for non ppp
 ehb_crude_reg <- ehb_crude_reg |>
   mutate(ehb_crude_dev_non_ppp = ehb_crude_non_ppp-ehb_crude_mean_non_ppp)
 
@@ -561,7 +522,7 @@ ggplot(ehb_crude_mean_ts, aes(x = year, y = value, color = measure)) +
 # different level probably due to different GDP data?
 # ppp adjusted gdp leads to strong deviation in the shape after 1999
 
-p3 <- ggplot(ehb_crude_mean_ts, aes(x = year, y = value)) +
+asset_gdp_fig_2 <- ggplot(ehb_crude_mean_ts, aes(x = year, y = value)) +
   geom_line(linewidth = 0.8, color = "#7df101") +
   geom_point(size = 2.5, shape = 17L, color = "#7df101") +
   scale_y_continuous(
@@ -590,8 +551,8 @@ p3 <- ggplot(ehb_crude_mean_ts, aes(x = year, y = value)) +
   )
 
 ggsave(
-  filename = "../output/crude_ehb_mean.png",
-  plot     = p3,
+  filename = "../output_final/asset_gdp_fig_2.png",
+  plot     = asset_gdp_fig_2,
   width    = 6,
   height   = 4,
   dpi      = 300
@@ -599,18 +560,6 @@ ggsave(
 
 
 # plot mean deviation
-#ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev, group = iso, color = iso)) +
-#  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
-#  geom_line() +
-#  geom_point() +
-#  labs(
-#    title = "Crude EHB Deviation from Yearly Mean by Country",
-#    x = "Year", y = "ehb_crude - Year Mean",
-#    color = "Country"
-#  ) +
-#  theme_minimal()
-
-# plot mean deviation for non ppp adjusted
 ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev_non_ppp, group = iso, color = iso)) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
   geom_line() +
@@ -628,7 +577,7 @@ ehb_crude_labels <- ehb_crude_reg |>
   filter(year == max(year)) |>
   ungroup()
 
-p4 <- ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev_non_ppp, group = iso, color = iso)) +
+mean_dev_asset_gdp <- ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev_non_ppp, group = iso, color = iso)) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "grey50", linewidth = 0.4) +
   geom_line(linewidth = 0.5, show.legend = FALSE) +
   geom_point(shape = 15, size = 1.8, show.legend = FALSE) +
@@ -663,7 +612,7 @@ p4 <- ggplot(ehb_crude_reg, aes(x = year, y = ehb_crude_dev_non_ppp, group = iso
 
 ggsave(
   filename = "../output/crude_ehb_deviation_by_country.png",
-  plot     = p4,
+  plot     = mean_dev_asset_gdp,
   width    = 6,
   height   = 4,
   dpi      = 300
@@ -715,8 +664,6 @@ write_csv(ehb_crude_reg_small, "../data/ehb_crude_reg_small.csv")
 # ══════════════════════════════════════════════════════════════════════════════
 # Check and Visualize Data
 # ══════════════════════════════════════════════════════════════════════════════
-
-library(ggplot2)
 
 ### 1a. EHB (one line per country) ###
 ggplot(ehb_reg, aes(x = year, y = EHB, group = iso, color = iso)) +
@@ -1253,7 +1200,7 @@ table1_wide |>
                      "Assets"    = 6,
                      "Liabilities" = 6)) |>
   kable_styling(latex_options = c("hold_position", "scale_down")) |>
-  save_kable("../output/table1.tex")
+  save_kable("../output_final/table1.tex")
 
 
 
@@ -1297,9 +1244,28 @@ table2_equity_wide <- df |>
   ) |>
   mutate(country = countrycode::countrycode(iso, "iso3c", "country.name")) |>
   arrange(country) |>
-  select(country,
+  select(country, iso,
          share_foreign_eq_1993, EHB_1993,
-         share_foreign_eq_2003, EHB_2003)
+         share_foreign_eq_2003, EHB_2003) |>
+  mutate(
+    # Ireland: all columns → NA
+    across(c(share_foreign_eq_1993, EHB_1993,
+             share_foreign_eq_2003, EHB_2003),
+           ~ if_else(iso == "IRL", NA_real_, .x)),
+    # Finland: 2003 columns only → NA
+    across(c(share_foreign_eq_2003, EHB_2003),
+           ~ if_else(iso == "FIN", NA_real_, .x))
+  ) |>
+  select(-iso) 
+
+table2_equity_wide <- table2_equity_wide |>
+  bind_rows(
+    table2_equity_wide |>
+      summarise(
+        country = "Average",
+        across(where(is.numeric), ~ round(mean(.x, na.rm = TRUE), 2))
+      )
+  )
 
 table2_equity_wide |>
   kbl(
@@ -1314,9 +1280,7 @@ table2_equity_wide |>
   ) |>
   add_header_above(c(" " = 1, "1993" = 2, "2003" = 2)) |>
   kable_styling(latex_options = c("hold_position", "scale_down")) |>
-  save_kable("../output/table2.tex")
-
-
+  save_kable("../output_final/table2.tex")
 
 
 
