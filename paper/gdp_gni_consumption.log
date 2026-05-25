@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.15)  22 MAY 2026 11:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.15)  25 MAY 2026 09:34
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -368,24 +368,50 @@ File: ../output/rs_cs_sanity_i.pdf Graphic file (type pdf)
 <use ../output/rs_cs_sanity_i.pdf>
 Package pdftex.def Info: ../output/rs_cs_sanity_i.pdf  used on input line 257.
 (pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
- [3 <../output/rs_cs_ext_4a_c.pdf> <../output/rs_cs_ext_4c_c.pdf> <../output/rs_cs_ext_4a_i.pdf> <../output/rs_cs_ext_4c_i.pdf>] [4 <../output/rs_cs_ext_4b_c.pdf> <../output/rs_cs_ext_4b_i.pdf> <../output/rs_cs_ext_5a_c.pdf> <../output/rs_cs_ext_5b_c.pdf>] [5 <../output/rs_cs_ext_5a_i.pdf> <../output/rs_cs_ext_5b_i.pdf> <../output/rs_cs_sanity_c_2.pdf> <../output/rs_cs_sanity_i.pdf>] [6] (gdp_gni_consumption.aux)
+ [3 <../output/rs_cs_ext_4a_c.pdf> <../output/rs_cs_ext_4c_c.pdf> <../output/rs_cs_ext_4a_i.pdf> <../output/rs_cs_ext_4c_i.pdf>] [4 <../output/rs_cs_ext_4b_c.pdf> <../output/rs_cs_ext_4b_i.pdf> <../output/rs_cs_ext_5a_c.pdf> <../output/rs_cs_ext_5b_c.pdf>] [5 <../output/rs_cs_ext_5a_i.pdf> <../output/rs_cs_ext_5b_i.pdf> <../output/rs_cs_sanity_c_2.pdf> <../output/rs_cs_sanity_i.pdf>]
+<../output/ea_95_23.pdf, id=240, 578.16pt x 433.62pt>
+File: ../output/ea_95_23.pdf Graphic file (type pdf)
+<use ../output/ea_95_23.pdf>
+Package pdftex.def Info: ../output/ea_95_23.pdf  used on input line 276.
+(pdftex.def)             Requested size: 211.38832pt x 158.53795pt.
+<../output/ea_95_07.pdf, id=241, 578.16pt x 433.62pt>
+File: ../output/ea_95_07.pdf Graphic file (type pdf)
+<use ../output/ea_95_07.pdf>
+Package pdftex.def Info: ../output/ea_95_07.pdf  used on input line 282.
+(pdftex.def)             Requested size: 211.38832pt x 158.53795pt.
+<../output/ea_10_19.pdf, id=242, 578.16pt x 433.62pt>
+File: ../output/ea_10_19.pdf Graphic file (type pdf)
+<use ../output/ea_10_19.pdf>
+Package pdftex.def Info: ../output/ea_10_19.pdf  used on input line 291.
+(pdftex.def)             Requested size: 211.38832pt x 158.53795pt.
+<../output/ea_10_23.pdf, id=243, 578.16pt x 433.62pt>
+File: ../output/ea_10_23.pdf Graphic file (type pdf)
+<use ../output/ea_10_23.pdf>
+Package pdftex.def Info: ../output/ea_10_23.pdf  used on input line 297.
+(pdftex.def)             Requested size: 211.38832pt x 158.53795pt.
+<../output/channels_cross_section.pdf, id=244, 578.16pt x 433.62pt>
+File: ../output/channels_cross_section.pdf Graphic file (type pdf)
+<use ../output/channels_cross_section.pdf>
+Package pdftex.def Info: ../output/channels_cross_section.pdf  used on input line 306.
+(pdftex.def)             Requested size: 469.75502pt x 352.31538pt.
+ [6 <../output/ea_95_23.pdf> <../output/ea_95_07.pdf> <../output/ea_10_19.pdf> <../output/ea_10_23.pdf>] [7 <../output/channels_cross_section.pdf>] (gdp_gni_consumption.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 4290 strings out of 467691
- 76028 string characters out of 5414987
- 486971 words of memory out of 5000000
- 33339 multiletter control sequences out of 15000+600000
- 633431 words of font info for 60 fonts, out of 8000000 for 9000
+ 4318 strings out of 467691
+ 77141 string characters out of 5414987
+ 485971 words of memory out of 5000000
+ 33369 multiletter control sequences out of 15000+600000
+ 632788 words of font info for 58 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 67i,9n,77p,506b,508s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\felix\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on gdp_gni_consumption.pdf (6 pages, 322058 bytes).
+ 67i,9n,77p,426b,509s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb>
+Output written on gdp_gni_consumption.pdf (7 pages, 310123 bytes).
 PDF statistics:
- 289 PDF objects out of 1000 (max. 8388607)
+ 308 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 116 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 141 words of extra memory for PDF output out of 10000 (max. 10000000)
 

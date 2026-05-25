@@ -24,19 +24,19 @@ library(plm)
 ############ 1. Eurozone Channels of Risk Sharing ############
 
 ############ Get annual i) GDP, GNI, GDI, total consumption ii) household consumption expenditure and iii) CPI and Population (for normalization to real and per capita values)
-# Note : No data available for Cyprus and Malta, hence consider only EA18. Then, unbalanced panel.
+# Note : No data available for Cyprus and Malta, hence consider only EA19. Then, unbalanced panel.
 ############ Define relevant SDM codes and load data ############
 # GDP, GNI, GDI, total consumption
-#sdmx_channels_raw <- "https://sdmx.oecd.org/public/rest/data/OECD.SDD.NAD,DSD_NAMAIN10@DF_TABLE2,/A.AUT+BEL+FIN+EST+FRA+DEU+GRC+IRL+ITA+LVA+LTU+LUX+NLD+SVK+PRT+SVN+ESP+HRV...B1GQ+B5G+P3+B6G....XDC.V..?startPeriod=1969&endPeriod=2024&dimensionAtObservation=AllDimensions&format=csvfilewithlabels"
-sdmx_channels_raw <- "https://sdmx.oecd.org/public/rest/data/OECD.SDD.NAD,DSD_NAMAIN10@DF_TABLE2,/A.AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+IRL+ITA+LVA+LTU+LUX+NLD+POL+PRT+SVK+SVN+ESP+SWE+HRV+ROU+BGR...B1GQ+B5G+B6G+P3....XDC.V..?startPeriod=1969&endPeriod=2025&dimensionAtObservation=AllDimensions&format=csvfilewithlabels"
+sdmx_channels_raw <- "https://sdmx.oecd.org/public/rest/data/OECD.SDD.NAD,DSD_NAMAIN10@DF_TABLE2,/A.AUT+BEL+FIN+EST+FRA+DEU+GRC+IRL+ITA+LVA+LTU+LUX+NLD+SVK+PRT+SVN+ESP+HRV+BGR...B1GQ+B5G+P3+B6G....XDC.V..?startPeriod=1969&endPeriod=2024&dimensionAtObservation=AllDimensions&format=csvfilewithlabels"
+#sdmx_channels_raw <- "https://sdmx.oecd.org/public/rest/data/OECD.SDD.NAD,DSD_NAMAIN10@DF_TABLE2,/A.AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+IRL+ITA+LVA+LTU+LUX+NLD+POL+PRT+SVK+SVN+ESP+SWE+HRV+ROU+BGR...B1GQ+B5G+B6G+P3....XDC.V..?startPeriod=1969&endPeriod=2025&dimensionAtObservation=AllDimensions&format=csvfilewithlabels"
 channels_raw <- "../data/channels_raw.csv"
 download.file(sdmx_channels_raw, destfile = channels_raw, mode = "wb")
 message("channels_raw dataset downloaded.")
 
 # Household Consumption
-#sdmx_cons_hh <- "https://sdmx.oecd.org/public/rest/data/OECD.SDD.NAD,DSD_NAMAIN10@DF_TABLE5_T501,1.0/A.HRV+BEL+EST+FIN+FRA+DEU+GRC+IRL+ITA+LVA+LTU+LUX+NLD+SVK+PRT+SVN+ESP+AUT.S14....._T.XDC.V..?startPeriod=1969&endPeriod=2023&dimensionAtObservation=AllDimensions&format=csvfilewithlabels"
-sdmx_cons_hh <- "https://sdmx.oecd.org/public/rest/data/OECD.SDD.NAD,DSD_NAMAIN10@DF_TABLE5_T501,1.0/A.BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+IRL+ITA+LVA+LTU+LUX+NLD+POL+PRT+SVK+SVN+ESP+SWE+ROU+HRV+BGR+AUT.S14....._T.XDC.V..?startPeriod=1995&endPeriod=2023&dimensionAtObservation=AllDimensions&format=csvfilewithlabels"
-cons_hh <- "../data/cpi.csv"
+sdmx_cons_hh <- "https://sdmx.oecd.org/public/rest/data/OECD.SDD.NAD,DSD_NAMAIN10@DF_TABLE5_T501,1.0/A.HRV+BEL+EST+FIN+FRA+DEU+GRC+IRL+ITA+LVA+LTU+LUX+NLD+SVK+PRT+SVN+ESP+BGR+AUT.S14....._T.XDC.V..?startPeriod=1969&endPeriod=2023&dimensionAtObservation=AllDimensions&format=csvfilewithlabels"
+#sdmx_cons_hh <- "https://sdmx.oecd.org/public/rest/data/OECD.SDD.NAD,DSD_NAMAIN10@DF_TABLE5_T501,1.0/A.BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+IRL+ITA+LVA+LTU+LUX+NLD+POL+PRT+SVK+SVN+ESP+SWE+ROU+HRV+BGR+AUT.S14....._T.XDC.V..?startPeriod=1995&endPeriod=2023&dimensionAtObservation=AllDimensions&format=csvfilewithlabels"
+cons_hh <- "../data/cons_hh.csv"
 download.file(sdmx_cons_hh, destfile = cons_hh, mode = "wb")
 message("cons_hh dataset downloaded.")
 
@@ -110,6 +110,30 @@ per_capita_data <- bind_rows(channels_raw_data, cons_hh_prepared) %>%
   mutate(OBS_VALUE = OBS_VALUE / Population) %>%
   arrange(REF_AREA, measure, TIME_PERIOD)
 
+# Convert to 2015 USD (not PPP!, see methodology of referenced paper) using WDI exchange rates (OECD had limited exchange rate data)
+exchange_rates <- read_csv("../data/wdi_exchange_rates.csv")
+exchange_rates <- exchange_rates %>%
+  rename(`Reference area` = `Country Name`, "REF_AREA" = `Country Code`, "erate" = `2015 [YR2015]`) %>%
+  select(`Reference area`, "REF_AREA", "erate") %>%
+  drop_na()
+
+# For all EA countries, manually set erate to 0.9013
+euro_bound_iso3 <- c(
+  "AUT", "BEL", "HRV", "CYP", "EST", "FIN", "FRA", "DEU", "GRC", "IRL", 
+  "ITA", "LVA", "LTU", "LUX", "MLT", "NLD", "PRT", "SVK", "SVN", "ESP", "BGR"
+)
+
+exchange_rates <- exchange_rates %>%
+  mutate(erate = ifelse(REF_AREA %in% euro_bound_iso3, 0.9013, erate))
+
+per_capita_data <- per_capita_data %>%
+  left_join(exchange_rates %>% select(REF_AREA, erate), by = "REF_AREA") %>%
+  mutate(
+    OBS_VALUE = OBS_VALUE / erate
+  ) %>%
+  select(-erate) %>%
+  arrange(REF_AREA, measure, TIME_PERIOD)
+
 ### Set up regression-ready data
 channels_data <- per_capita_data %>%
   select(REF_AREA, TIME_PERIOD, measure, OBS_VALUE) %>%
@@ -139,13 +163,13 @@ channels_diff <- channels_data %>%
 
 ############ Perform panel data estimations (within transformation, time fixed effects, Pooled OLS (no GLS weighting)) ############
 calculate_risk_sharing <- function(data, area, var_s = "y_s", var_u = "y_u") {
-  
-  pdata <- pdata.frame(data, index = c("REF_AREA", "TIME_PERIOD"))
-
   # Drop RELEVANT NAs here
   vars_to_check <- c("dlog_GDP", "y_f", "y_tau", var_s, var_u)
   data <- data %>%
     drop_na(any_of(vars_to_check))
+
+  # Create Panel Data Frame
+  pdata <- pdata.frame(data, index = c("REF_AREA", "TIME_PERIOD"))
   
   # Factor income and transfers
   eq_f   <- plm(y_f ~ dlog_GDP, data = pdata, effect = "time", model = "within")
@@ -252,131 +276,45 @@ calculate_risk_sharing <- function(data, area, var_s = "y_s", var_u = "y_u") {
 }
 
 ############ Perform analysis for different time frames ############
-### Time Frame 1
-time_frame <- 2010:2019
-joint_dataset_10_19 <- joint_dataset(channels_raw_data = channels_raw_data, cpi_data = cpi_data, cons_hh_data = cons_hh_data,
+### Time Frame 1: 1970 - 2019
+time_frame <- 1970:2019
+joint_dataset_70_19 <- joint_dataset(channels_raw_data = channels_raw_data, cpi_data = cpi_data, cons_hh_data = cons_hh_data,
                                      pop_data_temp = pop_data_temp, time_frame = time_frame)
 
-# Euro areaa using private and government consumption
-ea <- calculate_risk_sharing(data = joint_dataset_10_19, area = "Eurozone")
-ea[["Plot"]]
+# Euro area using private and government consumption
+ea_70_19 <- calculate_risk_sharing(data = joint_dataset_70_19, area = "Eurozone")
+ea_70_19[["Plot"]]
 
-# Euro area using private consumption only
-ea_hh <- calculate_risk_sharing(data = joint_dataset_10_19, area = "Eurozone", var_s = "y_s_hh", var_u = "y_u_hh")
+### Time Frame 2: 1970 - 1991
+time_frame <- 1970:1991
+joint_dataset_70_91 <- joint_dataset(channels_raw_data = channels_raw_data, cpi_data = cpi_data, cons_hh_data = cons_hh_data,
+                                     pop_data_temp = pop_data_temp, time_frame = time_frame)
+
+# Euro area using private and government consumption
+ea_70_91 <- calculate_risk_sharing(data = joint_dataset_70_91, area = "Eurozone")
+ea_70_91[["Plot"]]
+
+### Time Frame 3: 1991 - 2007
+time_frame <- 1991:2007
+joint_dataset_91_07 <- joint_dataset(channels_raw_data = channels_raw_data, cpi_data = cpi_data, cons_hh_data = cons_hh_data,
+                                     pop_data_temp = pop_data_temp, time_frame = time_frame)
+
+# Euro area using private and government consumption
+ea_91_07 <- calculate_risk_sharing(data = joint_dataset_91_07, area = "Eurozone")
+ea_91_07[["Plot"]]
+
+### Time Frame 4: 2007 - 2019
+time_frame <- 2010:2019
+joint_dataset_07_19 <- joint_dataset(channels_raw_data = channels_raw_data, cpi_data = cpi_data, cons_hh_data = cons_hh_data,
+                                     pop_data_temp = pop_data_temp, time_frame = time_frame)
+
+# Euro area using private and government consumption
+ea_07_19 <- calculate_risk_sharing(data = joint_dataset_07_19, area = "Eurozone")
+ea_07_19[["Plot"]]
+
+##########
+# # Euro area using private consumption only
+joint_dataset_09_19 <- joint_dataset(channels_raw_data = channels_raw_data, cpi_data = cpi_data, cons_hh_data = cons_hh_data,
+                                     pop_data_temp = pop_data_temp, time_frame = 2009:2019)
+ea_hh <- calculate_risk_sharing(data = joint_dataset_09_19, area = "Eurozone", var_s = "y_s_hh", var_u = "y_u_hh")
 ea_hh[["Plot"]]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# ############ 1. US Channels of Risk Sharing ############
-# ############ Annual GDP, GNI, NNI, DNI and Consumption data (nominal, current prices) and CPI data ############
-
-# # Load US data (skip first three lines as they are title lines)
-# us_data <- read_csv("../data/us_state_data.csv", skip = 3)
-
-# # Clean data and adapt to known format
-# us_data_clean <- us_data %>%
-#   # Filter out US aggregate and NAs (resulting from legend at bottom of dataset)
-#   filter(!is.na(GeoName), GeoName != "United States") %>%
-
-#   # Transforming GeoName and Description columns
-#   rename(`Reference area` = GeoName) %>%
-
-#   mutate(Description = str_trim(Description)) %>%
-#   mutate(measure = case_when(
-#     Description == "Gross domestic product (GDP)" ~ "GDP",
-#     Description == "Personal income" ~ "GNI",
-#     Description == "Disposable personal income" ~ "GDI",
-#     Description == "Personal consumption expenditures" ~ "consumption",
-#     TRUE ~ NA_character_
-#   )) %>%
-#   filter(!is.na(measure)) %>%
-  
-#   # Pivot the year columns into long format
-#   pivot_longer(
-#     cols = matches("^[0-9]{4}$"), 
-#     names_to = "TIME_PERIOD", 
-#     values_to = "OBS_VALUE",
-#     values_transform = list(OBS_VALUE = as.numeric)
-#   ) %>%
-  
-#   # Convert TIME_PERIOD to integer and clean up the final column selection
-#   mutate(TIME_PERIOD = as.integer(TIME_PERIOD)) %>%
-#   select(`Reference area`, TIME_PERIOD, measure, OBS_VALUE) %>%
-#   arrange(`Reference area`, measure, TIME_PERIOD)
-
-# # Regression ready format
-# us_data_clean <- us_data_clean %>%
-#   pivot_wider(names_from = measure, values_from = OBS_VALUE) %>%
-#   filter(TIME_PERIOD %in% 1996:2007) %>%
-#   arrange(`Reference area`, TIME_PERIOD)
-
-# us_data_diff <- us_data_clean %>%
-#   group_by(`Reference area`) %>%
-#   mutate(
-#     # Compute log differences for each aggregate
-#     dlog_GDP = log(GDP) - dplyr::lag(log(GDP)),
-#     dlog_GNI = log(GNI) - dplyr::lag(log(GNI)),
-#     dlog_GDI = log(GDI) - dplyr::lag(log(GDI)),
-#     dlog_C   = log(consumption) - dplyr::lag(log(consumption))
-#   ) %>%
-#   ungroup() %>%
-#   mutate(
-#     # Construct the dependent variables for the 5 channels in system (14)
-#     y_f   = dlog_GDP - dlog_GNI,  # Factor income flows
-#     y_tau = dlog_GNI - dlog_GDI,  # Transfers
-#     y_s   = dlog_GDI - dlog_C,    # Saving
-#     y_u   = dlog_C                # Residual
-#   ) %>%
-#   # Drop NAs resulting from the lag differencing
-#   drop_na()
-
-# ############ Perform panel data estimations (within transformation, time fixed effects) ############
-# us_data_diff <- us_data_diff %>% rename(`Reference_area`=`Reference area`)
-# pdata <- pdata.frame(us_data_diff, index = c("Reference_area", "TIME_PERIOD"))
-
-# # Factor income flows
-# eq_f   <- plm(y_f   ~ dlog_GDP, data = pdata, effect = "time", model = "within")
-# # Transfers
-# eq_tau <- plm(y_tau ~ dlog_GDP, data = pdata, effect = "time", model = "within")
-# # Saving
-# eq_s   <- plm(y_s   ~ dlog_GDP, data = pdata, effect = "time", model = "within")
-# # Residual
-# eq_u   <- plm(y_u   ~ dlog_GDP, data = pdata, effect = "time", model = "within")
-
-# results_table <- data.frame(
-#   Coefficient = c(
-#     coef(eq_f)["dlog_GDP"],
-#     coef(eq_tau)["dlog_GDP"],
-#     coef(eq_s)["dlog_GDP"],
-#     coef(eq_u)["dlog_GDP"]
-#   ),
-#   p_value = c(
-#     round(summary(eq_f)$coefficients["dlog_GDP", "Pr(>|t|)"], 4),
-#     round(summary(eq_tau)$coefficients["dlog_GDP", "Pr(>|t|)"], 4),
-#     round(summary(eq_s)$coefficients["dlog_GDP", "Pr(>|t|)"], 4),
-#     round(summary(eq_u)$coefficients["dlog_GDP", "Pr(>|t|)"], 4))
-# )
-
-# rownames(results_table) <- c(
-#   "Factor Income", 
-#   "Transfers", 
-#   "Saving",
-#   "Unsmoothed"
-# )

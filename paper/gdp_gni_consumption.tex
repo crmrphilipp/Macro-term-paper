@@ -260,20 +260,52 @@ Then, extend to only post-2003 and afterwards also pre-1992 (for both)
     \caption{Manually computed PPP adjustment from extracted data}
 \end{figure}
 
-\section{Research Proposal}
-\noindent \underline{Replication}
-\begin{itemize}
-    \item We can confirm the negative correlation between Home Bias and risk sharing. \textbf{Within the reference paper selction of OECD countries, a lower Home Bias since the 1990s is associated with higher risk sharing.}
-    \item We focus on the main specification of the reference paper, that is: Consumption and income (GNI) risk sharing as well as Home Bias measured as the share of foreign assets over GDP ("crude Home Bias") and the equity Home Bias ("EHB"). We do not replicate
-    \item The main output is a plot showing the evolution of rolling risk sharing estimates against Home Bias measures as well as an extended Panel risk sharing regression, specifying for the risk sharing parameter $\kappa$: $\kappa = \kappa_0 + \kappa_1 (t-\bar{t}) + \kappa_2 (\text{Home Bias deviation})$
-    \item We omit further Home Bias measures and robustness checks of the reference paper to focus on extensions.
-\end{itemize}
+\newpage
 
-\noindent \underline{Extensions}
-\begin{itemize}
-    \item We extend time and observations both to pre-1993 and post-2003, analyzing to what extent the negative correlation between Home Bias and risk sharing holds in a larger population and time horizon. [Main tool: Nested regression]
-    \item We show plots and nested regression for i) Eurozone members against non-Eurozone members and would expect the Home Bias to decrease stronger for the former since 1999 and ii) define the Eurozone Home Bias analogously and would expect the Eurozone Home Bias to increase after 1999.
-    \item If these expectations hold, the lower insurance against idiosyncratic shocks means the cost of a single monetary authority is higher than without this (endogenous) adjustment.
-\end{itemize}
+\section{Channels of Risk Sharing}
+\noindent Relying on ASY (1996), SY (1997) and Gervais/Hosseini (2026), we estimate Channels of Risk Sharing in the Euro Area.\\
+\noindent First, note that I am using the Gervais/Hosseini (2026) methodology and data to be able to check whether our code is functioning properly. Table 7 entirely reproducible. I conclude data and code to be correct. \\
+\noindent Reproducing the Panel Data Regressions from Table 7 for the Euro Area, we get:
+
+\begin{figure}[htbp]
+    \centering
+    
+    % --- First row ---
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/ea_95_23.pdf}
+        \caption{1995 -- 2023}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/ea_95_07.pdf}
+        \caption{1995 -- 2007}
+    \end{subfigure}
+    
+    \vspace{1em}
+    
+    % --- Second row ---
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/ea_10_19.pdf}
+        \caption{2010 -- 2019}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../output/ea_10_23.pdf}
+        \caption{2010 -- 2023}
+    \end{subfigure}
+    
+    \caption{Consumption Risk Sharing using ASY methodology for the Euro Area in selected sample periods}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{../output/channels_cross_section.pdf}
+    \caption{Channels of Risk Sharing in the Euro Area, cross-section estimates}
+\end{figure}
+
 
 \end{document}
