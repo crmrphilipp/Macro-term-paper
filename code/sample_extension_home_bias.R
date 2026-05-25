@@ -827,6 +827,11 @@ means_long <- ehb_top60_restr |>
   pivot_longer(-year, names_to = "variable", values_to = "value") |>
   mutate(variable = str_remove(variable, "_mean"))
 
+fig_2_asset_gdp_data_long <- means_long |>
+  filter(variable=="ehb_crude")
+
+write.csv(fig_2_asset_gdp_data_long, "../data/fig_2_asset_gdp_data_long.csv")
+
 ggplot(means_long, aes(x = year, y = value, color = variable)) +
   geom_line() +
   geom_point() +
