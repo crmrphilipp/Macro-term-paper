@@ -827,10 +827,6 @@ means_long <- ehb_top60_restr |>
   pivot_longer(-year, names_to = "variable", values_to = "value") |>
   mutate(variable = str_remove(variable, "_mean"))
 
-fig_2_asset_gdp_data_long <- means_long |>
-  filter(variable=="ehb_crude")
-
-write.csv(fig_2_asset_gdp_data_long, "../data/fig_2_asset_gdp_data_long.csv")
 
 ggplot(means_long, aes(x = year, y = value, color = variable)) +
   geom_line() +
@@ -1168,6 +1164,8 @@ ehb_long_orig <- ehb_long_orig |>
 ehb_long_orig_small <- ehb_long_orig |>
   select(iso,year,EHB_dev, ehb_crude_dev, eq_ehb_crude_dev,debt_ehb_crude_dev,fdi_ehb_crude_dev,eq_debt_ehb_crude_dev)
 
+
+
 write_csv(ehb_long_orig_small, "../data/ehb_long_orig_small.csv")
 
 
@@ -1179,6 +1177,12 @@ means_long_orig <- ehb_long_orig |>
            fdi_ehb_crude_mean, eq_debt_ehb_crude_mean) |>
   pivot_longer(-year, names_to = "variable", values_to = "value") |>
   mutate(variable = str_remove(variable, "_mean"))
+
+fig_2_asset_gdp_data_long <- means_long_orig |>
+  filter(variable=="ehb_crude")
+
+write.csv(fig_2_asset_gdp_data_long, "../data/fig_2_asset_gdp_data_long.csv")
+
 
 ggplot(means_long, aes(x = year, y = value, color = variable)) +
   geom_line() +
