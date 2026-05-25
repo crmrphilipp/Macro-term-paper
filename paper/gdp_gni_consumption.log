@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.15)  25 MAY 2026 15:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.15)  25 MAY 2026 17:49
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -298,24 +298,45 @@ File: ../output/rs_cs_ext_3_i.pdf Graphic file (type pdf)
 <use ../output/rs_cs_ext_3_i.pdf>
 Package pdftex.def Info: ../output/rs_cs_ext_3_i.pdf  used on input line 90.
 (pdftex.def)             Requested size: 469.75502pt x 352.31538pt.
- [9 <../output/rs_cs_ext_3_c.pdf>] [10 <../output/rs_cs_ext_3_i.pdf>] (gdp_gni_consumption.aux)
+ [9 <../output/rs_cs_ext_3_c.pdf>] [10 <../output/rs_cs_ext_3_i.pdf>]
+<../output/ea_95_23.pdf, id=137, 578.16pt x 433.62pt>
+File: ../output/ea_95_23.pdf Graphic file (type pdf)
+<use ../output/ea_95_23.pdf>
+Package pdftex.def Info: ../output/ea_95_23.pdf  used on input line 103.
+(pdftex.def)             Requested size: 150.32504pt x 112.73854pt.
+<../output/ea_95_07.pdf, id=138, 578.16pt x 433.62pt>
+File: ../output/ea_95_07.pdf Graphic file (type pdf)
+<use ../output/ea_95_07.pdf>
+Package pdftex.def Info: ../output/ea_95_07.pdf  used on input line 110.
+(pdftex.def)             Requested size: 150.32504pt x 112.73854pt.
+<../output/ea_10_23.pdf, id=139, 578.16pt x 433.62pt>
+File: ../output/ea_10_23.pdf Graphic file (type pdf)
+<use ../output/ea_10_23.pdf>
+Package pdftex.def Info: ../output/ea_10_23.pdf  used on input line 117.
+(pdftex.def)             Requested size: 150.32504pt x 112.73854pt.
+<../output/channels_cross_section.pdf, id=140, 578.16pt x 433.62pt>
+File: ../output/channels_cross_section.pdf Graphic file (type pdf)
+<use ../output/channels_cross_section.pdf>
+Package pdftex.def Info: ../output/channels_cross_section.pdf  used on input line 126.
+(pdftex.def)             Requested size: 469.75502pt x 352.31538pt.
+ [11 <../output/ea_95_23.pdf> <../output/ea_95_07.pdf> <../output/ea_10_23.pdf>] [12 <../output/channels_cross_section.pdf>] (gdp_gni_consumption.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 4181 strings out of 467691
- 72137 string characters out of 5414987
+ 4220 strings out of 467691
+ 73361 string characters out of 5414987
  478932 words of memory out of 5000000
- 33233 multiletter control sequences out of 15000+600000
- 632489 words of font info for 57 fonts, out of 8000000 for 9000
+ 33271 multiletter control sequences out of 15000+600000
+ 632788 words of font info for 58 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 67i,7n,77p,426b,319s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on gdp_gni_consumption.pdf (10 pages, 146226 bytes).
+ 67i,8n,77p,426b,507s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb>
+Output written on gdp_gni_consumption.pdf (12 pages, 187764 bytes).
 PDF statistics:
- 155 PDF objects out of 1000 (max. 8388607)
+ 198 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 51 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 71 words of extra memory for PDF output out of 10000 (max. 10000000)
 

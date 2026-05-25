@@ -1,9 +1,11 @@
-# ------------------------------------------------- #
-################## Testing WDI data
-# ------------------------------------------------- #
+# ------------------------------------------------------------------------------------------------------- #
+################## Using WDI data to apply the methodolgy of Gervais/ Hosseini (2026) #####################
+#################################### Risk Sharing Channels in the Eurozone ################################
+# ------------------------------------------------------------------------------------------------------- #
 
 ############ Preliminaries
 rm(list=ls())
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 library(WDI)
 library(dplyr)
 library(tidyr)
@@ -232,7 +234,7 @@ ggsave("../output/ea_10_23.pdf", plot = ea_10_23[["Plot"]], width = 8, height = 
 
 ############ Run risk sharing regressions in Cross Section regressions
 ############ 4. Cross-Sectional Risk Sharing (Over Time)
-time_frame <- 1994:2023
+time_frame <- 1995:2023
 data <- clean_data(wdi_data = wdi_data, time_frame = time_frame)
 # 1. Filter out missing values and ensure TIME_PERIOD is numeric
 vars_to_check <- c("dlog_GDP", "y_f", "y_tau", "y_s_hh", "y_u_hh")
@@ -246,10 +248,10 @@ yearly_results <- clean_df %>%
   group_by(TIME_PERIOD) %>%
   summarise(
     # Check if we have enough observations (e.g., at least 3 countries) for a regression
-    `Capital Market` = if(n() >= 3) coef(lm(y_f ~ dlog_GDP))["dlog_GDP"] else NA_real_,
-    `Transfers`      = if(n() >= 3) coef(lm(y_tau ~ dlog_GDP))["dlog_GDP"] else NA_real_,
-    `Saving`         = if(n() >= 3) coef(lm(y_s_hh ~ dlog_GDP))["dlog_GDP"] else NA_real_,
-    `Unsmoothed`     = if(n() >= 3) coef(lm(y_u_hh ~ dlog_GDP))["dlog_GDP"] else NA_real_,
+    `Capital Market` = coef(lm(y_f ~ dlog_GDP))["dlog_GDP"],
+    `Transfers`      = coef(lm(y_tau ~ dlog_GDP))["dlog_GDP"],
+    `Saving`         = coef(lm(y_s_hh ~ dlog_GDP))["dlog_GDP"],
+    `Unsmoothed`     = coef(lm(y_u_hh ~ dlog_GDP))["dlog_GDP"],
     .groups = "drop"
   ) %>%
   drop_na() %>%
@@ -267,19 +269,14 @@ plot_data <- yearly_results %>%
   arrange(TIME_PERIOD) %>%
   mutate(
     # 10 year rolling averages
-    Smoothed_Coefficient = zoo::rollmean(
-      x = Coefficient, 
-      k = 10, 
-      fill = NA, 
-      align = "center")
-    # Apply your exact ksmooth methodology
-    # Smoothed_Coefficient = ksmooth(
-    #   x = TIME_PERIOD, 
-    #   y = Coefficient, 
-    #   kernel = "normal", 
-    #   bandwidth = 2 * (qnorm(0.75) * 4),
-    #   x.points = TIME_PERIOD
-    # )$y
+    Smoothed_Coefficient = zoo::rollapply(
+      data = Coefficient, 
+      width = 10, 
+      FUN = mean, 
+      na.rm = TRUE, 
+      partial = TRUE, 
+      align = "center"
+    )
   ) %>%
   ungroup() %>%
   mutate(Channel = factor(Channel, levels = c("Capital Market", "Transfers", "Saving", "Unsmoothed")))
@@ -307,8 +304,7 @@ p_cross_sec <- ggplot(plot_data, aes(x = TIME_PERIOD, color = Channel, fill = Ch
   # Use coord_cartesian so it doesn't drop extreme points out of the dataset entirely, just zooms
   coord_cartesian(ylim = c(-0.25, 1.25)) + 
   labs(
-    title = "Time-Varying Risk Sharing in the Eurozone",
-    subtitle = "Cross-sectional OLS year-by-year with Gaussian Kernel Smoothing",
+    title = "Time-Varying Risk Sharing Channels in the Eurozone",
     x = "Year",
     y = "Fraction of Risk Absorbed",
     color = "Channel"
@@ -316,7 +312,6 @@ p_cross_sec <- ggplot(plot_data, aes(x = TIME_PERIOD, color = Channel, fill = Ch
   theme_minimal(base_size = 14) +
   theme(
     plot.title = element_text(face = "bold", hjust = 0.5, size = 16, margin = margin(b = 5)),
-    plot.subtitle = element_text(hjust = 0.5, size = 11, margin = margin(b = 20), color = "gray40"),
     axis.text.x = element_text(face = "bold", size = 11),
     axis.title.y = element_text(margin = margin(r = 10)),
     panel.grid.minor = element_blank(),
