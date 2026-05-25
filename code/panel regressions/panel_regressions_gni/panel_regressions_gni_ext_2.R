@@ -409,3 +409,4 @@ stargazer(
 file.exists(
   file.path(output_dir, "5panel_reg_gni_ext_2.tex")
 )
+

@@ -169,6 +169,7 @@ summary(reg_cons_all_assets)
 # 4. Creating the tables
 #=============================================
 
+
 # Table 3 Regression results
 
 library(stargazer)
@@ -242,9 +243,9 @@ stargazer(
   reg_cons_stage2,
   type = "latex",
   out = file.path(output_dir, "3panel_reg_cons_ext_1.tex"),
-  title = "Ext-1 Consumption Risk Sharing and Equity Home Bias",
-  dep.var.labels = "Consumption Risk Sharing",
-  column.labels = c("Consumption"),
+  title = "EXT 1 cons Risk Sharing and Equity Home Bias",
+  dep.var.labels = "cons Risk Sharing",
+  column.labels = c("cons"),
   model.numbers = FALSE,
   coef = list(table3_coef),
   t = list(table3_t),
@@ -264,7 +265,7 @@ file.exists(file.path(output_dir, "3panel_reg_cons_ext_1.tex"))
 
 # ============================================
 # Table 5 regression results
-# Function: transform coefficients into Table 5 format
+#Function: transform coefficients into Table 5 format
 # ============================================
 
 get_table5_cons_estimates <- function(model) {
@@ -370,15 +371,15 @@ table5_cons_t <- lapply(
 
 
 # ============================================
-# Stargazer output: Table 5 consumption regression
+# Stargazer output: Table 5 cons regression
 # ============================================
 
 stargazer(
   table5_cons_models,
   type = "latex",
   out = file.path(output_dir, "5panel_reg_cons_ext_1.tex"),
-  title = "Ext-1 REP Consumption Risk Sharing and Foreign Asset Holdings Relative to GDP",
-  dep.var.labels = "Consumption Risk Sharing",
+  title = "Ext 1 cons Risk Sharing and Foreign Asset Holdings Relative to GDP",
+  dep.var.labels = "cons Risk Sharing",
   column.labels = c(
     "Equity",
     "Debt",
@@ -409,5 +410,3 @@ stargazer(
 file.exists(
   file.path(output_dir, "5panel_reg_cons_ext_1.tex")
 )
-
-

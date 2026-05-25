@@ -408,3 +408,4 @@ stargazer(
 file.exists(
   file.path(output_dir, "5panel_reg_cons_ext_2.tex")
 )
+

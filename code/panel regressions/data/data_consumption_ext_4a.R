@@ -1,7 +1,7 @@
 # ============================================
 #The main regression: Consumption Risk Sharing
 #Table 3 & Table 5 in the paper 
-#EXTENTION 4a Only Eurozone 1970 - 2019
+#EXTENTION 4a Only Eurozone 1987 - 2017
 #=============================================
 # ============================================
 # 1. Cleaning data and preparing data for regression
@@ -22,7 +22,7 @@ setwd(
 )
 
 # load data
-cons_ext2_raw <- read.csv("../data/data_cy_ext_4a.csv")
+cons_ext2_raw <- read.csv("../data/data_cy_ext_3.csv")
 
 # load home bias data
 ehb_data <- read.csv("../data/ehb_top60_restr_small.csv")
@@ -30,8 +30,27 @@ ehb_data <- read.csv("../data/ehb_top60_restr_small.csv")
 
 ### Regression sample
 reg_sample <- c(
-  "AUT", "BEL", "DEU", "ESP", "FIN", "FRA",
-  "IRL", "ITA", "LUX", "NLD", "PRT"
+  "AUT", # Austria
+  "BEL", # Belgium
+  "BGR", # Bulgaria
+  "HRV", # Croatia
+  "CYP", # Cyprus
+  "EST", # Estonia
+  "FIN", # Finland
+  "FRA", # France
+  "DEU", # Germany
+  "GRC", # Greece
+  "IRL", # Ireland
+  "ITA", # Italy
+  "LVA", # Latvia
+  "LTU", # Lithuania
+  "LUX", # Luxembourg
+  "MLT", # Malta
+  "NLD", # Netherlands
+  "PRT", # Portugal
+  "SVK", # Slovakia
+  "SVN", # Slovenia
+  "ESP"  # Spain
 )
 # right format
 cons_ext2 <- cons_ext2_raw %>%
@@ -114,10 +133,10 @@ cons_ext2 <- cons_ext2 %>%
 
 # keep regression period
 cons_ext2 <- cons_ext2 %>%
-  filter(TIME_PERIOD >= 1970, TIME_PERIOD < 2020)
+  filter(TIME_PERIOD > 1986, TIME_PERIOD < 2018)
 
 ehb_data <- ehb_data %>%
-    filter(year >= 1970, year < 2020)
+    filter(year > 1986, year < 2018)
 
 # rename identifiers
 cons_ext2 <- cons_ext2 %>%
@@ -135,7 +154,7 @@ merged_df <- list(cons_ext2, ehb_data) %>%
   reduce(left_join, by = c("iso", "year"))
 
 merged_df <- merged_df %>%
-  mutate(time = year - 1997)
+  mutate(time = year - 2002)
 
 # clean estimation sample
 reg_cons_df <- merged_df %>%

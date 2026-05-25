@@ -1,6 +1,6 @@
 # ============================================
 # Extention 2: As many oecd countries as possible
-# 1993 - 2019
+# 1987 - 2017
 #=============================================
 
 
@@ -33,11 +33,10 @@ ehb_data <- read.csv("../data/ehb_top60_restr_small.csv")
 
 ### Regression sample
 reg_sample <- c(
-  "AUS", "AUT", "BEL", "CAN", "CHL", "CZE",
-  "DNK", "FRA", "DEU", "GRC", "HUN",
-  "ISR", "ITA", "JPN", "KOR",
-  "MEX", "NLD", "NOR", "POL", "PRT",
-  "SVK", "SVN", "ESP", "CHE", "TUR", "GBR", "USA"
+  "AUS", "AUT", "BEL", "CAN", "DEU", "DNK",
+  "ESP", "FRA", "GBR", "ISR", "ITA",
+  "JPN", "KOR", "LUX", "MEX", "NLD",
+  "PRT", "SGP", "SWE", "USA", "ZAF"
 )
 # right format
 gni_rep <- gni_rep_raw %>%
@@ -55,8 +54,8 @@ gni_rep <- gni_rep_raw %>%
   )
 
 ### Creating deviation variables 
-gni_rep <- gni_rep %>%
-  filter(REF_AREA %in% reg_sample)
+# gni_rep <- gni_rep %>%
+  # filter(REF_AREA %in% reg_sample)
 
 #### per capita growth rates: GDP and GNI
 gni_rep <- gni_rep %>%
@@ -121,7 +120,7 @@ gni_rep <- gni_rep %>%
 
 # keep regression period
 gni_rep <- gni_rep %>%
-  filter(TIME_PERIOD > 1992, TIME_PERIOD < 2020)
+  filter(TIME_PERIOD > 1986, TIME_PERIOD < 2018)
 
 # rename identifiers
 gni_rep <- gni_rep %>%
@@ -135,7 +134,7 @@ merged_df <- list(gni_rep, ehb_data) %>%
   reduce(left_join, by = c("iso", "year"))
 
 merged_df <- merged_df %>%
-  mutate(time = year - 2006)
+  mutate(time = year - 2002)
 
 # clean estimation sample
 reg_gni_df <- merged_df %>%
@@ -153,4 +152,7 @@ write.csv(
   "../data/reg_gni_df_ext_2.csv",
   row.names = FALSE
 )
+
+
+
 

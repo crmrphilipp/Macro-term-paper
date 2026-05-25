@@ -169,6 +169,7 @@ summary(reg_gni_all_assets)
 # 4. Creating the tables
 #=============================================
 
+
 # Table 3 Regression results
 
 library(stargazer)
@@ -409,3 +410,4 @@ stargazer(
 file.exists(
   file.path(output_dir, "5panel_reg_gni_ext_1.tex")
 )
+

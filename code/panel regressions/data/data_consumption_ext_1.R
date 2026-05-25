@@ -1,7 +1,7 @@
 # ============================================
 #The main regression: Consumption Risk Sharing
 #Table 3 & Table 5 in the paper 
-#EXTENTION same sample but 1993 - 2019
+#EXTENTION same sample but 1987 - 2017
 #=============================================
 
 # ============================================
@@ -17,7 +17,7 @@ setwd(
   normalizePath(
     file.path(
       dirname(rstudioapi::getActiveDocumentContext()$path),
-      "..", "..", "data"
+      "..", "..", "..", "data"
     )
   )
 )
@@ -116,10 +116,10 @@ cons_ext1 <- cons_ext1 %>%
 
 # keep regression period
 cons_ext1 <- cons_ext1 %>%
-  filter(TIME_PERIOD > 1992, TIME_PERIOD < 2020)
+  filter(TIME_PERIOD > 1986, TIME_PERIOD < 2018)
 
 ehb_data <- ehb_data %>%
-    filter(year > 1992, year < 2020)
+    filter(year > 1986, year < 2018)
 
 # rename identifiers
 cons_ext1 <- cons_ext1 %>%
@@ -138,7 +138,7 @@ merged_df <- list(cons_ext1, ehb_data) %>%
   reduce(left_join, by = c("iso", "year"))
 
 merged_df <- merged_df %>%
-  mutate(time = year - 2006)
+  mutate(time = year - 2002)
 
 # clean estimation sample
 reg_cons_df <- merged_df %>%

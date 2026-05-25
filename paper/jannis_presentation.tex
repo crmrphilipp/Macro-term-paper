@@ -1,0 +1,731 @@
+% ============================================================
+%  ECONOMICS PRESENTATION — Metropolis + Warm Accents
+%  Compile with: xelatex or lualatex (for metropolis fonts)
+%  Fallback:     pdflatex (add \usefonttheme{default} below)
+% ============================================================
+\documentclass[aspectratio=169, 10pt]{beamer}
+
+% ---- Theme ----
+\usetheme{metropolis}
+
+% ---- Color palette: warm burgundy / terracotta (no orange) ----
+\definecolor{PrimaryDark}{HTML}{6B2D3E}    % deep burgundy
+\definecolor{PrimaryLight}{HTML}{A8505A}   % softer rose
+\definecolor{Accent}{HTML}{C2705B}         % terracotta accent
+\definecolor{TextDark}{HTML}{2E2E2E}       % near-black text
+\definecolor{BgLight}{HTML}{FAF7F5}        % warm off-white
+\definecolor{AlertRed}{HTML}{B03A3A}       % for \alert{}
+
+\setbeamercolor{palette primary}{bg=PrimaryDark, fg=white}
+\setbeamercolor{title separator}{fg=Accent}
+\setbeamercolor{progress bar}{fg=Accent, bg=PrimaryDark!20}
+\setbeamercolor{frametitle}{bg=PrimaryDark, fg=white}
+\setbeamercolor{alerted text}{fg=AlertRed}
+\setbeamercolor{example text}{fg=PrimaryLight}
+\setbeamercolor{footnote mark}{fg=Accent}
+\setbeamercolor{block title}{bg=PrimaryDark, fg=white}
+\setbeamercolor{block body}{bg=BgLight, fg=TextDark}
+\setbeamercolor{block title alerted}{bg=AlertRed, fg=white}
+\setbeamercolor{block body alerted}{bg=AlertRed!8, fg=TextDark}
+\setbeamercolor{block title example}{bg=PrimaryLight, fg=white}
+\setbeamercolor{block body example}{bg=PrimaryLight!8, fg=TextDark}
+
+% ---- Progress bar at the TOP of each frame ----
+\makeatletter
+\setlength{\metropolis@frametitle@padding}{1.8ex}
+\makeatother
+\metroset{
+  progressbar=frametitle,   % bar sits inside the frametitle strip
+  sectionpage=progressbar,  % section divider pages show the bar
+  numbering=fraction        % slide 3/24 in footer
+}
+
+% ---- Packages: graphics, tables, math, refs ----
+\usepackage{graphicx}
+\usepackage{booktabs}          % professional tables (\toprule, \midrule …)
+\usepackage{tabularx}          % flexible-width columns
+\usepackage{amsmath,amssymb}   % equations
+\usepackage{mathtools}         % extras (dcases, coloneqq …)
+\usepackage{caption}           % better caption formatting
+\usepackage{subcaption}        % side-by-side figures
+\usepackage[
+  backend=biber,
+  style=authoryear-comp,       % (Author, Year) — change to numeric if you prefer
+  maxcitenames=2,
+  giveninits=true
+]{biblatex}
+% \addbibresource{references.bib}  % <-- uncomment when you have a .bib file
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=PrimaryDark,
+  citecolor=PrimaryLight,
+  urlcolor=Accent
+}
+\usepackage{appendixnumberbeamer}  % restart slide numbering in appendix
+\usepackage{adjustbox} 
+% ---- Handy command: clickable appendix button ----
+% Usage: \appendixbutton{Button Label}{targetlabel}
+\newcommand{\appendixbutton}[2]{%
+  \hyperlink{#2}{%
+    \beamergotobutton{#1}%
+  }%
+}
+% And to mark the target in the appendix:
+% \begin{frame}[label=targetlabel]{Title} …
+
+% ============================================================
+%  FRONT MATTER
+% ============================================================
+\title{Home Bias and Risk Sharing}
+\subtitle{Sørensen et al. 2007, Emprical Replication and Extension \\ PSE, Prof. Alex Clymo, Juan Pablo Ugarte}
+
+\author{Philipp Cremer, Jannis Stagge, Felix Westerhoff}
+
+\date{26.05.2026}
+% \titlegraphic{\hfill\includegraphics[height=1.2cm]{logo.pdf}}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+\maketitle
+
+% ---- Outline (optional) ----
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+
+% ============================================================
+\section{Introduction}
+% ============================================================
+
+\begin{frame}{Motivation Home Bias and Risk Sharing}
+  \begin{itemize}
+    \item Macroeconomic Risk Sharing
+      \begin{itemize}
+        \item international diversification and smoothing of income streams
+        \item hedging against idiosyncratic income shocks
+      \end{itemize}
+    \end{itemize}
+
+  \begin{itemize}
+    \item  Home Bias
+      \begin{itemize}
+        \item tendency of investors to hold a disproportionally large share of domestic assets
+        \item less internationally diversified portfolios than financial theory would predict
+      \end{itemize}
+    \end{itemize}
+
+    \vfill
+
+  \begin{block}{They do not need to go hand in hand...}
+    Agents could also smooth consumption through borrowing and lending. 
+  \end{block}
+
+\end{frame}
+% fertig
+
+% ============================================================
+% Panel-data Regression slides Theory
+\section{Panel-data Regressions}
+% ============================================================
+\begin{frame}{Panel-data Regressions}
+  \begin{block}{Income Risk Sharing Panel Regression}
+  \begin{equation}\label{eq:gni_panel}
+    \Delta \log GNI_{it} - \Delta \log GNI_t
+    =
+    \text{constant}
+    +
+    \kappa
+    \left(
+    \Delta \log GDP_{it} - \Delta \log GDP_t
+    \right)
+    +
+    \epsilon_{it}
+  \end{equation}
+
+  with
+
+  \begin{equation}\label{eq:kappa_gni}
+    \kappa
+    =
+    \kappa_0
+    +
+    \kappa_1(t - \overline{t})
+    +
+    \kappa_2(EHB_{it} - \overline{EHB}_t)
+  \end{equation}
+  \end{block}
+
+  \begin{block}{Consumption Risk Sharing Panel Regression}
+  \begin{equation}\label{eq:cons_panel}
+    \Delta \log C_{it} - \Delta \log C_t
+    =
+    \text{constant}
+    +
+    \eta
+    \left(
+    \Delta \log GDP_{it} - \Delta \log GDP_t
+    \right)
+    +
+    \epsilon_{it}
+  \end{equation}
+
+  with
+
+  \begin{equation}\label{eq:eta_cons}
+    \eta
+    =
+    \eta_0
+    +
+    \eta_1(t - \overline{t})
+    +
+    \eta_2(EHB_{it} - \overline{EHB}_t)
+  \end{equation}
+  \end{block}
+\end{frame}
+% fertig
+
+\begin{frame}[t]{Risk Sharing and Equity Home Bias, OECD Sample 1993--2003}
+\centering
+
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{0.85}
+
+\vspace{0.05cm}
+
+{\large \textbf{Original Paper}}
+
+\vspace{0.08cm}
+
+\begin{adjustbox}{
+  width=0.88\textwidth,
+  max totalheight=0.33\textheight,
+  keepaspectratio
+}
+  \begin{tabular}{@{\extracolsep{5pt}}lccc}
+  \\[-1.8ex]\hline
+  \hline \\[-1.8ex]
+  Outcome 
+  & Average risk sharing 
+  & Trend 
+  & Equity Home Bias \\
+  \hline \\[-1.8ex]
+  GNI 
+  & 2 (1.02) 
+  & 0 (0.02) 
+  & $-$39 (4.19) \\
+  Consumption 
+  & 57 (15.06) 
+  & 2 (2.09) 
+  & $-$136 (5.48) \\
+  \hline \\[-1.8ex]
+  \multicolumn{4}{l}{\footnotesize Notes: t-values are reportet in parantheses.} \\
+
+  \end{tabular}
+\end{adjustbox}
+
+\vspace{0.35cm}
+
+{\large \textbf{Replication}}
+
+\vspace{0.08cm}
+
+\begin{adjustbox}{
+  width=0.88\textwidth,
+  max totalheight=0.33\textheight,
+  keepaspectratio
+}
+  \begin{tabular}{@{\extracolsep{5pt}}lccc}
+  \\[-1.8ex]\hline
+  \hline \\[-1.8ex]
+  Outcome 
+  & Average risk sharing 
+  & Trend 
+  & Equity Home Bias \\
+  \hline \\[-1.8ex]
+  GNI 
+  & 15.67 (4.16) 
+  & 0.75 (0.76) 
+  & $-$132.83 (4.87) \\
+  Consumption 
+  & 54.56 (15.01) 
+  & 0.55 (0.52) 
+  & $-$204.217 (9.07) \\
+  \hline \\[-1.8ex]
+  \multicolumn{4}{l}{\footnotesize Notes: t-values are reportet in parantheses.} \\
+  \end{tabular}
+\end{adjustbox}
+
+\endgroup
+
+\end{frame}
+% fertig.
+% ------------------------------------------------
+\begin{frame}[t]{Risk Sharing and Foreign Asset Holdings relative to GDP, OECD Sample 1993--2003}
+\centering
+
+\begingroup
+\tiny
+\setlength{\tabcolsep}{1pt}
+\renewcommand{\arraystretch}{0.62}
+
+\vspace{0.03cm}
+
+{\scriptsize \textbf{Original Paper}}
+
+\vspace{0.04cm}
+
+\begin{adjustbox}{
+  width=0.98\textwidth,
+  max totalheight=0.28\textheight,
+  keepaspectratio
+}
+  \begin{tabular}{@{\extracolsep{3pt}}llccccc}
+  \\[-1.8ex]\hline
+  \hline \\[-1.8ex]
+  Outcome 
+  & Measure
+  & Equity 
+  & Debt 
+  & FDI 
+  & Equity + Debt 
+  & All Assets \\
+  \hline \\[-1.8ex]
+
+  Income
+  & Average risk sharing 
+  & 6 (2.74)
+  & 5 (2.53)
+  & 3 (1.70)
+  & 6 (2.85)
+  & 6 (2.75) \\
+
+  & Trend 
+  & 0 (0.77)
+  & 0 (0.34)
+  & 0 (0.47)
+  & 0 (0.37)
+  & 0 (0.47) \\
+
+  & Asset holdings 
+  & 5 (4.50)
+  & 9 (4.46)
+  & 3 (2.70)
+  & 9 (4.65)
+  & 8 (4.35) \\
+
+  \hline \\[-1.8ex]
+
+  Consumption
+  & Average risk sharing 
+  & 51 (13.34)
+  & 45 (11.56)
+  & 51 (13.39)
+  & 47 (11.95)
+  & 48 (12.34) \\
+
+  & Trend 
+  & 1 (0.83)
+  & 0 (0.25)
+  & 0 (0.09)
+  & 0 (0.33)
+  & 0 (0.45) \\
+
+  & Asset holdings 
+  & 11 (4.02)
+  & 7 (1.64)
+  & 9 (3.79)
+  & 9 (2.26)
+  & 11 (2.74) \\
+
+  \hline \\[-1.8ex]
+  \multicolumn{7}{l}{\footnotesize Notes: t-values are reportet in parantheses.} \\
+  \end{tabular}
+\end{adjustbox}
+
+\vspace{0.18cm}
+
+{\scriptsize \textbf{Replication}}
+
+\vspace{0.04cm}
+
+\begin{adjustbox}{
+  width=0.98\textwidth,
+  max totalheight=0.35\textheight,
+  keepaspectratio
+}
+  \begin{tabular}{@{\extracolsep{3pt}}llccccc}
+  \\[-1.8ex]\hline
+  \hline \\[-1.8ex]
+  Outcome 
+  & Measure
+  & Equity 
+  & Debt 
+  & FDI 
+  & Equity + Debt 
+  & All Assets \\
+  \hline \\[-1.8ex]
+
+  Income 
+  & Average risk sharing 
+  & 15.064 (4.145)
+  & 15.784 (4.211)
+  & 9.675 (2.788)
+  & 15.997 (4.253)
+  & 15.709 (4.262) \\
+
+  & Trend 
+  & 1.202 (1.209)
+  & 0.715 (0.719)
+  & 1.685 (1.634)
+  & 0.733 (0.729)
+  & 1.069 (1.062) \\
+
+  & Asset holdings 
+  & 12.180 (5.190)
+  & 17.747 (5.154)
+  & 11.726 (3.333)
+  & 17.583 (5.046)
+  & 20.515 (5.142) \\
+
+  \hline \\[-1.8ex]
+
+  Consumption 
+  & Average risk sharing 
+  & 56.614 (14.769)
+  & 49.948 (12.157)
+  & 51.790 (12.591)
+  & 52.469 (12.928)
+  & 54.959 (13.589) \\
+
+  & Trend 
+  & 0.942 (0.903)
+  & 0.172 (0.153)
+  & 0.455 (0.407)
+  & 0.355 (0.322)
+  & 0.497 (0.457) \\
+
+  & Asset holdings 
+  & 17.834 (8.796)
+  & 21.312 (6.009)
+  & 14.252 (6.160)
+  & 22.576 (6.814)
+  & 24.189 (7.348) \\
+
+  \hline \\[-1.8ex]
+  \multicolumn{7}{l}{\footnotesize Notes:t-values are reportet in parantheses.} \\
+  \end{tabular}
+\end{adjustbox}
+
+\endgroup
+
+\end{frame}
+% fertig
+% ============================================================
+\begin{frame}[t]{Risk Sharing and Equity Home Bias: OECD 1987--2017}
+\centering
+
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{0.85}
+
+\vspace{0.05cm}
+
+{\large \textbf{Extention by time Risk Sharing and Equity Home Bias}}
+
+\vspace{0.10cm}
+
+\begin{adjustbox}{
+  width=0.88\textwidth,
+  max totalheight=0.34\textheight,
+  keepaspectratio
+}
+\begin{tabular}{lccc}
+\hline\hline
+Outcome & Average risk sharing & Trend & Equity Home Bias \\
+\hline
+GNI         
+& 0.24 (0.14)   
+& $-$0.15 (0.82) 
+& $-$28.32 (2.80) \\
+
+Consumption 
+& 40.32 (19.61) 
+& $-$0.07 (0.29) 
+& $-$81.26 (7.96) \\
+\hline\hline
+  \multicolumn{4}{l}{\footnotesize Notes:t-values are reportet in parantheses.} \\
+\end{tabular}
+\end{adjustbox}
+
+\vspace{0.35cm}
+
+{\large \textbf{Extention by time and sample size Risk Sharing and Equity Home Bias}}
+
+\vspace{0.10cm}
+
+\begin{adjustbox}{
+  width=0.88\textwidth,
+  max totalheight=0.34\textheight,
+  keepaspectratio
+}
+\begin{tabular}{lccc}
+\hline\hline
+Outcome & Average risk sharing & Trend & Equity Home Bias \\
+\hline
+GNI         
+& 0.48 (0.34)   
+& $-$0.04 (0.26) 
+& $-$28.34 (3.24) \\
+
+Consumption 
+& 30.39 (15.28) 
+& $-$0.09 (0.41) 
+& $-$84.31 (8.25) \\
+\hline\hline
+  \multicolumn{4}{l}{\footnotesize Notes:t-values are reportet in parantheses.} \\
+\end{tabular}
+\end{adjustbox}
+
+\endgroup
+
+\end{frame}
+% fertig
+% ============================================================
+\begin{frame}[t]{Risk Sharing and Foreign Asset Holdings Relative to GDP: OECD 1987--2017}
+\centering
+
+\begingroup
+\tiny
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{0.62}
+
+\vspace{0.03cm}
+
+{\scriptsize \textbf{Time Extention Risk Sharing and Foreign Asset Holdings Relative to GDP}}
+
+\vspace{0.04cm}
+
+\begin{adjustbox}{
+  width=0.98\textwidth,
+  max totalheight=0.39\textheight,
+  keepaspectratio
+}
+\begin{tabular}{llccc}
+\hline\hline
+Outcome & Asset measure & Average risk sharing & Trend & Asset holdings \\
+\hline
+GNI         & Equity       & $-$1.70 (0.87) & $-$0.12 (0.70) & 4.84 (3.59)  \\
+            & Debt         & $-$0.36 (0.21) & $-$0.14 (0.80) & 7.60 (4.14)  \\
+            & FDI          & $-$2.31 (0.98) & 0.07 (0.40)    & 4.39 (2.57)  \\
+            & Equity+Debt  & $-$1.13 (0.62) & $-$0.16 (0.91) & 7.93 (4.15)  \\
+            & All Assets   & $-$1.97 (1.03) & $-$0.13 (0.74) & 8.16 (4.08)  \\
+\hline
+Consumption & Equity       & 42.22 (20.31)  & 0.06 (0.28)    & 10.50 (9.07) \\
+            & Debt         & 38.62 (18.10)  & $-$0.17 (0.72) & 11.94 (5.60) \\
+            & FDI          & 40.24 (19.21)  & 0.04 (0.18)    & 10.71 (7.41) \\
+            & Equity+Debt  & 40.26 (18.98)  & $-$0.14 (0.58) & 14.25 (7.06) \\
+            & All Assets   & 41.07 (19.35)  & $-$0.09 (0.40) & 14.97 (7.60) \\
+\hline\hline
+  \multicolumn{5}{l}{\footnotesize Notes: t-values are reportet in parantheses.} \\
+\end{tabular}
+\end{adjustbox}
+
+\vspace{0.10cm}
+
+{\scriptsize \textbf{Time and Sample Extention Risk Sharing and Foreign Asset Holdings Relative to GDP}}
+
+\vspace{0.04cm}
+
+\begin{adjustbox}{
+  width=0.98\textwidth,
+  max totalheight=0.39\textheight,
+  keepaspectratio
+}
+\begin{tabular}{llccc}
+\hline\hline
+Outcome & Asset measure & Average risk sharing & Trend & Asset holdings \\
+\hline
+GNI         & Equity       & 0.89 (0.63)    & $-$0.10 (0.68) & 2.51 (3.40)  \\
+            & Debt         & 0.28 (0.20)    & $-$0.13 (0.93) & 7.22 (4.72)  \\
+            & FDI          & $-$2.09 (1.23) & 0.08 (0.62)    & 4.44 (3.23)  \\
+            & Equity+Debt  & 0.07 (0.05)    & $-$0.16 (1.09) & 6.96 (4.65)  \\
+            & All Assets   & $-$0.38 (0.27) & $-$0.14 (0.94) & 6.83 (4.54)  \\
+\hline
+Consumption & Equity       & 27.96 (14.42)  & $-$0.12 (0.56) & 11.92 (11.26)\\
+            & Debt         & 29.72 (14.02)  & 0.11 (0.49)    & 9.69 (4.75)  \\
+            & FDI          & 25.92 (11.85)  & 0.44 (2.00)    & 11.75 (7.78) \\
+            & Equity+Debt  & 28.45 (13.53)  & 0.0005 (0.002) & 13.18 (6.73) \\
+            & All Assets   & 28.15 (13.46)  & 0.06 (0.27)    & 14.23 (7.37) \\
+\hline\hline
+  \multicolumn{5}{l}{\footnotesize Notes: t-values are reportet in parantheses.} \\
+\end{tabular}
+\end{adjustbox}
+
+\endgroup
+
+\end{frame}
+% fertig
+
+
+
+% ============================================================
+%  REFERENCES
+% ============================================================
+% \begin{frame}[allowframebreaks]{References}
+%   \printbibliography[heading=none]
+% \end{frame}
+
+
+% ============================================================
+%  APPENDIX — slides after this line are not counted
+% ============================================================
+\appendix
+
+\begin{frame}[label=appendix:data]{Appendix: OECD National Accounts (2005) Risk Sharing and Equity Home Bias}
+
+\centering
+
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{0.85}
+
+\vspace{0.10cm}
+
+{\large \textbf{OECD (2005) National Accounts Risk Sharing and Equity Home Bias}}
+
+\vspace{0.15cm}
+
+\begin{adjustbox}{
+  width=0.90\textwidth,
+  max totalheight=0.70\textheight,
+  keepaspectratio
+}
+\begin{tabular}{@{\extracolsep{5pt}}lccc}
+\\[-1.8ex]\hline
+\hline \\[-1.8ex]
+Outcome 
+& Average risk sharing 
+& Time trend 
+& Equity home bias \\
+\hline \\[-1.8ex]
+
+Consumption 
+& 34.065 (4.721) 
+& 0.898 (1.154) 
+& $-$86.453 (26.920) \\
+
+GNI 
+& 6.542 (4.389) 
+& 0.419 (0.792) 
+& $-$77.820 (21.571) \\
+
+\hline \\[-1.8ex]
+  \multicolumn{4}{l}{Notes: [Standard Errors are reportet in Paranthesis.].} \\
+\end{tabular}
+\end{adjustbox}
+
+\endgroup
+
+\end{frame}
+% fertig
+
+\begin{frame}[label=appendix:oecd2005_assets]{Appendix: OECD National Accounts (2005) Risk Sharing and Foreign Asset Holdings relative to GDP}
+\centering
+
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{0.85}
+
+\vspace{0.10cm}
+
+{\large \textbf{PDF Estimates}}
+
+\vspace{0.15cm}
+
+\begin{adjustbox}{
+  width=0.95\textwidth,
+  max totalheight=0.70\textheight,
+  keepaspectratio
+}
+\begin{tabular}{@{\extracolsep{5pt}}llccccc}
+\\[-1.8ex]\hline
+\hline \\[-1.8ex]
+Outcome 
+& Measure
+& Equity 
+& Debt 
+& FDI 
+& Equity + Debt 
+& All Assets \\
+\hline \\[-1.8ex]
+
+Consumption 
+& Average risk sharing 
+& 47.517 
+& 39.227 
+& 41.818 
+& 42.290 
+& 44.626 \\
+
+& Time trend 
+& 1.349 
+& 0.616 
+& 0.356 
+& 0.780 
+& 0.894 \\
+
+& Foreign assets/GDP 
+& 13.514 
+& 14.075 
+& 9.338 
+& 16.578 
+& 18.336 \\
+
+\hline \\[-1.8ex]
+
+GNI 
+& Average income risk sharing 
+& 8.039 
+& 5.027 
+& 0.873 
+& 6.776 
+& 6.944 \\
+
+& Time trend 
+& 0.164 
+& $-$0.382 
+& $-$0.663 
+& $-$0.195 
+& $-$0.147 \\
+
+& Foreign assets/GDP 
+& 6.925 
+& 12.163 
+& 3.102 
+& 11.942 
+& 10.746 \\
+
+\hline \\[-1.8ex]
+\multicolumn{7}{l}{Sample period is 1993--2003].} \\
+\end{tabular}
+\end{adjustbox}
+
+\endgroup
+
+\end{frame}
+% fertig
+
+
+% ============================================================
+\end{document}
+

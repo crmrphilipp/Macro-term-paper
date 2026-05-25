@@ -17,7 +17,7 @@ setwd(
   normalizePath(
     file.path(
       dirname(rstudioapi::getActiveDocumentContext()$path),
-      "..", "..", "data"
+      "..", "..", "..", "data"
     )
   )
 )
@@ -31,11 +31,12 @@ ehb_data <- read.csv("../data/ehb_top60_restr_small.csv")
 
 ### Regression sample
 reg_sample <- c(
-  "AUS", "AUT", "BEL", "CAN", "CHL", "CZE",
-  "DNK", "FRA", "DEU", "GRC", "HUN",
-  "ISR", "ITA", "JPN", "KOR",
-  "MEX", "NLD", "NOR", "POL", "PRT",
-  "SVK", "SVN", "ESP", "CHE", "TUR", "GBR", "USA"
+  "AUS", "AUT", "BEL", "CAN", "CHE", "CHL",
+  "COL", "DEU", "DNK", "ESP", "FRA",
+  "GBR", "GRC", "IND", "ISR", "ITA",
+  "JPN", "KOR", "LUX", "MEX", "NLD",
+  "NOR", "PRT", "SAU", "SGP", "SWE",
+  "TUR", "USA", "ZAF"
 )
 
 # right format
@@ -54,7 +55,7 @@ cons_ext2 <- cons_ext2_raw %>%
   )
 
 ### Creating deviation variables 
-cons_ext2 <- cons_ext2 %>%
+ cons_ext2 <- cons_ext2 %>%
   filter(REF_AREA %in% reg_sample)
 
 #### per capita growth rates: GDP and consumption
@@ -119,10 +120,10 @@ cons_ext2 <- cons_ext2 %>%
 
 # keep regression period
 cons_ext2 <- cons_ext2 %>%
-  filter(TIME_PERIOD > 1992, TIME_PERIOD < 2020)
+  filter(TIME_PERIOD > 1986, TIME_PERIOD < 2018)
 
 ehb_data <- ehb_data %>%
-    filter(year > 1992, year < 2020)
+    filter(year > 1986, year < 2018)
 
 # rename identifiers
 cons_ext2 <- cons_ext2 %>%
@@ -132,7 +133,7 @@ cons_ext2 <- cons_ext2 %>%
   )
 
 ehb_data <- ehb_data %>%
-  filter(iso %in% reg_sample)
+   filter(iso %in% reg_sample)
 
 
 # merge data
@@ -140,7 +141,7 @@ merged_df <- list(cons_ext2, ehb_data) %>%
   reduce(left_join, by = c("iso", "year"))
 
 merged_df <- merged_df %>%
-  mutate(time = year - 2006)
+  mutate(time = year - 2002)
 
 # clean estimation sample
 reg_cons_df <- merged_df %>%
@@ -158,3 +159,4 @@ write.csv(
   "../data/reg_cons_df_ext_2.csv",
   row.names = FALSE
 )
+
