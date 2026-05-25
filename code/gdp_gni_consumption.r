@@ -82,21 +82,21 @@ country_selection_replication <- c(
 time_frame_replication <- 1992:2003
 
 gdp_comparison <- gdp_cons_data %>%
-  filter(GDP_cons == "GDP", TIME_PERIOD %in% time_frame_replication, REF_AREA %in% country_selection_replication) %>%
+  filter(GDP_CONS == "GDP", TIME_PERIOD %in% time_frame_replication, `Reference area` %in% country_selection_replication) %>%
   select(REF_AREA, TIME_PERIOD, OBS_VALUE) %>%
-  rename(GDP_cons = OBS_VALUE) %>%
+  rename(GDP_CONS = OBS_VALUE) %>%
   left_join(
-    gdp_gni_data %>% filter(GDP_GNI == "GDP") %>% select(REF_AREA, TIME_PERIOD, OBS_VALUE) %>% rename(GDP_gni = OBS_VALUE),
+    gdp_gni_data %>% filter(GDP_GNI == "GDP") %>% select(REF_AREA, TIME_PERIOD, OBS_VALUE) %>% rename(GDP_GNI = OBS_VALUE),
     by = c("REF_AREA", "TIME_PERIOD")
   )
 
 # Find mismatches, isolate available mismatches and plot them
 mismatch_data <- gdp_comparison %>%
-  filter(!is.na(GDP_cons) & !is.na(GDP_gni)) %>% 
-  filter(!near(GDP_cons, GDP_gni))
+  filter(!is.na(GDP_CONS) & !is.na(GDP_GNI)) %>% 
+  filter(!near(GDP_CONS, GDP_GNI))
 
 # Plot them
-ggplot(mismatch_data, aes(x = GDP_cons, y = GDP_gni)) +
+ggplot(mismatch_data, aes(x = GDP_CONS, y = GDP_GNI)) +
   geom_point(color = "red", alpha = 0.7) +
   geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "blue") +
   labs(
@@ -150,19 +150,21 @@ pop_data_temp <- pop_data_temp %>%
   select(REF_AREA, TIME_PERIOD, Population) %>%
   arrange(REF_AREA, TIME_PERIOD)
 
-# Add Euro Area observations
-ea20_iso <- c("AUT", "BEL", "HRV", "CYP", "EST", "FIN", "FRA", "DEU", "GRC", "IRL", 
-               "ITA", "LVA", "LTU", "LUX", "MLT", "NLD", "PRT", "SVK", "SVN", "ESP")
-ea20_data <- pop_data_temp %>%
-  filter(REF_AREA %in% ea20_iso) %>%
-  group_by(TIME_PERIOD) %>%
-  summarize(
-    Population = sum(Population, na.rm = TRUE),
-    .groups = "drop"
-  ) %>%
-  mutate(REF_AREA = "EA20")
+# # Add Euro Area observations
+# ea20_iso <- c("AUT", "BEL", "HRV", "CYP", "EST", "FIN", "FRA", "DEU", "GRC", "IRL", 
+#                "ITA", "LVA", "LTU", "LUX", "MLT", "NLD", "PRT", "SVK", "SVN", "ESP")
+# ea20_data <- pop_data_temp %>%
+#   filter(REF_AREA %in% ea20_iso) %>%
+#   group_by(TIME_PERIOD) %>%
+#   summarize(
+#     Population = sum(Population, na.rm = TRUE),
+#     .groups = "drop"
+#   ) %>%
+#   mutate(REF_AREA = "EA20")
 
-pop_data <- bind_rows(pop_data_temp, ea20_data)
+# pop_data <- bind_rows(pop_data_temp, ea20_data)
+
+pop_data <- pop_data_temp
 
 ####################### Begin writing data cleaning function here
 data_cleaning_function <- function(gdp_cons_dataset, gdp_gni_dataset, time_frame,
@@ -354,13 +356,14 @@ return(list(
 }
 
 ####################### REPLICATION
+########## Current OECD data
 # Define variables for function and run function
 country_selection_replication <- c(
     "Australia", "Austria", "Belgium", "Canada", "Denmark", "Finland", "France", "Germany", "Greece",
     "Iceland", "Ireland", "Italy", "Japan", "Mexico", "Netherlands", "New Zealand", "Norway", "Portugal", "Spain", "Sweden", "Switzerland",
     "Türkiye", "United Kingdom", "United States"
 )
-time_frame_replication <- 1992:2003
+time_frame_replication <- 1992:2003 # Note we start in 1992 because data will be lagged!
 data_sets_replication <- data_cleaning_function(gdp_cons_dataset = gdp_cons_data, gdp_gni_dataset = gdp_gni_data,
                                                 time_frame = time_frame_replication, country_selection = country_selection_replication,
                                                 cpi_data = cpi_data, ppp_data = ppp_data, pop_data = pop_data)
@@ -369,119 +372,7 @@ data_sets_replication <- data_cleaning_function(gdp_cons_dataset = gdp_cons_data
 write_csv(data_sets_replication[["consumption_data"]], "../data/data_cy_rep.csv")
 write_csv(data_sets_replication[["gni_data"]], "../data/data_iy_rep.csv")
 
-####################### EXTENSION 1: 1993 to 2019, same countries
-# Define variables for function and run function
-country_selection_extension_1 <- c(
-    "Australia", "Austria", "Belgium", "Canada", "Denmark", "Finland", "France", "Germany", "Greece",
-    "Iceland", "Ireland", "Italy", "Japan", "Mexico", "Netherlands", "New Zealand", "Norway", "Portugal", "Spain", "Sweden", "Switzerland",
-    "Türkiye", "United Kingdom", "United States"
-)
-time_frame_extension_1 <- 1992:2019
-data_sets_replication <- data_cleaning_function(gdp_cons_dataset = gdp_cons_data, gdp_gni_dataset = gdp_gni_data,
-                                                time_frame = time_frame_extension_1, country_selection = country_selection_extension_1,
-                                                cpi_data = cpi_data, ppp_data = ppp_data, pop_data = pop_data)
-
-# Export the final datasets
-write_csv(data_sets_replication[["consumption_data"]], "../data/data_cy_ext_1.csv")
-write_csv(data_sets_replication[["gni_data"]], "../data/data_iy_ext_1.csv")
-
-####################### EXTENSION 2: 1993 to 2019, whole OECD
-# Define variables for function and run function
-country_selection_extension_2 <- c(
-    "Australia", "Austria", "Belgium", "Canada", "Denmark", "Finland", "France", "Germany", "Greece", "Chile", "Columbia", "Costa Rica", "Czechia", "Estonia", "Hungary", "Poland", "Slovak Republic", "Slovenia",
-    "Iceland", "Ireland", "Italy", "Japan", "Mexico", "Netherlands", "New Zealand", "Norway", "Portugal", "Spain", "Sweden", "Switzerland", "Israel", "Korea", "Latvia", "Lithuania", "Luxembourg",
-    "Türkiye", "United Kingdom", "United States"
-)
-time_frame_extension_2 <- 1992:2019
-data_sets_replication <- data_cleaning_function(gdp_cons_dataset = gdp_cons_data, gdp_gni_dataset = gdp_gni_data,
-                                                time_frame = time_frame_extension_2, country_selection = country_selection_extension_2,
-                                                cpi_data = cpi_data, ppp_data = ppp_data, pop_data = pop_data)
-
-# Export the final datasets
-write_csv(data_sets_replication[["consumption_data"]], "../data/data_cy_ext_2.csv")
-write_csv(data_sets_replication[["gni_data"]], "../data/data_iy_ext_2.csv")
-
-####################### EXTENSION 3: 1970 to 2019, whole OECD
-# Define variables for function and run function
-# country_selection_extension_3 <- c(
-#     "Australia", "Austria", "Belgium", "Canada", "Denmark", "Finland", "France", "Germany", "Greece", "Chile", "Columbia", "Costa Rica", "Czechia", "Estonia", "Hungary", "Poland", "Slovak Republic", "Slovenia",
-#     "Iceland", "Ireland", "Italy", "Japan", "Mexico", "Netherlands", "New Zealand", "Norway", "Portugal", "Spain", "Sweden", "Switzerland", "Israel", "Korea", "Latvia", "Lithuania", "Luxembourg",
-#     "Türkiye", "United Kingdom", "United States"
-# )
-# time_frame_extension_3 <- 1970:2019
-# data_sets_replication <- data_cleaning_function(gdp_cons_dataset = gdp_cons_data, gdp_gni_dataset = gdp_gni_data,
-#                                                 time_frame = time_frame_extension_3, country_selection = country_selection_extension_3,
-#                                                 cpi_data = cpi_data, ppp_data = ppp_data, pop_data = pop_data)
-
-# # Export the final datasets
-# write_csv(data_sets_replication[["consumption_data"]], "../data/data_cy_ext_3.csv")
-# write_csv(data_sets_replication[["gni_data"]], "../data/data_iy_ext_3.csv")
-
-######################### EXTENSION 4: 1970 to 2019, Eurozone vs. non-Eurozone
-### Eurozone: Choose all countries that eventually join the Euro
-country_selection_extension_4a <- c(
-    "Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus", "Estonia", "Finland", "France", "Germany", "Greece",
-    "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Malta", "Netherlands", "Portugal", "Slovak Republic", "Slovenia", "Spain"
-)
-time_frame_extension_4a <- 1970:2019
-data_sets_replication <- data_cleaning_function(gdp_cons_dataset = gdp_cons_data, gdp_gni_dataset = gdp_gni_data,
-                                                time_frame = time_frame_extension_4a, country_selection = country_selection_extension_4a,
-                                                cpi_data = cpi_data, ppp_data = ppp_data, pop_data = pop_data)
-
-write_csv(data_sets_replication[["consumption_data"]], "../data/data_cy_ext_4a.csv")
-write_csv(data_sets_replication[["gni_data"]], "../data/data_iy_ext_4a.csv")
-
-### Non-Eurozone, but OECD (including EU)
-country_selection_extension_4b <- c(
-        "Australia", "Canada", "Denmark", "Chile", "Columbia", "Costa Rica", "Czechia", "Hungary", "Poland", "Iceland", "Japan", "Mexico", 
-        "New Zealand", "Norway", "Switzerland", "Israel", "Korea", "Türkiye", "United Kingdom", "United States"
-)
-time_frame_extension_4b <- 1970:2019
-data_sets_replication <- data_cleaning_function(gdp_cons_dataset = gdp_cons_data, gdp_gni_dataset = gdp_gni_data,
-                                                time_frame = time_frame_extension_4b, country_selection = country_selection_extension_4b,
-                                                cpi_data = cpi_data, ppp_data = ppp_data, pop_data = pop_data)
-
-write_csv(data_sets_replication[["consumption_data"]], "../data/data_cy_ext_4b.csv")
-write_csv(data_sets_replication[["gni_data"]], "../data/data_iy_ext_4b.csv")
-
-### Non-Eurozone, entire sample
-country_selection_extension_4c <- unique(gdp_cons_data$`Reference area`)[!(unique(gdp_cons_data$`Reference area`) %in% country_selection_extension_4a)]
-time_frame_extension_4c <- 1970:2019
-data_sets_replication <- data_cleaning_function(gdp_cons_dataset = gdp_cons_data, gdp_gni_dataset = gdp_gni_data,
-                                                time_frame = time_frame_extension_4c, country_selection = country_selection_extension_4c,
-                                                cpi_data = cpi_data, ppp_data = ppp_data, pop_data = pop_data)
-
-write_csv(data_sets_replication[["consumption_data"]], "../data/data_cy_ext_4c.csv")
-write_csv(data_sets_replication[["gni_data"]], "../data/data_iy_ext_4c.csv")
-
-######################## EXTENSION 5: Eurozone as own observation (Expectation: after 1999, risk sharing increases less than with individual countries)
-# Eurozone as own obsveration
-ea20_names <- c(
-  "Austria", "Belgium", "Croatia", "Cyprus", "Estonia","Finland", "France", "Germany", "Greece", "Ireland", "European Union (27 countries from 01/02/2020)",
-  "Italy", "Latvia", "Lithuania", "Luxembourg", "Malta", "Netherlands", "Portugal", "Slovak Republic", "Slovenia", "Spain"
-)
-country_selection_extension_5a <- unique(gdp_cons_data$`Reference area`)[!unique(gdp_cons_data$`Reference area`)%in%ea20_names]
-
-time_frame_extension_5a <- 1995:2019
-data_sets_replication <- data_cleaning_function(gdp_cons_dataset = gdp_cons_data, gdp_gni_dataset = gdp_gni_data,
-                                                time_frame = time_frame_extension_5a, country_selection = country_selection_extension_5a,
-                                                cpi_data = cpi_data, ppp_data = ppp_data, pop_data = pop_data)
-
-write_csv(data_sets_replication[["consumption_data"]], "../data/data_cy_ext_5a.csv")
-write_csv(data_sets_replication[["gni_data"]], "../data/data_iy_ext_5a.csv")
-
-# Taking out Eurozone and EU27
-names_to_remove <- c("European Union (27 countries from 01/02/2020)","Euro area (20 countries)")
-country_selection_extension_5b <- unique(gdp_cons_data$`Reference area`)[!unique(gdp_cons_data$`Reference area`)%in%names_to_remove]
-
-time_frame_extension_5b <- 1995:2019
-data_sets_replication <- data_cleaning_function(gdp_cons_dataset = gdp_cons_data, gdp_gni_dataset = gdp_gni_data,
-                                                time_frame = time_frame_extension_5b, country_selection = country_selection_extension_5b,
-                                                cpi_data = cpi_data, ppp_data = ppp_data, pop_data = pop_data)
-
-write_csv(data_sets_replication[["consumption_data"]], "../data/data_cy_ext_5b.csv")
-write_csv(data_sets_replication[["gni_data"]], "../data/data_iy_ext_5b.csv")
-
+########## Old OECD data (PDF extracted)
 ######################## SANITY CHECK 1: USE PDF-extracted data
 ###### GDP/ consumption (own calculation)
 pdf_data <- read_csv("../data/pdf_oecd_reg.csv")
@@ -516,49 +407,71 @@ country_selection_sanity_check <- c(
     "Iceland", "Ireland", "Italy", "Japan", "Mexico", "Netherlands", "New Zealand", "Norway", "Portugal", "Spain", "Sweden", "Switzerland",
     "Türkiye", "United Kingdom", "United States"
 )
-time_frame_sanity_check <- 1993:2003
+time_frame_sanity_check <- 1992:2003
 data_sets_replication <- data_cleaning_sanity(gdp_cons_dataset = gdp_cons_sanity, gdp_gni_dataset = gdp_gni_sanity,
                                                 time_frame = time_frame_sanity_check, country_selection = country_selection_sanity_check, pop_data = pop_data)
 
 write_csv(data_sets_replication[["consumption_data"]], "../data/data_cy_sanity.csv")
 write_csv(data_sets_replication[["gni_data"]], "../data/data_iy_sanity.csv")
 
-######################### SANITY CHECK 2: PDF-extracted data (w/o manual computation)
-pdf_data <- read_csv("../data/pdf_oecd_reg.csv")
-gdp_cons_sanity <- pdf_data %>%
-  rename(REF_AREA = iso, `Reference area` = country, TIME_PERIOD = year) %>%
-  select(`Reference area`, REF_AREA, TIME_PERIOD, gdp_b3, acons_b4) %>%
-  pivot_longer(
-    cols = c("gdp_b3", "acons_b4"),
-    names_to = "GDP_CONS",                   
-    values_to = "OBS_VALUE"                     
-  ) %>%
-  mutate(
-    GDP_CONS = ifelse(GDP_CONS == "gdp_b3", "GDP", "consumption")
-  ) %>%
-  arrange(REF_AREA, GDP_CONS)
-
-gdp_gni_sanity <- pdf_data %>% ### IS NOT EXTRA DATA, USES GNI_USD_PPP
-  rename(REF_AREA = iso, `Reference area` = country, TIME_PERIOD = year) %>%
-  select(`Reference area`, REF_AREA, TIME_PERIOD, gdp_usd_ppp, gni_usd_ppp) %>%
-  pivot_longer(
-    cols = c("gdp_usd_ppp", "gni_usd_ppp"),
-    names_to = "GDP_GNI",                   
-    values_to = "OBS_VALUE"                     
-  ) %>%
-  mutate(
-    GDP_GNI = ifelse(GDP_GNI == "gdp_usd_ppp", "GDP", "GNI")
-  ) %>%
-  arrange(REF_AREA, GDP_GNI)
-
-country_selection_sanity_check <- c(
+####################### EXTENSION 1: 1987 to 2017, same countries
+# Define variables for function and run function
+country_selection_extension_1 <- c(
     "Australia", "Austria", "Belgium", "Canada", "Denmark", "Finland", "France", "Germany", "Greece",
     "Iceland", "Ireland", "Italy", "Japan", "Mexico", "Netherlands", "New Zealand", "Norway", "Portugal", "Spain", "Sweden", "Switzerland",
     "Türkiye", "United Kingdom", "United States"
 )
-time_frame_sanity_check <- 1993:2003
-data_sets_replication <- data_cleaning_sanity(gdp_cons_dataset = gdp_cons_sanity, gdp_gni_dataset = gdp_gni_sanity,
-                                                time_frame = time_frame_sanity_check, country_selection = country_selection_sanity_check, pop_data = pop_data)
+time_frame_extension_1 <- 1986:2017
+data_sets_replication <- data_cleaning_function(gdp_cons_dataset = gdp_cons_data, gdp_gni_dataset = gdp_gni_data,
+                                                time_frame = time_frame_extension_1, country_selection = country_selection_extension_1,
+                                                cpi_data = cpi_data, ppp_data = ppp_data, pop_data = pop_data)
 
-write_csv(data_sets_replication[["consumption_data"]], "../data/data_cy_sanity_2.csv")
-write_csv(data_sets_replication[["gni_data"]], "../data/data_iy_sanity_2.csv")
+# Export the final datasets
+write_csv(data_sets_replication[["consumption_data"]], "../data/data_cy_ext_1.csv")
+write_csv(data_sets_replication[["gni_data"]], "../data/data_iy_ext_1.csv")
+
+####################### EXTENSION 2: 1987 to 2017, Top 50 Economies + EU (- some countries, depending on data availability)
+# Define variables for function and run function
+country_selection_extension_2 <- c(
+    "Argentina", "Australia", "Austria", "Bangladesh", "Belgium", 
+    "Brazil", "Bulgaria", "Canada", "Chile", "China", 
+    "Colombia", "Croatia", "Czechia", "Denmark", "Egypt", 
+    "France", "Germany", "Greece", "Hong Kong", "Hungary", 
+    "India", "Indonesia", "Iran", "Israel", "Italy", 
+    "Japan", "Kazakhstan", "Korea", "Latvia", "Luxembourg", 
+    "Malaysia", "Mexico", "Netherlands", "Nigeria", "Norway", 
+    "Pakistan", "Philippines", "Poland", "Portugal", "Romania", 
+    "Russia", "Saudi Arabia", "Singapore", "Slovak Republic", "Slovenia", 
+    "South Africa", "Spain", "Sweden", "Switzerland", "Thailand", 
+    "Türkiye", "United Arab Emirates", "United Kingdom", "United States", 
+    "Vietnam"
+)
+
+# Check which countries and which time periods are in the big sample
+filtered_gdp_data <- gdp_cons_data %>%
+  filter(`Reference area` %in% country_selection_extension_2)
+
+time_periods_by_country <- split(filtered_gdp_data$TIME_PERIOD, filtered_gdp_data$`Reference area`)
+
+time_frame_extension_2 <- 1986:2017
+data_sets_replication <- data_cleaning_function(gdp_cons_dataset = gdp_cons_data, gdp_gni_dataset = gdp_gni_data,
+                                                time_frame = time_frame_extension_2, country_selection = country_selection_extension_2,
+                                                cpi_data = cpi_data, ppp_data = ppp_data, pop_data = pop_data)
+
+# Export the final datasets
+write_csv(data_sets_replication[["consumption_data"]], "../data/data_cy_ext_2.csv")
+write_csv(data_sets_replication[["gni_data"]], "../data/data_iy_ext_2.csv")
+
+######################### EXTENSION 3: 1987 to 2017, Eurozone
+### Eurozone: Choose all countries that eventually join the Euro
+country_selection_extension_4a <- c(
+    "Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus", "Estonia", "Finland", "France", "Germany", "Greece",
+    "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Malta", "Netherlands", "Portugal", "Slovak Republic", "Slovenia", "Spain"
+)
+time_frame_extension_4a <- 1986:2017
+data_sets_replication <- data_cleaning_function(gdp_cons_dataset = gdp_cons_data, gdp_gni_dataset = gdp_gni_data,
+                                                time_frame = time_frame_extension_4a, country_selection = country_selection_extension_4a,
+                                                cpi_data = cpi_data, ppp_data = ppp_data, pop_data = pop_data)
+
+write_csv(data_sets_replication[["consumption_data"]], "../data/data_cy_ext_3.csv")
+write_csv(data_sets_replication[["gni_data"]], "../data/data_iy_ext_3.csv")

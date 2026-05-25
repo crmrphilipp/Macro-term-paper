@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.15)  25 MAY 2026 09:34
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.15)  25 MAY 2026 13:15
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -242,176 +242,47 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-<../output/gdp_per_capita.pdf, id=1, 578.16pt x 433.62pt>
-File: ../output/gdp_per_capita.pdf Graphic file (type pdf)
-<use ../output/gdp_per_capita.pdf>
-Package pdftex.def Info: ../output/gdp_per_capita.pdf  used on input line 23.
-(pdftex.def)             Requested size: 140.92793pt x 105.69196pt.
-<../output/consumption_per_capita.pdf, id=2, 578.16pt x 433.62pt>
-File: ../output/consumption_per_capita.pdf Graphic file (type pdf)
-<use ../output/consumption_per_capita.pdf>
-Package pdftex.def Info: ../output/consumption_per_capita.pdf  used on input line 30.
-(pdftex.def)             Requested size: 140.92793pt x 105.69196pt.
-<../output/gni_per_capita.pdf, id=3, 578.16pt x 433.62pt>
-File: ../output/gni_per_capita.pdf Graphic file (type pdf)
-<use ../output/gni_per_capita.pdf>
-Package pdftex.def Info: ../output/gni_per_capita.pdf  used on input line 37.
-(pdftex.def)             Requested size: 140.92793pt x 105.69196pt.
-<../output/rs_cs_rep_c.pdf, id=4, 578.16pt x 433.62pt>
+<../output/rs_cs_rep_c.pdf, id=1, 578.16pt x 433.62pt>
 File: ../output/rs_cs_rep_c.pdf Graphic file (type pdf)
 <use ../output/rs_cs_rep_c.pdf>
-Package pdftex.def Info: ../output/rs_cs_rep_c.pdf  used on input line 54.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/rs_cs_rep_i.pdf, id=5, 578.16pt x 433.62pt>
+Package pdftex.def Info: ../output/rs_cs_rep_c.pdf  used on input line 20.
+(pdftex.def)             Requested size: 469.75502pt x 352.31538pt.
+<../output/rs_cs_rep_i.pdf, id=2, 578.16pt x 433.62pt>
 File: ../output/rs_cs_rep_i.pdf Graphic file (type pdf)
 <use ../output/rs_cs_rep_i.pdf>
-Package pdftex.def Info: ../output/rs_cs_rep_i.pdf  used on input line 61.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/rs_cs_ext_1_c.pdf, id=6, 578.16pt x 433.62pt>
-File: ../output/rs_cs_ext_1_c.pdf Graphic file (type pdf)
-<use ../output/rs_cs_ext_1_c.pdf>
-Package pdftex.def Info: ../output/rs_cs_ext_1_c.pdf  used on input line 74.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/rs_cs_ext_1_i.pdf, id=7, 578.16pt x 433.62pt>
-File: ../output/rs_cs_ext_1_i.pdf Graphic file (type pdf)
-<use ../output/rs_cs_ext_1_i.pdf>
-Package pdftex.def Info: ../output/rs_cs_ext_1_i.pdf  used on input line 81.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/rs_cs_ext_2_c.pdf, id=8, 578.16pt x 433.62pt>
-File: ../output/rs_cs_ext_2_c.pdf Graphic file (type pdf)
-<use ../output/rs_cs_ext_2_c.pdf>
-Package pdftex.def Info: ../output/rs_cs_ext_2_c.pdf  used on input line 94.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/rs_cs_ext_2_i.pdf, id=9, 578.16pt x 433.62pt>
-File: ../output/rs_cs_ext_2_i.pdf Graphic file (type pdf)
-<use ../output/rs_cs_ext_2_i.pdf>
-Package pdftex.def Info: ../output/rs_cs_ext_2_i.pdf  used on input line 101.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/rs_cs_ext_3_c.pdf, id=10, 578.16pt x 433.62pt>
-File: ../output/rs_cs_ext_3_c.pdf Graphic file (type pdf)
-<use ../output/rs_cs_ext_3_c.pdf>
-Package pdftex.def Info: ../output/rs_cs_ext_3_c.pdf  used on input line 114.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/rs_cs_ext_3_i.pdf, id=11, 578.16pt x 433.62pt>
-File: ../output/rs_cs_ext_3_i.pdf Graphic file (type pdf)
-<use ../output/rs_cs_ext_3_i.pdf>
-Package pdftex.def Info: ../output/rs_cs_ext_3_i.pdf  used on input line 121.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/rs_cs_ext_4a_c.pdf, id=12, 578.16pt x 433.62pt>
-File: ../output/rs_cs_ext_4a_c.pdf Graphic file (type pdf)
-<use ../output/rs_cs_ext_4a_c.pdf>
-Package pdftex.def Info: ../output/rs_cs_ext_4a_c.pdf  used on input line 136.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/rs_cs_ext_4c_c.pdf, id=13, 578.16pt x 433.62pt>
-File: ../output/rs_cs_ext_4c_c.pdf Graphic file (type pdf)
-<use ../output/rs_cs_ext_4c_c.pdf>
-Package pdftex.def Info: ../output/rs_cs_ext_4c_c.pdf  used on input line 143.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
+Package pdftex.def Info: ../output/rs_cs_rep_i.pdf  used on input line 26.
+(pdftex.def)             Requested size: 469.75502pt x 352.31538pt.
  [1
 
-{C:/Users/felix/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map} <../output/gdp_per_capita.pdf> <../output/consumption_per_capita.pdf> <../output/gni_per_capita.pdf> <../output/rs_cs_rep_c.pdf> <../output/rs_cs_rep_i.pdf>] [2 <../output/rs_cs_ext_1_c.pdf> <../output/rs_cs_ext_1_i.pdf> <../output/rs_cs_ext_2_c.pdf> <../output/rs_cs_ext_2_i.pdf> <../output/rs_cs_ext_3_c.pdf> <../output/rs_cs_ext_3_i.pdf>]
-<../output/rs_cs_ext_4a_i.pdf, id=113, 578.16pt x 433.62pt>
-File: ../output/rs_cs_ext_4a_i.pdf Graphic file (type pdf)
-<use ../output/rs_cs_ext_4a_i.pdf>
-Package pdftex.def Info: ../output/rs_cs_ext_4a_i.pdf  used on input line 155.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/rs_cs_ext_4c_i.pdf, id=114, 578.16pt x 433.62pt>
-File: ../output/rs_cs_ext_4c_i.pdf Graphic file (type pdf)
-<use ../output/rs_cs_ext_4c_i.pdf>
-Package pdftex.def Info: ../output/rs_cs_ext_4c_i.pdf  used on input line 162.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-File: ../output/rs_cs_ext_4a_c.pdf Graphic file (type pdf)
-<use ../output/rs_cs_ext_4a_c.pdf>
-Package pdftex.def Info: ../output/rs_cs_ext_4a_c.pdf  used on input line 173.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/rs_cs_ext_4b_c.pdf, id=115, 578.16pt x 433.62pt>
-File: ../output/rs_cs_ext_4b_c.pdf Graphic file (type pdf)
-<use ../output/rs_cs_ext_4b_c.pdf>
-Package pdftex.def Info: ../output/rs_cs_ext_4b_c.pdf  used on input line 180.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-File: ../output/rs_cs_ext_4a_i.pdf Graphic file (type pdf)
-<use ../output/rs_cs_ext_4a_i.pdf>
-Package pdftex.def Info: ../output/rs_cs_ext_4a_i.pdf  used on input line 192.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/rs_cs_ext_4b_i.pdf, id=116, 578.16pt x 433.62pt>
-File: ../output/rs_cs_ext_4b_i.pdf Graphic file (type pdf)
-<use ../output/rs_cs_ext_4b_i.pdf>
-Package pdftex.def Info: ../output/rs_cs_ext_4b_i.pdf  used on input line 199.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/rs_cs_ext_5a_c.pdf, id=117, 578.16pt x 433.62pt>
-File: ../output/rs_cs_ext_5a_c.pdf Graphic file (type pdf)
-<use ../output/rs_cs_ext_5a_c.pdf>
-Package pdftex.def Info: ../output/rs_cs_ext_5a_c.pdf  used on input line 211.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/rs_cs_ext_5b_c.pdf, id=118, 578.16pt x 433.62pt>
-File: ../output/rs_cs_ext_5b_c.pdf Graphic file (type pdf)
-<use ../output/rs_cs_ext_5b_c.pdf>
-Package pdftex.def Info: ../output/rs_cs_ext_5b_c.pdf  used on input line 218.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/rs_cs_ext_5a_i.pdf, id=119, 578.16pt x 433.62pt>
-File: ../output/rs_cs_ext_5a_i.pdf Graphic file (type pdf)
-<use ../output/rs_cs_ext_5a_i.pdf>
-Package pdftex.def Info: ../output/rs_cs_ext_5a_i.pdf  used on input line 230.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/rs_cs_ext_5b_i.pdf, id=120, 578.16pt x 433.62pt>
-File: ../output/rs_cs_ext_5b_i.pdf Graphic file (type pdf)
-<use ../output/rs_cs_ext_5b_i.pdf>
-Package pdftex.def Info: ../output/rs_cs_ext_5b_i.pdf  used on input line 237.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/rs_cs_sanity_c_2.pdf, id=121, 578.16pt x 433.62pt>
-File: ../output/rs_cs_sanity_c_2.pdf Graphic file (type pdf)
-<use ../output/rs_cs_sanity_c_2.pdf>
-Package pdftex.def Info: ../output/rs_cs_sanity_c_2.pdf  used on input line 250.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
-<../output/rs_cs_sanity_i.pdf, id=122, 578.16pt x 433.62pt>
+{C:/Users/felix/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map} <../output/rs_cs_rep_c.pdf>] [2 <../output/rs_cs_rep_i.pdf>]
+<../output/rs_cs_sanity_c.pdf, id=32, 578.16pt x 433.62pt>
+File: ../output/rs_cs_sanity_c.pdf Graphic file (type pdf)
+<use ../output/rs_cs_sanity_c.pdf>
+Package pdftex.def Info: ../output/rs_cs_sanity_c.pdf  used on input line 35.
+(pdftex.def)             Requested size: 469.75502pt x 352.31538pt.
+<../output/rs_cs_sanity_i.pdf, id=33, 578.16pt x 433.62pt>
 File: ../output/rs_cs_sanity_i.pdf Graphic file (type pdf)
 <use ../output/rs_cs_sanity_i.pdf>
-Package pdftex.def Info: ../output/rs_cs_sanity_i.pdf  used on input line 257.
-(pdftex.def)             Requested size: 225.4804pt x 169.10449pt.
- [3 <../output/rs_cs_ext_4a_c.pdf> <../output/rs_cs_ext_4c_c.pdf> <../output/rs_cs_ext_4a_i.pdf> <../output/rs_cs_ext_4c_i.pdf>] [4 <../output/rs_cs_ext_4b_c.pdf> <../output/rs_cs_ext_4b_i.pdf> <../output/rs_cs_ext_5a_c.pdf> <../output/rs_cs_ext_5b_c.pdf>] [5 <../output/rs_cs_ext_5a_i.pdf> <../output/rs_cs_ext_5b_i.pdf> <../output/rs_cs_sanity_c_2.pdf> <../output/rs_cs_sanity_i.pdf>]
-<../output/ea_95_23.pdf, id=240, 578.16pt x 433.62pt>
-File: ../output/ea_95_23.pdf Graphic file (type pdf)
-<use ../output/ea_95_23.pdf>
-Package pdftex.def Info: ../output/ea_95_23.pdf  used on input line 276.
-(pdftex.def)             Requested size: 211.38832pt x 158.53795pt.
-<../output/ea_95_07.pdf, id=241, 578.16pt x 433.62pt>
-File: ../output/ea_95_07.pdf Graphic file (type pdf)
-<use ../output/ea_95_07.pdf>
-Package pdftex.def Info: ../output/ea_95_07.pdf  used on input line 282.
-(pdftex.def)             Requested size: 211.38832pt x 158.53795pt.
-<../output/ea_10_19.pdf, id=242, 578.16pt x 433.62pt>
-File: ../output/ea_10_19.pdf Graphic file (type pdf)
-<use ../output/ea_10_19.pdf>
-Package pdftex.def Info: ../output/ea_10_19.pdf  used on input line 291.
-(pdftex.def)             Requested size: 211.38832pt x 158.53795pt.
-<../output/ea_10_23.pdf, id=243, 578.16pt x 433.62pt>
-File: ../output/ea_10_23.pdf Graphic file (type pdf)
-<use ../output/ea_10_23.pdf>
-Package pdftex.def Info: ../output/ea_10_23.pdf  used on input line 297.
-(pdftex.def)             Requested size: 211.38832pt x 158.53795pt.
-<../output/channels_cross_section.pdf, id=244, 578.16pt x 433.62pt>
-File: ../output/channels_cross_section.pdf Graphic file (type pdf)
-<use ../output/channels_cross_section.pdf>
-Package pdftex.def Info: ../output/channels_cross_section.pdf  used on input line 306.
+Package pdftex.def Info: ../output/rs_cs_sanity_i.pdf  used on input line 41.
 (pdftex.def)             Requested size: 469.75502pt x 352.31538pt.
- [6 <../output/ea_95_23.pdf> <../output/ea_95_07.pdf> <../output/ea_10_19.pdf> <../output/ea_10_23.pdf>] [7 <../output/channels_cross_section.pdf>] (gdp_gni_consumption.aux)
+ [3 <../output/rs_cs_sanity_c.pdf>] [4 <../output/rs_cs_sanity_i.pdf>] (gdp_gni_consumption.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 4318 strings out of 467691
- 77141 string characters out of 5414987
- 485971 words of memory out of 5000000
- 33369 multiletter control sequences out of 15000+600000
- 632788 words of font info for 58 fonts, out of 8000000 for 9000
+ 4139 strings out of 467691
+ 70571 string characters out of 5414987
+ 478930 words of memory out of 5000000
+ 33191 multiletter control sequences out of 15000+600000
+ 632489 words of font info for 57 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 67i,9n,77p,426b,509s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb>
-Output written on gdp_gni_consumption.pdf (7 pages, 310123 bytes).
+ 67i,7n,77p,426b,319s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb>
+Output written on gdp_gni_consumption.pdf (4 pages, 84374 bytes).
 PDF statistics:
- 308 PDF objects out of 1000 (max. 8388607)
+ 75 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 141 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
