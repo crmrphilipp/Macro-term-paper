@@ -4,6 +4,8 @@
 #
 # ══════════════════════════════════════════════════════════════════════════════
 
+# DATA START 1987
+
 ### Clear workspace, set working directory and load libraries
 rm(list=ls())
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
@@ -86,19 +88,22 @@ data_cleaning <- function(data, consumption){
 }
 
 ### Merged
-plot_generator <- function(df, limits, seq = 1, home_bias_include = FALSE, home_bias_df = NULL, sec_limits = c(-0.8, 0.4), sec_seq = 0.2, left_sec = 10) {
-  # 1. Base Plot: Risk Sharing (Original & Smoothed)
+plot_generator <- function(df, limits, left_sec = 10, seq = 1, 
+                           home_bias_include = FALSE, home_bias_df = NULL, 
+                           sec_limits = c(-0.8, 0.4), sec_seq = 0.2) {
+
+  # 1. Base Plot: Risk Sharing (Left Axis - Consumption or GNI)
   p1 <- ggplot(df, aes(x = TIME_PERIOD)) +
-    geom_line(aes(y = risk_shared, color = "Original Estimates"), linewidth = 0.5, alpha = 0.3) +
+    geom_line(aes(y = risk_shared, color = "Original Estimates"), linewidth = 0.5, alpha = 0.6) +
     geom_point(aes(y = risk_shared, color = "Original Estimates"), size = 2) +
     geom_line(aes(y = smoothed_risk, color = "Smoothed Estimates"), linewidth = 0.8) +
     geom_point(aes(y = smoothed_risk, color = "Smoothed Estimates"), shape = 15, size = 3)
   
-  # 2. Optional Addition: Home Bias Dual Axis
+  # 2. Optional Addition: Foreign Assets over GDP (Right Axis)
   if (home_bias_include) {
     if (is.null(home_bias_df)) stop("You must provide the Home Bias dataframe when home_bias_include is TRUE.")
     
-    # Filter Home Bias data to match the years present in the main df
+    # Filter right-axis data to match the years present in the main df
     valid_years <- unique(df$TIME_PERIOD)
     ehb_filtered <- home_bias_df %>% filter(year %in% valid_years)
     
@@ -107,13 +112,13 @@ plot_generator <- function(df, limits, seq = 1, home_bias_include = FALSE, home_
     prim_max <- limits[2]
     prim_range <- prim_max - prim_min
     
-    sec_min <- -0.8
-    sec_max <- 0.4
+    sec_min <- sec_limits[1] 
+    sec_max <- sec_limits[2] 
     sec_range <- sec_max - sec_min 
     
     scale_factor <- prim_range / sec_range
     
-    # Add mapped Home Bias lines and points
+    # Add mapped Right Axis lines and points
     p1 <- p1 +
       geom_line(data = ehb_filtered, 
                 aes(x = year, y = (value - sec_min) * scale_factor + prim_min, color = "Foreign Assets over GDP"), 
@@ -122,7 +127,7 @@ plot_generator <- function(df, limits, seq = 1, home_bias_include = FALSE, home_
                  aes(x = year, y = (value - sec_min) * scale_factor + prim_min, color = "Foreign Assets over GDP"), 
                  size = 2.5, shape = 17)
     
-    # Configure dual y-axes and add Home Bias to the manual color scale
+    # Configure dual y-axes
     p1 <- p1 + 
       scale_y_continuous(
         labels = function(x) sprintf("%.1f%%", x),
@@ -133,7 +138,8 @@ plot_generator <- function(df, limits, seq = 1, home_bias_include = FALSE, home_
           # Inverse transformation for the axis labels
           transform = ~ (. - prim_min) / scale_factor + sec_min, 
           name = "Natural Log. of (assets/GDP)",
-          breaks = seq(sec_limits[1], sec_limits[2], by = sec_seq)
+          breaks = seq(sec_limits[1], sec_limits[2], by = sec_seq),
+          labels = function(x) sprintf("%.1f", x)
         )
       ) +
       scale_color_manual(
@@ -144,18 +150,18 @@ plot_generator <- function(df, limits, seq = 1, home_bias_include = FALSE, home_
       )
       
   } else {
-    # 3. Standard Configuration (No Home Bias)
+    # 3. Standard Configuration (No Right Axis)
     p1 <- p1 + 
       scale_y_continuous(
         labels = function(x) sprintf("%.1f%%", x),
         limits = c(limits[1], limits[2]),
-        breaks = seq(limits[1], limits[2], by = 10),
+        breaks = seq(limits[1], limits[2], by = left_sec),
         expand = c(0, 0)
       ) +
       scale_color_manual(
         name = "Estimate Type",
-        values = c("Original Estimates" = "lightblue", 
-                   "Smoothed Estimates" = "blue")
+        values = c("Original Estimates" = "#4c6aff", 
+                   "Smoothed Estimates" = "#080885")
       )
   }
   
@@ -182,7 +188,7 @@ plot_generator <- function(df, limits, seq = 1, home_bias_include = FALSE, home_
       legend.title = element_blank()
     )
   
-  return(p1)
+return(p1)
 }
 
 ############################# Generate plots
@@ -202,7 +208,7 @@ ggsave("../output/rs_cs_rep_c.pdf", plot = plot, width = 8, height = 6)
 data <- read.csv("../data/data_iy_rep.csv")
 data_clean <- data_cleaning(data = data, consumption = FALSE)
 
-plot <- plot_generator(df = data_clean, limits = c(-20,35), sec_limits = c(-1.5, 0.5), sec_seq = 0.2,
+plot <- plot_generator(df = data_clean, limits = c(-20,35), sec_seq = 0.2,
                        home_bias_include = TRUE, home_bias_df = home_bias_df)
 ggsave("../output/rs_cs_rep_i.pdf", plot = plot, width = 8, height = 6)
 
@@ -225,13 +231,13 @@ ggsave("../output/rs_cs_sanity_i.pdf", plot = plot, width = 8, height = 6)
 
 ##########################################################################
 ### EXTENSION 1: 1987 to 2017, same countries
-# home_bias_df <- read_csv("../data/fig_2_asset_gdp_long.csv")
-# home_bias_df <- home_bias_df[,-1]
+home_bias_df <- read_csv("../data/fig_2_asset_gdp_data_long.csv")
+home_bias_df <- home_bias_df[,-1]
 # Consumption risk sharing
 data <- read.csv("../data/data_cy_ext_1.csv")
 data_clean <- data_cleaning(data = data, consumption = TRUE)
 
-plot <- plot_generator(df = data_clean, limits = c(-10,100), seq = 5,
+plot <- plot_generator(df = data_clean, limits = c(-10,100), seq = 5, sec_limits = c(-1.2,1),
                                                home_bias_include = TRUE, home_bias_df = home_bias_df)
 ggsave("../output/rs_cs_ext_1_c.pdf", plot = plot, width = 8, height = 6)
 
@@ -239,16 +245,18 @@ ggsave("../output/rs_cs_ext_1_c.pdf", plot = plot, width = 8, height = 6)
 data <- read.csv("../data/data_iy_ext_1.csv")
 data_clean <- data_cleaning(data = data, consumption = FALSE)
 
-plot <- plot_generator(df = data_clean, limits = c(-20,70), seq = 5,
+plot <- plot_generator(df = data_clean, limits = c(-20,50), seq = 5, sec_limits = c(-1.2, 1),
                                                home_bias_include = TRUE, home_bias_df = home_bias_df)
 ggsave("../output/rs_cs_ext_1_i.pdf", plot = plot, width = 8, height = 6)
 
 ### EXTENSION 2: 1987 to 2017, Top 50 Economies + EU (- some countries, depending on data availability)
+home_bias_df <- read_csv("../data/fig_2_asset_gdp_data_long_broad.csv")
+home_bias_df <- home_bias_df[,-1]
 # Consumption risk sharing
 data <- read.csv("../data/data_cy_ext_2.csv")
 data_clean <- data_cleaning(data = data, consumption = TRUE)
 
-plot <- plot_generator(df = data_clean, limits = c(-20,100), seq = 5,
+plot <- plot_generator(df = data_clean, limits = c(-20,100), seq = 5, sec_limits = c(-2.5, 0.5),
                                                home_bias_include = TRUE, home_bias_df = home_bias_df)
 ggsave("../output/rs_cs_ext_2_c.pdf", plot = plot, width = 8, height = 6)
 
@@ -256,16 +264,18 @@ ggsave("../output/rs_cs_ext_2_c.pdf", plot = plot, width = 8, height = 6)
 data <- read.csv("../data/data_iy_ext_2.csv")
 data_clean <- data_cleaning(data = data, consumption = FALSE)
 
-plot <- plot_generator(df = data_clean, limits = c(-70,110), seq = 5,
+plot <- plot_generator(df = data_clean, limits = c(-70,110), seq = 5, sec_limits = c(-2.5, 0.5),
                                                home_bias_include = TRUE, home_bias_df = home_bias_df)
 ggsave("../output/rs_cs_ext_2_i.pdf", plot = plot, width = 8, height = 6)
 
 ### EXTENSION 3: 1987 to 2017, Eurozone
+home_bias_df <- read_csv("../data/fig_2_asset_gdp_data_long_euro.csv")
+home_bias_df <- home_bias_df[,-1]
 # Consumption risk sharing
 data <- read.csv("../data/data_cy_ext_3.csv")
 data_clean <- data_cleaning(data = data, consumption = TRUE)
 
-plot <- plot_generator(df = data_clean, limits = c(-10,100), seq = 5,
+plot <- plot_generator(df = data_clean, limits = c(-10,100), seq = 5, sec_limits = c(-2.5, 0.5),
                                                home_bias_include = TRUE, home_bias_df = home_bias_df)
 ggsave("../output/rs_cs_ext_3_c.pdf", plot = plot, width = 8, height = 6)
 
@@ -273,6 +283,6 @@ ggsave("../output/rs_cs_ext_3_c.pdf", plot = plot, width = 8, height = 6)
 data <- read.csv("../data/data_iy_ext_3.csv")
 data_clean <- data_cleaning(data = data, consumption = FALSE)
 
-plot <- plot_generator(df = data_clean, limits = c(-190,190), seq = 5, left_sec = 30,
+plot <- plot_generator(df = data_clean, limits = c(-190,190), seq = 5, left_sec = 30, sec_limits = c(-2.5, 0.5),
                                                home_bias_include = TRUE, home_bias_df = home_bias_df)
 ggsave("../output/rs_cs_ext_3_i.pdf", plot = plot, width = 8, height = 6)
