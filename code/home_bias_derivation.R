@@ -506,6 +506,8 @@ ehb_crude_mean_ts <- ehb_crude_reg |>
     "ehb_crude_mean_non_ppp" = "Non-PPP GDP"
   ))
 
+write.csv(ehb_crude_mean_ts, "../data/fig_2_asset_gdp.csv")
+
 ggplot(ehb_crude_mean_ts, aes(x = year, y = value, color = measure)) +
   geom_line() +
   geom_point() +

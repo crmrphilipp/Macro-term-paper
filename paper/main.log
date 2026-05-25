@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.14)  24 MAY 2026 12:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.14)  25 MAY 2026 09:44
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -64,27 +64,44 @@ Package: iftex 2024/12/12 v1.0g TeX engine tests
 \Gm@layouthoffset=\dimen168
 \Gm@layoutvoffset=\dimen169
 \Gm@dimlist=\toks18
+) (/usr/local/texlive/2026/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
+ (/usr/local/texlive/2026/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+ (/usr/local/texlive/2026/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+) (/usr/local/texlive/2026/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 106.
+ (/usr/local/texlive/2026/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen170
+\Gin@req@width=\dimen171
+) (/usr/local/texlive/2026/texmf-dist/tex/latex/placeins/placeins.sty
+Package: placeins 2005/04/18  v 2.2
 ) (/usr/local/texlive/2026/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count290
-)
-No file main.aux.
+) (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -119,261 +136,73 @@ LaTeX Font Info:    ... okay on input line 9.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
+(/usr/local/texlive/2026/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count291
+\scratchdimen=\dimen172
+\scratchbox=\box53
+\nofMPsegments=\count292
+\nofMParguments=\count293
+\everyMPshowfont=\toks19
+\MPscratchCnt=\count294
+\MPscratchDim=\dimen173
+\MPnumerator=\count295
+\makeMPintoPDFobject=\count296
+\everyMPtoPDFconversion=\toks20
+) (/usr/local/texlive/2026/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+ (/usr/local/texlive/2026/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
+))
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 10.
+(Font)              <12> on input line 12.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 10.
+(Font)              <8> on input line 12.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 10.
-(../output/table_coverage.tex
-../output/table_coverage.tex:5: Undefined control sequence.
-l.5 \resizebox
-              {\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-../output/table_coverage.tex:5: Undefined control sequence.
-l.5 \resizebox{\ifdim\width
-                           >\linewidth\linewidth\else\width\fi}{!}{
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-../output/table_coverage.tex:5: Missing number, treated as zero.
-<to be read again> 
-                   >
-l.5 \resizebox{\ifdim\width>
-                            \linewidth\linewidth\else\width\fi}{!}{
-A number should have been here; I inserted `0'.
-(If you can't figure out why I needed to see a number,
-look up `weird error' in the index to The TeXbook.)
-
-../output/table_coverage.tex:5: Illegal unit of measure (pt inserted).
-<to be read again> 
-                   >
-l.5 \resizebox{\ifdim\width>
-                            \linewidth\linewidth\else\width\fi}{!}{
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
-
-../output/table_coverage.tex:5: Undefined control sequence.
-l.5 ...ifdim\width>\linewidth\linewidth\else\width
-                                                  \fi}{!}{
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
+(Font)              <6> on input line 12.
+ (../output/table_coverage.tex
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 6.
+(Font)              <7> on input line 40.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 6.
-
-Overfull \hbox (128.11244pt too wide) in paragraph at lines 5--41
- [] 
- []
-
+(Font)              <5> on input line 40.
 ) (../output/year_coverage.tex
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 ) (../output_final/table1.tex
-../output_final/table1.tex:5: Undefined control sequence.
-l.5 \resizebox
-              {\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-../output_final/table1.tex:5: Undefined control sequence.
-l.5 \resizebox{\ifdim\width
-                           >\linewidth\linewidth\else\width\fi}{!}{
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-../output_final/table1.tex:5: Missing number, treated as zero.
-<to be read again> 
-                   >
-l.5 \resizebox{\ifdim\width>
-                            \linewidth\linewidth\else\width\fi}{!}{
-A number should have been here; I inserted `0'.
-(If you can't figure out why I needed to see a number,
-look up `weird error' in the index to The TeXbook.)
-
-../output_final/table1.tex:5: Illegal unit of measure (pt inserted).
-<to be read again> 
-                   >
-l.5 \resizebox{\ifdim\width>
-                            \linewidth\linewidth\else\width\fi}{!}{
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
-
-../output_final/table1.tex:5: Undefined control sequence.
-l.5 ...ifdim\width>\linewidth\linewidth\else\width
-                                                  \fi}{!}{
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 ) (../output_final/table2.tex
-../output_final/table2.tex:5: Undefined control sequence.
-l.5 \resizebox
-              {\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-../output_final/table2.tex:5: Undefined control sequence.
-l.5 \resizebox{\ifdim\width
-                           >\linewidth\linewidth\else\width\fi}{!}{
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-../output_final/table2.tex:5: Missing number, treated as zero.
-<to be read again> 
-                   >
-l.5 \resizebox{\ifdim\width>
-                            \linewidth\linewidth\else\width\fi}{!}{
-A number should have been here; I inserted `0'.
-(If you can't figure out why I needed to see a number,
-look up `weird error' in the index to The TeXbook.)
-
-../output_final/table2.tex:5: Illegal unit of measure (pt inserted).
-<to be read again> 
-                   >
-l.5 \resizebox{\ifdim\width>
-                            \linewidth\linewidth\else\width\fi}{!}{
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
-
-../output_final/table2.tex:5: Undefined control sequence.
-l.5 ...ifdim\width>\linewidth\linewidth\else\width
-                                                  \fi}{!}{
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-[1
-
-{/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 ) (../output/table_extension_gaps.tex
-../output/table_extension_gaps.tex:5: Undefined control sequence.
-l.5 \resizebox
-              {\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-../output/table_extension_gaps.tex:5: Undefined control sequence.
-l.5 \resizebox{\ifdim\width
-                           >\linewidth\linewidth\else\width\fi}{!}{
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-../output/table_extension_gaps.tex:5: Missing number, treated as zero.
-<to be read again> 
-                   >
-l.5 \resizebox{\ifdim\width>
-                            \linewidth\linewidth\else\width\fi}{!}{
-A number should have been here; I inserted `0'.
-(If you can't figure out why I needed to see a number,
-look up `weird error' in the index to The TeXbook.)
-
-../output/table_extension_gaps.tex:5: Illegal unit of measure (pt inserted).
-<to be read again> 
-                   >
-l.5 \resizebox{\ifdim\width>
-                            \linewidth\linewidth\else\width\fi}{!}{
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
-
-../output/table_extension_gaps.tex:5: Undefined control sequence.
-l.5 ...ifdim\width>\linewidth\linewidth\else\width
-                                                  \fi}{!}{
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Overfull \hbox (188.60765pt too wide) in paragraph at lines 5--29
- [] 
- []
-
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-) (../output/reg_risk_sharing.tex) (../output/pdf_table_3_consumption_estimates_se.tex) (../output/pdf_table_3_gni_estimates_se.tex) (../output/table5_consumption_point_estimates.tex) (../output/table5_gni_point_estimates.tex) [2] [3] [4] [5] [6] (./main.aux)
+) (../output/reg_risk_sharing.tex) [1
+
+{/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] [4] [5] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  ) 
 Here is how much of TeX's memory you used:
- 1208 strings out of 467525
- 21599 string characters out of 5418982
- 485756 words of memory out of 5000000
- 30139 multiletter control sequences out of 15000+600000
+ 2013 strings out of 467525
+ 33064 string characters out of 5418982
+ 497067 words of memory out of 5000000
+ 30920 multiletter control sequences out of 15000+600000
  631707 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,12n,65p,290b,298s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 57i,13n,65p,290b,319s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on main.pdf (6 pages, 115709 bytes).
+Output written on main.pdf (5 pages, 113523 bytes).
 PDF statistics:
- 68 PDF objects out of 1000 (max. 8388607)
- 41 compressed objects within 1 object stream
+ 65 PDF objects out of 1000 (max. 8388607)
+ 39 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
