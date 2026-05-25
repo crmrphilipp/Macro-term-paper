@@ -1,0 +1,254 @@
+% ============================================================
+%  ECONOMICS PRESENTATION — Metropolis + Warm Accents
+%  Compile with: xelatex or lualatex (for metropolis fonts)
+%  Fallback:     pdflatex (add \usefonttheme{default} below)
+% ============================================================
+\documentclass[aspectratio=169, 10pt]{beamer}
+
+% ---- Theme ----
+\usetheme{metropolis}
+
+% ---- Color palette: warm burgundy / terracotta (no orange) ----
+\definecolor{PrimaryDark}{HTML}{6B2D3E}    % deep burgundy
+\definecolor{PrimaryLight}{HTML}{A8505A}   % softer rose
+\definecolor{Accent}{HTML}{C2705B}         % terracotta accent
+\definecolor{TextDark}{HTML}{2E2E2E}       % near-black text
+\definecolor{BgLight}{HTML}{FAF7F5}        % warm off-white
+\definecolor{AlertRed}{HTML}{B03A3A}       % for \alert{}
+
+\setbeamercolor{palette primary}{bg=PrimaryDark, fg=white}
+\setbeamercolor{title separator}{fg=Accent}
+\setbeamercolor{progress bar}{fg=Accent, bg=PrimaryDark!20}
+\setbeamercolor{frametitle}{bg=PrimaryDark, fg=white}
+\setbeamercolor{alerted text}{fg=AlertRed}
+\setbeamercolor{example text}{fg=PrimaryLight}
+\setbeamercolor{footnote mark}{fg=Accent}
+\setbeamercolor{block title}{bg=PrimaryDark, fg=white}
+\setbeamercolor{block body}{bg=BgLight, fg=TextDark}
+\setbeamercolor{block title alerted}{bg=AlertRed, fg=white}
+\setbeamercolor{block body alerted}{bg=AlertRed!8, fg=TextDark}
+\setbeamercolor{block title example}{bg=PrimaryLight, fg=white}
+\setbeamercolor{block body example}{bg=PrimaryLight!8, fg=TextDark}
+
+% ---- Progress bar at the TOP of each frame ----
+\makeatletter
+\setlength{\metropolis@frametitle@padding}{1.8ex}
+\makeatother
+\metroset{
+  progressbar=frametitle,   % bar sits inside the frametitle strip
+  sectionpage=progressbar,  % section divider pages show the bar
+  numbering=fraction        % slide 3/24 in footer
+}
+
+% ---- Packages: graphics, tables, math, refs ----
+\usepackage{graphicx}
+\usepackage{booktabs}          % professional tables (\toprule, \midrule …)
+\usepackage{tabularx}          % flexible-width columns
+\usepackage{amsmath,amssymb}   % equations
+\usepackage{mathtools}         % extras (dcases, coloneqq …)
+\usepackage{caption}           % better caption formatting
+\usepackage{subcaption}        % side-by-side figures
+\usepackage[
+  backend=biber,
+  style=authoryear-comp,       % (Author, Year) — change to numeric if you prefer
+  maxcitenames=2,
+  giveninits=true
+]{biblatex}
+% \addbibresource{references.bib}  % <-- uncomment when you have a .bib file
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=PrimaryDark,
+  citecolor=PrimaryLight,
+  urlcolor=Accent
+}
+\usepackage{appendixnumberbeamer}  % restart slide numbering in appendix
+
+% ---- Handy command: clickable appendix button ----
+% Usage: \appendixbutton{Button Label}{targetlabel}
+\newcommand{\appendixbutton}[2]{%
+  \hyperlink{#2}{%
+    \beamergotobutton{#1}%
+  }%
+}
+% And to mark the target in the appendix:
+% \begin{frame}[label=targetlabel]{Title} …
+
+% ============================================================
+%  FRONT MATTER
+% ============================================================
+\title{Home Bias and Risk Sharing}
+\subtitle{Sørensen et al. 2007, Emprical Replication and Extension \\ PSE, Prof. Alex Clymo, Juan Pablo Ugarte}
+
+\author{Philipp Cremer, Jannis Stagge, Felix Westerhoff}
+
+\date{26.05.2026}
+% \titlegraphic{\hfill\includegraphics[height=1.2cm]{logo.pdf}}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+\maketitle
+
+% ---- Outline (optional) ----
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+
+% ============================================================
+\section{Introduction}
+% ============================================================
+
+\begin{frame}{Motivation}
+  \begin{itemize}
+    \item Research question and why it matters
+    \item Key policy relevance
+    \item Our contribution: \alert{three-fold}
+  \end{itemize}
+
+  \vfill
+  \footnotesize
+  \appendixbutton{Data details}{appendix:data}
+  \hspace{0.5em}
+  \appendixbutton{Robustness}{appendix:robustness}
+\end{frame}
+
+
+% ============================================================
+\section{Model}
+% ============================================================
+
+\begin{frame}{Theoretical Framework}
+  Consider a representative agent who maximises
+  \begin{equation}\label{eq:utility}
+    \max_{\{c_t, k_{t+1}\}} \;
+    \sum_{t=0}^{\infty} \beta^{t}\, u(c_t)
+    \quad \text{s.t.} \quad
+    c_t + k_{t+1} = f(k_t) + (1-\delta)\,k_t
+  \end{equation}
+  where $\beta\in(0,1)$ is the discount factor and $\delta$ the depreciation rate.
+
+  \begin{block}{Euler equation}
+    \[
+      u'(c_t) = \beta\bigl[f'(k_{t+1}) + 1 - \delta\bigr]\,u'(c_{t+1})
+    \]
+  \end{block}
+\end{frame}
+
+
+% ============================================================
+\section{Data \& Empirical Strategy}
+% ============================================================
+
+\begin{frame}{Summary Statistics}
+  \begin{table}
+    \centering
+    \caption{Descriptive statistics, 2000--2020}
+    \label{tab:sumstats}
+    \begin{tabularx}{0.85\textwidth}{Xrrr}
+      \toprule
+      Variable        & Mean  & Std.\ Dev. & $N$ \\
+      \midrule
+      GDP growth (\%) & 2.34  & 1.87       & 420 \\
+      Inflation (\%)  & 3.12  & 2.45       & 420 \\
+      Trade / GDP     & 0.56  & 0.21       & 418 \\
+      \bottomrule
+    \end{tabularx}
+  \end{table}
+\end{frame}
+
+\begin{frame}{Identification}
+  We estimate:
+  \begin{equation}\label{eq:main}
+    Y_{it} = \alpha_i + \gamma_t + \beta\, X_{it} + \boldsymbol{\delta}'\mathbf{Z}_{it} + \varepsilon_{it}
+  \end{equation}
+  with $\alpha_i$ entity and $\gamma_t$ time fixed effects.
+
+  % Example citation (uncomment when .bib is ready):
+  % Following the approach of \textcite{Autor2013}, we instrument \dots
+\end{frame}
+
+
+% ============================================================
+\section{Results}
+% ============================================================
+
+\begin{frame}{Main Results}
+  % Example: include a figure
+  % \begin{figure}
+  %   \centering
+  %   \includegraphics[width=0.75\textwidth]{figures/main_result.pdf}
+  %   \caption{Treatment effect over time}
+  %   \label{fig:main}
+  % \end{figure}
+
+  Placeholder for your results figure or table.
+
+  \vfill
+  \footnotesize
+  \appendixbutton{Full regression table}{appendix:robustness}
+\end{frame}
+
+
+% ============================================================
+\section{Conclusion}
+% ============================================================
+
+\begin{frame}{Takeaways}
+  \begin{enumerate}
+    \item Finding one — with policy implication
+    \item Finding two — mechanism
+    \item Finding three — external validity
+  \end{enumerate}
+\end{frame}
+
+
+% ============================================================
+%  REFERENCES
+% ============================================================
+% \begin{frame}[allowframebreaks]{References}
+%   \printbibliography[heading=none]
+% \end{frame}
+
+
+% ============================================================
+%  APPENDIX — slides after this line are not counted
+% ============================================================
+\appendix
+
+\begin{frame}[label=appendix:data]{Appendix: Data Construction}
+  Details on sample selection, variable definitions, etc.
+
+  \vfill
+  \footnotesize
+  \hyperlink{frametitle}{\beamerreturnbutton{Back to main}}
+\end{frame}
+
+\begin{frame}[label=appendix:robustness]{Appendix: Robustness Checks}
+  \begin{table}
+    \centering
+    \caption{Alternative specifications}
+    \begin{tabularx}{0.85\textwidth}{Xrrrr}
+      \toprule
+                     & (1)    & (2)    & (3)    & (4)    \\
+      \midrule
+      $\hat\beta$    & 0.45** & 0.42** & 0.39*  & 0.44** \\
+                     & (0.18) & (0.19) & (0.20) & (0.17) \\
+      Controls       & No     & Yes    & Yes    & Yes    \\
+      FE             & Entity & Entity & Two-way& Two-way\\
+      Cluster        & Entity & Entity & Entity & State  \\
+      $N$            & 4\,200 & 4\,180 & 4\,180 & 4\,180 \\
+      \bottomrule
+    \end{tabularx}
+  \end{table}
+
+  \vfill
+  \footnotesize
+  \hyperlink{frametitle}{\beamerreturnbutton{Back to main}}
+\end{frame}
+
+% ============================================================
+\end{document}

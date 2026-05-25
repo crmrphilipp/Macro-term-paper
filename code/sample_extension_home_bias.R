@@ -934,7 +934,13 @@ ggplot(ehb_top60_restr, aes(x = year, y = ehb_crude_dev, group = iso, color = is
   theme(legend.position = "none")
 
 
+
+
 ##### Extended Time Original Sample #####
+
+countries_iso3 <- c("AUS","AUT","BEL","CAN","DNK","FIN","FRA","DEU","GRC","ISL",
+                    "IRL","ITA","JPN","MEX","NLD","NZL","NOR","PRT","ESP","SWE",
+                    "CHE","TUR","GBR","USA")
 
 countries_iso3 <- c("AUS","AUT","BEL","CAN","DNK","FIN","FRA","DEU","GRC","ISL",
                     "IRL","ITA","JPN","MEX","NLD","NZL","NOR","PRT","ESP","SWE",
@@ -1177,6 +1183,30 @@ means_long_orig <- ehb_long_orig |>
            fdi_ehb_crude_mean, eq_debt_ehb_crude_mean) |>
   pivot_longer(-year, names_to = "variable", values_to = "value") |>
   mutate(variable = str_remove(variable, "_mean"))
+
+
+#ehb_crude_orig <- ehb_long_orig |>
+#  mutate(ehb_crude_try = log((eq_assets+debt_assets+fdi_assets)/gdp))|>
+#  select(iso,country.x,year, ehb_crude_try)
+
+#ehb_crude_orig <- ehb_crude_orig |>
+#  group_by(year) |>
+#  mutate(
+#    ehb_crude_mean = mean(ehb_crude_try, na.rm = TRUE),
+#    n = sum(!is.na(ehb_crude_try))
+#  )
+
+#ehb_crude_mean_ts <- ehb_crude_orig |>
+#  distinct(year, ehb_crude_mean) |>
+#  pivot_longer(
+#    cols      = c(ehb_crude_mean),
+#    names_to  = "measure",
+#    values_to = "value"
+#  ) |>
+#  mutate(measure = recode(measure,
+#    "ehb_crude_mean" = "GDP"
+#  ))
+
 
 fig_2_asset_gdp_data_long <- means_long_orig |>
   filter(variable=="ehb_crude")
