@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.15)  25 MAY 2026 13:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.15)  25 MAY 2026 14:39
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -265,24 +265,57 @@ File: ../output/rs_cs_sanity_i.pdf Graphic file (type pdf)
 <use ../output/rs_cs_sanity_i.pdf>
 Package pdftex.def Info: ../output/rs_cs_sanity_i.pdf  used on input line 41.
 (pdftex.def)             Requested size: 469.75502pt x 352.31538pt.
- [3 <../output/rs_cs_sanity_c.pdf>] [4 <../output/rs_cs_sanity_i.pdf>] (gdp_gni_consumption.aux)
+ [3 <../output/rs_cs_sanity_c.pdf>] [4 <../output/rs_cs_sanity_i.pdf>]
+<../output/rs_cs_ext_1_c.pdf, id=58, 578.16pt x 433.62pt>
+File: ../output/rs_cs_ext_1_c.pdf Graphic file (type pdf)
+<use ../output/rs_cs_ext_1_c.pdf>
+Package pdftex.def Info: ../output/rs_cs_ext_1_c.pdf  used on input line 52.
+(pdftex.def)             Requested size: 469.75502pt x 352.31538pt.
+<../output/rs_cs_ext_1_i.pdf, id=59, 578.16pt x 433.62pt>
+File: ../output/rs_cs_ext_1_i.pdf Graphic file (type pdf)
+<use ../output/rs_cs_ext_1_i.pdf>
+Package pdftex.def Info: ../output/rs_cs_ext_1_i.pdf  used on input line 58.
+(pdftex.def)             Requested size: 469.75502pt x 352.31538pt.
+ [5 <../output/rs_cs_ext_1_c.pdf>] [6 <../output/rs_cs_ext_1_i.pdf>]
+<../output/rs_cs_ext_2_c.pdf, id=84, 578.16pt x 433.62pt>
+File: ../output/rs_cs_ext_2_c.pdf Graphic file (type pdf)
+<use ../output/rs_cs_ext_2_c.pdf>
+Package pdftex.def Info: ../output/rs_cs_ext_2_c.pdf  used on input line 68.
+(pdftex.def)             Requested size: 469.75502pt x 352.31538pt.
+<../output/rs_cs_ext_2_i.pdf, id=85, 578.16pt x 433.62pt>
+File: ../output/rs_cs_ext_2_i.pdf Graphic file (type pdf)
+<use ../output/rs_cs_ext_2_i.pdf>
+Package pdftex.def Info: ../output/rs_cs_ext_2_i.pdf  used on input line 74.
+(pdftex.def)             Requested size: 469.75502pt x 352.31538pt.
+ [7 <../output/rs_cs_ext_2_c.pdf>] [8 <../output/rs_cs_ext_2_i.pdf>]
+<../output/rs_cs_ext_3_c.pdf, id=111, 578.16pt x 433.62pt>
+File: ../output/rs_cs_ext_3_c.pdf Graphic file (type pdf)
+<use ../output/rs_cs_ext_3_c.pdf>
+Package pdftex.def Info: ../output/rs_cs_ext_3_c.pdf  used on input line 84.
+(pdftex.def)             Requested size: 469.75502pt x 352.31538pt.
+<../output/rs_cs_ext_3_i.pdf, id=112, 578.16pt x 433.62pt>
+File: ../output/rs_cs_ext_3_i.pdf Graphic file (type pdf)
+<use ../output/rs_cs_ext_3_i.pdf>
+Package pdftex.def Info: ../output/rs_cs_ext_3_i.pdf  used on input line 90.
+(pdftex.def)             Requested size: 469.75502pt x 352.31538pt.
+ [9 <../output/rs_cs_ext_3_c.pdf>] [10 <../output/rs_cs_ext_3_i.pdf>] (gdp_gni_consumption.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 4139 strings out of 467691
- 70571 string characters out of 5414987
- 478930 words of memory out of 5000000
- 33191 multiletter control sequences out of 15000+600000
+ 4181 strings out of 467691
+ 72137 string characters out of 5414987
+ 478932 words of memory out of 5000000
+ 33233 multiletter control sequences out of 15000+600000
  632489 words of font info for 57 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  67i,7n,77p,426b,319s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/felix/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on gdp_gni_consumption.pdf (4 pages, 84374 bytes).
+Output written on gdp_gni_consumption.pdf (10 pages, 142436 bytes).
 PDF statistics:
- 75 PDF objects out of 1000 (max. 8388607)
+ 155 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 51 words of extra memory for PDF output out of 10000 (max. 10000000)
 

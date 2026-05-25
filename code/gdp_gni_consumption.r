@@ -150,20 +150,6 @@ pop_data_temp <- pop_data_temp %>%
   select(REF_AREA, TIME_PERIOD, Population) %>%
   arrange(REF_AREA, TIME_PERIOD)
 
-# # Add Euro Area observations
-# ea20_iso <- c("AUT", "BEL", "HRV", "CYP", "EST", "FIN", "FRA", "DEU", "GRC", "IRL", 
-#                "ITA", "LVA", "LTU", "LUX", "MLT", "NLD", "PRT", "SVK", "SVN", "ESP")
-# ea20_data <- pop_data_temp %>%
-#   filter(REF_AREA %in% ea20_iso) %>%
-#   group_by(TIME_PERIOD) %>%
-#   summarize(
-#     Population = sum(Population, na.rm = TRUE),
-#     .groups = "drop"
-#   ) %>%
-#   mutate(REF_AREA = "EA20")
-
-# pop_data <- bind_rows(pop_data_temp, ea20_data)
-
 pop_data <- pop_data_temp
 
 ####################### Begin writing data cleaning function here
@@ -464,13 +450,13 @@ write_csv(data_sets_replication[["gni_data"]], "../data/data_iy_ext_2.csv")
 
 ######################### EXTENSION 3: 1987 to 2017, Eurozone
 ### Eurozone: Choose all countries that eventually join the Euro
-country_selection_extension_4a <- c(
+country_selection_extension_3 <- c(
     "Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus", "Estonia", "Finland", "France", "Germany", "Greece",
     "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Malta", "Netherlands", "Portugal", "Slovak Republic", "Slovenia", "Spain"
 )
-time_frame_extension_4a <- 1986:2017
+time_frame_extension_3 <- 1986:2017
 data_sets_replication <- data_cleaning_function(gdp_cons_dataset = gdp_cons_data, gdp_gni_dataset = gdp_gni_data,
-                                                time_frame = time_frame_extension_4a, country_selection = country_selection_extension_4a,
+                                                time_frame = time_frame_extension_3, country_selection = country_selection_extension_4a,
                                                 cpi_data = cpi_data, ppp_data = ppp_data, pop_data = pop_data)
 
 write_csv(data_sets_replication[["consumption_data"]], "../data/data_cy_ext_3.csv")
