@@ -827,6 +827,33 @@ means_long <- ehb_top60_restr |>
   pivot_longer(-year, names_to = "variable", values_to = "value") |>
   mutate(variable = str_remove(variable, "_mean"))
 
+fig_2_asset_gdp_data_long_broad <- means_long |>
+  filter(variable=="ehb_crude")
+
+write.csv(fig_2_asset_gdp_data_long_broad, "../data/fig_2_asset_gdp_data_long_broad.csv")
+
+euro_area_iso <- c(
+  "AUT", "BEL", "CYP", "EST", "FIN", "FRA", "DEU", "GRC",
+  "IRL", "ITA", "LVA", "LTU", "LUX", "MLT", "NLD", "PRT",
+  "SVK", "SVN", "ESP", "BGR"
+)
+
+ehb_eurozone <- ehb_top60_restr |>
+  filter(iso%in%euro_area_iso)
+
+means_long_euro <- ehb_eurozone |>
+  ungroup() |>
+  distinct(year, ehb_crude_mean, eq_ehb_crude_mean, debt_ehb_crude_mean,
+           fdi_ehb_crude_mean, eq_debt_ehb_crude_mean) |>
+  pivot_longer(-year, names_to = "variable", values_to = "value") |>
+  mutate(variable = str_remove(variable, "_mean"))
+
+fig_2_asset_gdp_data_long_euro <- means_long_euro |>
+  filter(variable=="ehb_crude")
+
+write.csv(fig_2_asset_gdp_data_long_euro, "../data/fig_2_asset_gdp_data_long_euro.csv")
+
+
 
 ggplot(means_long, aes(x = year, y = value, color = variable)) +
   geom_line() +
