@@ -259,7 +259,7 @@ ehb_reg <- ehb_raw |>
     # there is no direct historic explanation for this
   # 5 are Finland 1999-2003
 
-# Check for EHB values larger 1
+# Check for EHB values larger 1 
 sum(ehb_reg$EHB>1)
 
   # gives 0 counts

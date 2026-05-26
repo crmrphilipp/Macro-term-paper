@@ -1,0 +1,87 @@
+\documentclass{article}
+\usepackage{booktabs}   
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{placeins}
+\geometry{margin=1in}
+
+\title{Coding Logbook to Macroeconomics 3 Project}
+\author{Philipp Cremer, Jannis Stagge, Felix Westerhoff}
+
+\begin{document}
+\maketitle
+
+Step 1 - Replicate EHB
+
+Replicate Table 1 and 2 of the paper using EWN and Stock Market Capitalisation Data from WDI
+Results are closely aligned with values reported in tables 1 and 2
+
+Discovered first data problems with WDI coverage after 2013
+Investigated potential other sources without success
+
+Discussed first Euro Area Extensions
+
+Step 2 - Replicate Risk Sharing Regression
+
+Data Process:
+first try - OECD Data non PPP (Jannis)
+second - OECD chained linked volumes 2020 rebased
+third - WDI data PPP
+
+all yield negative risk sharing trends
+
+fourth - OECD data non PPP, PPP adjustment with base year ???
+fifth - old 2005 OECD data scraped from PDF with Claude Code
+
+both give increasing trends with smaller slopes than original paper
+smoothing 
+
+
+Step 3 - Refine EHB data
+
+more detailed analysis of EHB data
+exclude some irregular values (negative EHB or above 1 EHB) and investigate potential causes (WDI data mismatch, restructuring of Stock Exchanges, Ireland as financial hub)
+
+Step 4 - Replication Panel Regressions
+
+quite far off with initial data versions also yielding opposite signs and different significance patterns
+disovered the two stage approach (feasible GLS) which is only mentioned in a footnote
+replicated direction of effects, similar magnitudes and paper consistent significance patterns with data versions 4 and 5
+
+Step 5 - Extension of Home Bias data
+
+investiage coverage of EWN, WDI data and subsequently EHB measure for longer time horizon and broader country sample
+restrict to top 50 economies (US$ GDP) and EU
+investigate irregularities in the data similar process as with original replication sample
+
+Step 6 - Euro Area Home Bias
+
+investigate Euro Area Home Bias as cross country averages and EA aggregate
+comparison to US, and non EA sample average for different samples
+investigation of negative EHB after 2014 (most likely due to countries dropping out of WDI but not out of EWN)
+
+Step 7 - Risk sharing sample Extensions
+
+extend for time
+extend for sample
+look at within Eurozone 
+look at non-Eurozone
+
+Step 8 - Panel Regression Extension
+
+extend for time
+extend for sample
+look at Eurozone as an aggregate observation
+investigate structural breaks
+
+Step 9 - EHB Eurozone Extension
+
+literature research for explanations on EHB patterns in EA
+ECB working paper replication data download
+investigation of paper and data mainly graphically
+
+Step 10 - Risk Sharing Eurozone extension
+
+seminal paper on risk sharing channels methodology
+replicate main results of risk sharing channels for EU from working paper
+apply methodology to Euro Zone

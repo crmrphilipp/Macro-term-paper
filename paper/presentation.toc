@@ -1,5 +1,5 @@
-\beamer@sectionintoc {1}{Introduction}{3}{0}{1}
-\beamer@sectionintoc {2}{Model}{5}{0}{2}
-\beamer@sectionintoc {3}{Data \& Empirical Strategy}{7}{0}{3}
-\beamer@sectionintoc {4}{Results}{10}{0}{4}
-\beamer@sectionintoc {5}{Conclusion}{12}{0}{5}
+\beamer@sectionintoc {1}{Outline and Summary}{2}{0}{1}
+\beamer@sectionintoc {2}{Replication Sørensen et al. 2007}{6}{0}{2}
+\beamer@sectionintoc {3}{Within Paper Extension Sørensen et al. 2007}{13}{0}{3}
+\beamer@sectionintoc {4}{Extensions Eurozone - European Financial Centers}{16}{0}{4}
+\beamer@sectionintoc {5}{Extensions Eurozone - Risk Sharing}{23}{0}{5}

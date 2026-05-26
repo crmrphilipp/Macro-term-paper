@@ -30,6 +30,14 @@
 \setbeamercolor{block title example}{bg=PrimaryLight, fg=white}
 \setbeamercolor{block body example}{bg=PrimaryLight!8, fg=TextDark}
 
+\setbeamertemplate{itemize item}{\textbullet}
+\setbeamertemplate{itemize subitem}{\textendash}
+\setbeamertemplate{itemize subsubitem}{\textperiodcentered}
+
+\setbeamercolor{itemize item}{fg=PrimaryDark}
+\setbeamercolor{itemize subitem}{fg=PrimaryLight}
+\setbeamercolor{itemize subsubitem}{fg=Accent}
+
 % ---- Progress bar at the TOP of each frame ----
 \makeatletter
 \setlength{\metropolis@frametitle@padding}{1.8ex}
@@ -39,6 +47,9 @@
   sectionpage=progressbar,  % section divider pages show the bar
   numbering=fraction        % slide 3/24 in footer
 }
+\metroset{numbering=fraction, sectionpage=progressbar}
+
+\setbeamertemplate{frametitle continuation}{}
 
 % ---- Packages: graphics, tables, math, refs ----
 \usepackage{graphicx}
@@ -54,7 +65,7 @@
   maxcitenames=2,
   giveninits=true
 ]{biblatex}
-% \addbibresource{references.bib}  % <-- uncomment when you have a .bib file
+\addbibresource{reference.bib} 
 
 \usepackage{hyperref}
 \hypersetup{
@@ -64,6 +75,9 @@
   urlcolor=Accent
 }
 \usepackage{appendixnumberbeamer}  % restart slide numbering in appendix
+
+\usepackage{adjustbox} 
+
 
 % ---- Handy command: clickable appendix button ----
 % Usage: \appendixbutton{Button Label}{targetlabel}
@@ -93,125 +107,539 @@
 \maketitle
 
 % ---- Outline (optional) ----
+%\begin{frame}{Outline}
+%  \tableofcontents
+%\end{frame}
+
+
+% ============================================================
+% ============================================================
+
+ % ============================================================
+\section{Outline and Summary}
+% ============================================================
+\begin{frame}{Sørensen et al. 2007}
+\centering
+
+\includegraphics[
+  width=0.95\textwidth,
+  height=0.75\textheight,
+  keepaspectratio
+]{../output_final/screenshot_sorensen.jpeg}
+  
+  \begin{block}{Do home bias and risk sharing go hand in hand?}
+    \begin{itemize}
+        \item Risk Sharing: international diversification and smoothing of income streams
+        \item Home Bias: tendency to hold an unproportionally large share of domestic assets 
+    \end{itemize}
+  \end{block}
+
+  \end{frame}
+
 \begin{frame}{Outline}
-  \tableofcontents
+
+\begin{enumerate}
+  \item Sørensen et al. 2007
+    \begin{enumerate}
+    \item Replication of main cross section and panel regressions
+    \item Extension by time and sample size
+    \end{enumerate} 
+    \item Eurozone Extension
+    \begin{enumerate}
+    \item Investigation of eurozone home bias
+    \item Channels of home bias reduction on risk sharing in eurozone
+    \end{enumerate} 
+\end{enumerate}
+
 \end{frame}
 
+\begin{frame}{Data}
 
-% ============================================================
-\section{Introduction}
-% ============================================================
+\begin{itemize}
+  \item Home bias data
+    \begin{itemize}
+    \item External Wealth of Nations Database
+    \item Stock Market Capitalizations, World Development Indications (World Bank)
+    \end{itemize} 
+\end{itemize}
+
+\begin{itemize}
+  \item Consumption, GDP and Income data
+    \begin{itemize}
+    \item OECD National Accounts 
+    \end{itemize} 
+  \end{itemize} 
+
+\end{frame}
+
+\section{Replication Sørensen et al. 2007}
 
 \begin{frame}{Home Bias - Theory}
-  \begin{itemize}
-    \item Research question and why it matters
-    \item Key policy relevance
-    \item Our contribution: \alert{three-fold}
+
+\textbf{Concept of Home Bias}
+\begin{itemize}
+    \item same market portfolio of risky assets based on Capital Asset Pricing Model (CAPM)
+    \item countries hold equities/bonds of each country corresponding to each countries share of world market capitalisation
+    \item deviations from this standard are considered a ``Home Bias''
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Potential Explanations for Home Bias}
+\begin{itemize}
+    \item currency risk
+    \item transaction costs
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Home Bias - Measurement}
+    \begin{equation}
+      \text{Equity Home Bias}_i = 1 - \frac{w_i^{\text{foreign}}}{1 - A_i}
+    \end{equation}
+    where:
+    \begin{equation*}
+      w_i^{\text{foreign}} = \frac{\text{Foreign equity held by country } i}{\text{Country } i\text{'s total equity portfolio}}
+    \end{equation*}
+
+    \begin{equation*}
+      A_i = \frac{\text{Stock market capitalization of country } i}{\text{Stock market capitalization of the world}}
+    \end{equation*}
+
+    and
+
+    \begin{equation*}
+      \text{Total equity portfolio}_i = \text{Market cap}_i + \text{Foreign equity held}_i - \text{Domestic equity held by foreigners}_i
+    \end{equation*}
+  \end{frame}
+
+\begin{frame}{Cross-section Risk Sharing Regressions: Reminder}
+  \underline{Setup} \\
+  Risk sharing regression estimating the \alert{degree of consumption} \tiny{(Lecture 4, slide 24)} \normalsize
+    \begin{itemize}
+    \item $\Delta \log C_{it} - \Delta \log C_t = \alpha + \beta_{C,t}(\Delta \log GDP_{it} - \Delta \log GDP_t) + \varepsilon_{it}$
   \end{itemize}
-
+  \underline{Perfect risk sharing}\\
+  $\alert{\beta_{c,t} = 0} \implies$ Consumption perfectly tracks world consumption ! \\[0.2cm]
+  \underline{Exercise \tiny{(Figures 1,2 of reference paper)}} \\
+  Plot rolling $\alert{(1-\widehat{\beta_{c,t}})*100}$ against foreign asset holdings over GDP
+  \begin{itemize}
+    \item Confirmation $\surd$: \alert{Increasing trend} of risk sharing and financial openness
+    \item Caveats $\times$: Specific \alert{levels} of risk sharing and overall increase
+  \end{itemize}
   \vfill
   \footnotesize
-  \appendixbutton{Data details}{appendix:data}
-  \hspace{0.5em}
-  \appendixbutton{Robustness}{appendix:robustness}
+  \appendixbutton{Sample}{appendix:sample}
 \end{frame}
 
 
-% ============================================================
-\section{Model}
-% ============================================================
-
-\begin{frame}{Theoretical Framework}
-  Consider a representative agent who maximises
-  \begin{equation}\label{eq:utility}
-    \max_{\{c_t, k_{t+1}\}} \;
-    \sum_{t=0}^{\infty} \beta^{t}\, u(c_t)
-    \quad \text{s.t.} \quad
-    c_t + k_{t+1} = f(k_t) + (1-\delta)\,k_t
-  \end{equation}
-  where $\beta\in(0,1)$ is the discount factor and $\delta$ the depreciation rate.
-
-  \begin{block}{Euler equation}
-    \[
-      u'(c_t) = \beta\bigl[f'(k_{t+1}) + 1 - \delta\bigr]\,u'(c_{t+1})
-    \]
-  \end{block}
-\end{frame}
-
-
-% ============================================================
-\section{Data \& Empirical Strategy}
-% ============================================================
-
-\begin{frame}{Summary Statistics}
-  \begin{table}
+\begin{frame}[label=consumption_risk_sharing]{Consumption risk sharing and foreign asset holdings}
+\underline{Replication of Consumption Risk Sharing}
+  \begin{figure}[htbp]
     \centering
-    \caption{Descriptive statistics, 2000--2020}
-    \label{tab:sumstats}
-    \begin{tabularx}{0.85\textwidth}{Xrrr}
-      \toprule
-      Variable        & Mean  & Std.\ Dev. & $N$ \\
-      \midrule
-      GDP growth (\%) & 2.34  & 1.87       & 420 \\
-      Inflation (\%)  & 3.12  & 2.45       & 420 \\
-      Trade / GDP     & 0.56  & 0.21       & 418 \\
-      \bottomrule
-    \end{tabularx}
-  \end{table}
-\end{frame}
-
-\begin{frame}{Identification}
-  We estimate:
-  \begin{equation}\label{eq:main}
-    Y_{it} = \alpha_i + \gamma_t + \beta\, X_{it} + \boldsymbol{\delta}'\mathbf{Z}_{it} + \varepsilon_{it}
-  \end{equation}
-  with $\alpha_i$ entity and $\gamma_t$ time fixed effects.
-
-  % Example citation (uncomment when .bib is ready):
-  % Following the approach of \textcite{Autor2013}, we instrument \dots
-\end{frame}
-
-
-% ============================================================
-\section{Results}
-% ============================================================
-
-\begin{frame}{Main Results}
-  % Example: include a figure
-  % \begin{figure}
-  %   \centering
-  %   \includegraphics[width=0.75\textwidth]{figures/main_result.pdf}
-  %   \caption{Treatment effect over time}
-  %   \label{fig:main}
-  % \end{figure}
-
-  Placeholder for your results figure or table.
-
+    \begin{minipage}[b]{0.48\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{../output/rs_cs_rep_c.pdf}
+    \end{minipage}\hfill
+    \begin{minipage}[b]{0.48\textwidth}
+      \centering
+      \raisebox{0.7cm}{\includegraphics[width=\textwidth]{../output/main_fig_2.png}}
+    \end{minipage}
+    
+    \caption{Consumption Risk Sharing and foreign asset holdings}
+  \end{figure}
   \vfill
   \footnotesize
-  \appendixbutton{Full regression table}{appendix:robustness}
+  \appendixbutton{Volatility}{appendix:volatility_consumption}
+\end{frame}
+
+\begin{frame}{Panel-data Regressions}
+  
+  \begin{block}{Consumption Risk Sharing Panel Regression}
+  \begin{equation}\label{eq:cons_panel}
+  \Delta \log C_{it} - \Delta \log C_t
+  =
+    \text{constant}
+  +
+    \kappa
+  \left(
+    \Delta \log GDP_{it} - \Delta \log GDP_t
+    \right)
+  +
+    \epsilon_{it}
+  \end{equation}
+  
+  with
+  
+  \begin{equation}\label{eq:eta_cons}
+  \kappa
+  =
+    \kappa_0
+  +
+    \kappa_1(t - \overline{t})
+  +
+    \kappa_2(EHB_{it} - \overline{EHB}_t)
+  \end{equation}
+  \end{block}
+
+  Focus of the analysis on:
+  \begin{equation}\label{eq:kappa_risk sharing}
+    Risk Sharing
+    =
+    1 - \kappa_0
+    - 
+    \kappa_1(t - \overline{t}) 
+    {\color{red} - \kappa_2(EHB_{it} - \overline{EHB}_t)}
+  \end{equation}
+  \end{frame}
+  % fertig
+  
+  \begin{frame}[t]{Risk Sharing and Equity Home Bias, OECD Sample 1993--2003}
+  \centering
+  
+  \begingroup
+  \scriptsize
+  \setlength{\tabcolsep}{2pt}
+  \renewcommand{\arraystretch}{0.85}
+  
+  \vspace{0.05cm}
+  
+  {\large \textbf{Original Paper}}
+  
+  \vspace{0.08cm}
+  
+  \begin{adjustbox}{
+    width=0.88\textwidth,
+    max totalheight=0.33\textheight,
+    keepaspectratio
+  }
+  \begin{tabular}{@{\extracolsep{5pt}}lccc}
+  \\[-1.8ex]\hline
+  \hline \\[-1.8ex]
+  Outcome 
+  & Average risk sharing 
+  & Trend 
+  & Equity Home Bias \\
+  \hline \\[-1.8ex]
+  Consumption 
+  & 57 (15.06) 
+  & 2 (2.09) 
+  & $-$136 (5.48) \\
+  \hline \\[-1.8ex]
+  \multicolumn{4}{l}{\footnotesize Notes: t-values are reported in parantheses.} \\
+  
+  \end{tabular}
+  \end{adjustbox}
+  
+  \vspace{0.35cm}
+  
+  {\large \textbf{Replication}}
+  
+  \vspace{0.08cm}
+  
+  \begin{adjustbox}{
+    width=0.88\textwidth,
+    max totalheight=0.33\textheight,
+    keepaspectratio
+  }
+  \begin{tabular}{@{\extracolsep{5pt}}lccc}
+  \\[-1.8ex]\hline
+  \hline \\[-1.8ex]
+  Outcome 
+  & Average risk sharing 
+  & Trend 
+  & Equity Home Bias \\
+  \hline \\[-1.8ex]
+  Consumption 
+  & 55 (15.01) 
+  & 0 (0.52) 
+  & $-$204 (9.07) \\
+  \hline \\[-1.8ex]
+  \multicolumn{4}{l}{\footnotesize Notes: t-values are reported in parantheses.} \\
+  \end{tabular}
+  \end{adjustbox}
+  
+  \endgroup
+  
+  \end{frame}
+
+  
+\section{Within Paper Extension Sørensen et al. 2007}
+
+  \begin{frame}{Extension by Time: Risk Sharing and Equity Home Bias}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{../output/rs_cs_ext_1_c.pdf}
+
+    \column{0.48\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{../output/rs_cs_ext_2_c.pdf}
+  \end{columns}
+\end{frame}
+
+   \begin{frame}[t]{Risk Sharing and Equity Home Bias: OECD 1987--2017}
+  \centering
+  
+  \begingroup
+  \scriptsize
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{0.85}
+  
+  \vspace{0.05cm}
+  
+  {\large \textbf{Extension by time Risk Sharing and Equity Home Bias}}
+  
+  \vspace{0.10cm}
+  
+  \begin{adjustbox}{
+    width=0.88\textwidth,
+    max totalheight=0.34\textheight,
+    keepaspectratio
+  }
+  \begin{tabular}{lccc}
+  \hline\hline
+  Outcome & Average risk sharing & Trend & Equity Home Bias \\
+  \hline
+  
+  Consumption 
+  & 40 (19.61) 
+  & 0 (0.29) 
+  & $-$81 (7.96) \\
+  \hline\hline
+  \multicolumn{4}{l}{\footnotesize Notes:t-values are reported in parantheses.} \\
+  \end{tabular}
+  \end{adjustbox}
+  
+  \vspace{0.35cm}
+  
+  {\large \textbf{Extension by time and sample size Risk Sharing and Equity Home Bias}}
+  
+  \vspace{0.10cm}
+  
+  \begin{adjustbox}{
+    width=0.88\textwidth,
+    max totalheight=0.34\textheight,
+    keepaspectratio
+  }
+  \begin{tabular}{lccc}
+  \hline\hline
+  Outcome & Average risk sharing & Trend & Equity Home Bias \\
+  \hline
+
+  Consumption 
+  & 30 (15.28) 
+  & 0 (0.41) 
+  & $-$84 (8.25) \\
+  \hline\hline
+  \multicolumn{4}{l}{\footnotesize Notes:t-values are reported in parantheses.} \\
+  \end{tabular}
+  \end{adjustbox}
+  
+  \endgroup
+  
+  \end{frame}
+  % fertig
+  % ============================================================
+
+
+  
+% ============================================================
+\section{Extensions Eurozone - European Financial Centers}
+% ============================================================
+
+\begin{frame}{The Puzzle: Euro Area Equity Home Bias}
+
+\textbf{Hypothesis:}
+\begin{itemize}
+  \item The currency union lowers exchange rate risk and transaction cost
+  \item After 1999, Euro Area countries' EHB should decline faster than non-EA countries
+  \item EA aggragate decline should be less steep than Euro Area countries' EHB decline
+  \item Lower EHB induces stronger within Euro Area Risk sharing
+\end{itemize}
+
+\onslide<2->{
+
+
+\begin{columns}[T]
+  \begin{column}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../output_final/ehb_mean_extended_1975_2024_4groups.png}
+  \end{column}
+  \begin{column}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../output_final/equity_home_bias_three_series.png}
+  \end{column}
+\end{columns}
+}
+
 \end{frame}
 
 
-% ============================================================
-\section{Conclusion}
-% ============================================================
+\begin{frame}{Onshore Offshore Financial Centers (OOFCs)}
 
-\begin{frame}{Takeaways}
-  \begin{enumerate}
-    \item Finding one — with policy implication
-    \item Finding two — mechanism
-    \item Finding three — external validity
-  \end{enumerate}
+\textbf{Explanation:} \textcite{NBERw32275}: \textbf{The Geography of Capital Allocation in the Euro Area} 
+
+\begin{itemize}
+  \item Luxembourg, Ireland, Netherlands host massive fund industries
+  \item Funds are owned by worldwide investors 
+  \item Standard data (e.g. EWN) looks at asset fund owner and origin - not underlying securities
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{\textcite{NBERw32275}} 
+\begin{itemize}
+  \item Use regulatory data and commercial fund holdings data
+  \item ``Unwind'' fund shares
+  \item Disentangle owners and underlying securities without the funds host country
+  \item Data Available online
+\end{itemize}
+
 \end{frame}
 
+\begin{frame}{Where Does Equity Investment Actually Go? - Example Germany}
+
+\begin{columns}[T]
+  \begin{column}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../output_final/reallocation_deu.png}
+  \end{column}
+  \begin{column}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../output_final/net_reallocation_deu.png}
+  \end{column}
+\end{columns}
+
+\begin{itemize}
+  \item Left panel: Germany to foreign country position in standard data vs. corrected data
+  \item Right panel: Net change in position of Germany to (foreign) countries after correction
+  \item Round-Tripping
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Who Actually Owns OOFC Funds?}
+
+\begin{columns}[T]
+  \begin{column}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../output_final/lux_fund_ownership_levels.png}
+  \end{column}
+  \begin{column}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../output_final/irl_fund_ownership_levels.png}
+  \end{column}
+\end{columns}
+
+\vspace{0.3cm}
+
+Euro area foreign asset position in standard data strongly inflated
+\end{frame}
+
+
+
+\begin{frame}{Corrected Home Bias: Equity vs.\ Bonds (Beck et al., 2024)}
+
+\begin{columns}[T]
+  \begin{column}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../output_final/Figure_9_ecb_paper.png}
+    \\[0.1cm]
+    {\small Equity Home Bias}
+  \end{column}
+  \begin{column}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../output_final/Figure_11_ecb_paper.png}
+    \\[0.1cm]
+    {\small Bond Home Bias}
+  \end{column}
+\end{columns}
+
+\vspace{0.3cm}
+
+\begin{itemize}
+  \item corrected EA equity HB $\approx$ US trajectory - no stronger home bias reduction
+  \item corrected EA Bond HB: clear excess decline  after Euro introduction
+\end{itemize}
+
+\end{frame}
+
+\section{Extensions Eurozone - Risk Sharing}
+\begin{frame}{Consumption Risk Sharing in the Eurozone}
+  \begin{itemize}
+    \item Starting Point: Consumption risk sharing around the introduction of the Euro.
+    \item Finding: Risk sharing seems to have increased around 1999 - but \alert{can this be attributed to a reduction in the Home Bias?}
+  \end{itemize}
+   \begin{figure}[htbp]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{../output/rs_cs_ext_3_c.pdf}
+      \textbf{Eurozone only}
+    \end{minipage}\hfill
+    \begin{minipage}[b]{0.45\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{../output/rs_cs_ext_3b_c.pdf}
+      \textbf{Non-Eurozone}
+    \end{minipage}
+    \caption{Consumption Risk Sharing cross-sectional estimates}
+  \end{figure}
+  Risk sharing seems to have increased - but can this be attributed to a reduction in the Home Bias?
+\end{frame}
+
+
+\begin{frame}{Risk Sharing Channels: Variance Decomposition}
+What if we could isolate the different risk sharing channels? \alert{We can!}
+\begin{itemize}
+  \item \alert{Capital Markets Channel}
+  \item Fiscal Transfers Channel
+  \item Credit Market Channel
+  \item Uninsured 
+\end{itemize}
+This methodology is based on and applied by us on the basis of:
+\begin{itemize}
+  \item \textcite{asy1996}: Seminal paper ($>$ 1000 citations)
+  \item \textcite{working_paper_26}: Replicable methodology (used for Eurozon sample)
+\end{itemize}
+\vfill
+  \footnotesize
+  \appendixbutton{Mafs}{appendix:mafs}
+\end{frame}
+
+
+\begin{frame}{Consumption Risk Sharing Channels in the Eurozone}
+  And again, relying on rolling cross-section estimates\\
+  \begin{itemize}
+    \item Finding: \alert{After the GFC, risk sharing via credit markets markedly increased}
+  \end{itemize}
+  \begin{figure}
+    \centering
+    \includegraphics[width = 0.5\textwidth]{../output/channels_cross_section.pdf}
+    \caption{Year-by-year cross-sectional estimates (10-year centred moving averages)}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Conclusion}
+  \begin{itemize}
+    \item Home Bias and Risk Sharing are \alert{negatively} associated (causal relationship?)
+    \item Finding in \textcite{main} \alert{robust} against various sample extensions (Note: \alert{specification sensitivity!})
+    \item Erronoues Data quality leads to EHB \alert{downward distortion}
+    \item Debt Home Bias declined stronger in Euro Area compared to US
+    \item Capital Markets \alert{gradually more important} for risk sharing (after GFC)
+    \item Consumption Smoothing remains at \alert{low levels} compared to US
+    \item Potential Cause: \alert{Incomplete European Integration}, no Capital Markets/Banking Union or Fiscal Transfers
+  \end{itemize}
+  
+\end{frame}
 
 % ============================================================
 %  REFERENCES
 % ============================================================
-% \begin{frame}[allowframebreaks]{References}
-%   \printbibliography[heading=none]
-% \end{frame}
+
+\begin{frame}[allowframebreaks]{References}
+  \printbibliography[heading=none]
+\end{frame}
 
 
 % ============================================================
@@ -219,36 +647,544 @@
 % ============================================================
 \appendix
 
-\begin{frame}[label=appendix:data]{Appendix: Data Construction}
-  Details on sample selection, variable definitions, etc.
+\begin{frame}{Appendix: Equity Home Bias Comparison}
+\centering
+\tiny
+\begin{columns}[T]
+\begin{column}{0.45\textwidth}
+\centering
+\textbf{Paper (Sørensen et al. 2007)}\\[2.6em]
+\begin{tabular}{lcccc}
+\hline
+ & \multicolumn{2}{c}{Foreign eq.} & \multicolumn{2}{c}{Equity} \\
+ & \multicolumn{2}{c}{in portf. (\%)} & \multicolumn{2}{c}{Home Bias} \\
+ & 1993 & 2003 & 1993 & 2003 \\
+\hline
+Australia    & 11.26 & 17.20 & 0.89 & 0.82 \\
+Austria      & 13.03 & 61.14 & 0.87 & 0.39 \\
+Belgium      & 45.94 & 50.16 & 0.54 & 0.50 \\
+Canada       & 26.00 & 30.27 & 0.73 & 0.69 \\
+Denmark      & 17.14 & 36.58 & 0.83 & 0.63 \\
+Finland      &  1.66 & 35.02 & 0.98 & 0.65 \\
+France       & 12.86 & 28.15 & 0.87 & 0.71 \\
+Germany      & 23.75 & 44.70 & 0.75 & 0.54 \\
+Greece       &  4.27 &  4.30 & 0.96 & 0.96 \\
+Iceland      &  --   &  --   &  --  &  --  \\
+Ireland      &  --   &  --   &  --  &  --  \\
+Italy        & 21.25 & 41.84 & 0.79 & 0.57 \\
+Japan        &  3.59 &  9.97 & 0.95 & 0.89 \\
+Mexico       &  1.16 & 11.45 & 0.99 & 0.89 \\
+Netherlands  & 40.00 & 62.01 & 0.59 & 0.37 \\
+New Zealand  &  7.10 & 35.10 & 0.93 & 0.65 \\
+Norway       & 16.70 & 51.45 & 0.83 & 0.48 \\
+Portugal     & 14.20 & 31.98 & 0.86 & 0.68 \\
+Spain        &  6.31 & 13.97 & 0.94 & 0.86 \\
+Sweden       & 14.94 & 41.60 & 0.85 & 0.58 \\
+Switzerland  & 40.13 & 47.52 & 0.59 & 0.51 \\
+Turkey       &  1.74 &  2.37 & 0.98 & 0.98 \\
+UK           & 23.16 & 29.51 & 0.75 & 0.68 \\
+US           & 10.25 & 14.32 & 0.84 & 0.74 \\
+\hline
+Average      & 16.20 & 31.85 & 0.83 & 0.67 \\
+\hline
+\end{tabular}
+\end{column}
 
-  \vfill
-  \footnotesize
-  \hyperlink{frametitle}{\beamerreturnbutton{Back to main}}
+\begin{column}{0.45\textwidth}
+\centering
+\textbf{Our Replication}\\[0.1em]
+\input{../output_final/table2}
+\end{column}
+\end{columns}
 \end{frame}
 
-\begin{frame}[label=appendix:robustness]{Appendix: Robustness Checks}
-  \begin{table}
+\begin{frame}{Appendix: Volatility of cross-section estimates}
+The cross-section risk sharing regressions are highly volatile to the \alert{price measurement}. \\
+  \begin{figure}[htbp]
     \centering
-    \caption{Alternative specifications}
-    \begin{tabularx}{0.85\textwidth}{Xrrrr}
-      \toprule
-                     & (1)    & (2)    & (3)    & (4)    \\
-      \midrule
-      $\hat\beta$    & 0.45** & 0.42** & 0.39*  & 0.44** \\
-                     & (0.18) & (0.19) & (0.20) & (0.17) \\
-      Controls       & No     & Yes    & Yes    & Yes    \\
-      FE             & Entity & Entity & Two-way& Two-way\\
-      Cluster        & Entity & Entity & Entity & State  \\
-      $N$            & 4\,200 & 4\,180 & 4\,180 & 4\,180 \\
-      \bottomrule
-    \end{tabularx}
-  \end{table}
+    \begin{minipage}[b]{0.48\textwidth}
+      \centering
+      \includegraphics[width=0.8\textwidth]{../output/rs_cs_sanity_c.pdf} \\
+      \textbf{2000 as base year}
+    \end{minipage}\hfill
+    \begin{minipage}[b]{0.48\textwidth}
+      \centering
+      \includegraphics[width=0.8\textwidth]{../output/rs_cs_rebased_c.pdf}
+      \textbf{Chained-linked volumes, rebased to 2020}$^1$
+    \end{minipage}
+    \caption{Consumption Risk Sharing (similar for GNI)}
+  \end{figure}
+  \footnotesize
+  $^1$ "Chained [linked volume] better reflect changes in aggregates than constant prices." (Source: \hyperbaseurl{https://www.oecd.org/en/data/insights/data-explainers/2024/03/tips-for-a-better-use-of-the-oecd-annual-national-accounts-statistics.html}OECD) \\[0.1cm]
+  \hyperlink{consumption_risk_sharing}{\beamerreturnbutton{Back to main}}
+\end{frame}
 
+\begin{frame}{Appendix: Volatility of cross-section estimates}
+  The sample includes Australia, Austria, Belgium, Canada, Denmark, Finland, France, Germany, Greece,
+Iceland, Ireland, Italy, Japan, Mexico, the Netherlands, New Zealand, Norway, Portugal, Spain, Sweden, Switzerland,
+Turkey, the UK, and the United States.\\[0.5cm]
+
+The sample is complete for foreign asset holdings over GDP and consumption and does not include Turkey for GNI (data availability).
+\footnotesize
+\hyperlink{frametitle}{\beamerreturnbutton{Back to main}}
+\end{frame}
+
+ 
+  \begin{frame}[label=appendix:data]{Appendix: OECD National Accounts (2005) Risk Sharing and Equity Home Bias}
+  
+  \centering
+  
+  \begingroup
+  \scriptsize
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{0.85}
+  
+  \vspace{0.10cm}
+  
+  {\large \textbf{OECD (2005) National Accounts Risk Sharing and Equity Home Bias}}
+  
+  \vspace{0.15cm}
+  
+  \begin{adjustbox}{
+    width=0.90\textwidth,
+    max totalheight=0.70\textheight,
+    keepaspectratio
+  }
+  \begin{tabular}{@{\extracolsep{5pt}}lccc}
+  \\[-1.8ex]\hline
+  \hline \\[-1.8ex]
+  Outcome 
+  & Average risk sharing 
+  & Time trend 
+  & Equity home bias \\
+  \hline \\[-1.8ex]
+  
+  Consumption 
+  & 34.065 (4.721) 
+  & 0.898 (1.154) 
+  & $-$86.453 (26.920) \\
+  
+  GNI 
+  & 6.542 (4.389) 
+  & 0.419 (0.792) 
+  & $-$77.820 (21.571) \\
+  
+  \hline \\[-1.8ex]
+  \multicolumn{4}{l}{Notes: [Standard Errors are reported in Paranthesis.].} \\
+  \end{tabular}
+  \end{adjustbox}
+  
+  \endgroup
+  
+  \end{frame}
+  % fertig
+  
+  \begin{frame}[label=appendix:oecd2005_assets]{Appendix: OECD National Accounts (2005) Risk Sharing and Foreign Asset Holdings relative to GDP}
+  \centering
+  
+  \begingroup
+  \scriptsize
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{0.85}
+  
+  \vspace{0.10cm}
+  
+  {\large \textbf{PDF Estimates}}
+  
+  \vspace{0.15cm}
+  
+  \begin{adjustbox}{
+    width=0.95\textwidth,
+    max totalheight=0.70\textheight,
+    keepaspectratio
+  }
+  \begin{tabular}{@{\extracolsep{5pt}}llccccc}
+  \\[-1.8ex]\hline
+  \hline \\[-1.8ex]
+  Outcome 
+  & Measure
+  & Equity 
+  & Debt 
+  & FDI 
+  & Equity + Debt 
+  & All Assets \\
+  \hline \\[-1.8ex]
+  
+  Consumption 
+  & Average risk sharing 
+  & 47.517 
+  & 39.227 
+  & 41.818 
+  & 42.290 
+  & 44.626 \\
+  
+  & Time trend 
+  & 1.349 
+  & 0.616 
+  & 0.356 
+  & 0.780 
+  & 0.894 \\
+  
+  & Foreign assets/GDP 
+  & 13.514 
+  & 14.075 
+  & 9.338 
+  & 16.578 
+  & 18.336 \\
+  
+  \hline \\[-1.8ex]
+  
+  GNI 
+  & Average income risk sharing 
+  & 8.039 
+  & 5.027 
+  & 0.873 
+  & 6.776 
+  & 6.944 \\
+  
+  & Time trend 
+  & 0.164 
+  & $-$0.382 
+  & $-$0.663 
+  & $-$0.195 
+  & $-$0.147 \\
+  
+  & Foreign assets/GDP 
+  & 6.925 
+  & 12.163 
+  & 3.102 
+  & 11.942 
+  & 10.746 \\
+  
+  \hline \\[-1.8ex]
+  \multicolumn{7}{l}{Sample period is 1993--2003].} \\
+  \end{tabular}
+  \end{adjustbox}
+  
+  \endgroup
+  
+  \end{frame}
+
+  \begin{frame}{Appendix: Corrected Foreign Equity Portfolio Shares}
+
+\begin{center}
+  \includegraphics[width=0.85\textwidth]{../output_final/foreign_share_ea_comparison.png}
+\end{center}
+
+\begin{itemize}
+  \item corrected foreign share (blue) lower for aggregate than for country average
+  \item right panel: large gap driven by reclassification from equity to underlying asset classes
+  \item left panel: smaller gap from RoW-to-RoW-via-OOFC channel only (reclassification and intra-EA effects cancel out)
+  \item ambiguous effects on EHB levels: lower $\omega$ pushes aggregate EHB up, larger $A$ pushes down
+\end{itemize}
+
+\end{frame}
+
+  % fertig
+\begin{frame}[label=appendix:oecd2005_assets]{Appendix: Current OECD National Accounts Risk Sharing and Foreign Asset Holdings Relative to GDP: OECD 1987--2017}
+  \centering
+  
+  \begingroup
+  \tiny
+  \setlength{\tabcolsep}{2pt}
+  \renewcommand{\arraystretch}{0.62}
+  
+  \vspace{0.03cm}
+  
+  {\scriptsize \textbf{Time Extension Risk Sharing and Foreign Asset Holdings Relative to GDP}}
+  
+  \vspace{0.04cm}
+  
+  \begin{adjustbox}{
+    width=0.98\textwidth,
+    max totalheight=0.39\textheight,
+    keepaspectratio
+  }
+  \begin{tabular}{llccc}
+  \hline\hline
+  Outcome & Asset measure & Average risk sharing & Trend & Asset holdings \\
+  \hline
+  GNI         & Equity       & $-$1.70 (0.87) & $-$0.12 (0.70) & 4.84 (3.59)  \\
+  & Debt         & $-$0.36 (0.21) & $-$0.14 (0.80) & 7.60 (4.14)  \\
+  & FDI          & $-$2.31 (0.98) & 0.07 (0.40)    & 4.39 (2.57)  \\
+  & Equity+Debt  & $-$1.13 (0.62) & $-$0.16 (0.91) & 7.93 (4.15)  \\
+  & All Assets   & $-$1.97 (1.03) & $-$0.13 (0.74) & 8.16 (4.08)  \\
+  \hline
+  Consumption & Equity       & 42.22 (20.31)  & 0.06 (0.28)    & 10.50 (9.07) \\
+  & Debt         & 38.62 (18.10)  & $-$0.17 (0.72) & 11.94 (5.60) \\
+  & FDI          & 40.24 (19.21)  & 0.04 (0.18)    & 10.71 (7.41) \\
+  & Equity+Debt  & 40.26 (18.98)  & $-$0.14 (0.58) & 14.25 (7.06) \\
+  & All Assets   & 41.07 (19.35)  & $-$0.09 (0.40) & 14.97 (7.60) \\
+  \hline\hline
+  \multicolumn{5}{l}{\footnotesize Notes: t-values are reported in parantheses.} \\
+  \end{tabular}
+  \end{adjustbox}
+  
+  \vspace{0.10cm}
+  
+  {\scriptsize \textbf{Time and Sample Extension Risk Sharing and Foreign Asset Holdings Relative to GDP}}
+  
+  \vspace{0.04cm}
+  
+  \begin{adjustbox}{
+    width=0.98\textwidth,
+    max totalheight=0.39\textheight,
+    keepaspectratio
+  }
+  \begin{tabular}{llccc}
+  \hline\hline
+  Outcome & Asset measure & Average risk sharing & Trend & Asset holdings \\
+  \hline
+  GNI         & Equity       & 0.89 (0.63)    & $-$0.10 (0.68) & 2.51 (3.40)  \\
+  & Debt         & 0.28 (0.20)    & $-$0.13 (0.93) & 7.22 (4.72)  \\
+  & FDI          & $-$2.09 (1.23) & 0.08 (0.62)    & 4.44 (3.23)  \\
+  & Equity+Debt  & 0.07 (0.05)    & $-$0.16 (1.09) & 6.96 (4.65)  \\
+  & All Assets   & $-$0.38 (0.27) & $-$0.14 (0.94) & 6.83 (4.54)  \\
+  \hline
+  Consumption & Equity       & 27.96 (14.42)  & $-$0.12 (0.56) & 11.92 (11.26)\\
+  & Debt         & 29.72 (14.02)  & 0.11 (0.49)    & 9.69 (4.75)  \\
+  & FDI          & 25.92 (11.85)  & 0.44 (2.00)    & 11.75 (7.78) \\
+  & Equity+Debt  & 28.45 (13.53)  & 0.0005 (0.002) & 13.18 (6.73) \\
+  & All Assets   & 28.15 (13.46)  & 0.06 (0.27)    & 14.23 (7.37) \\
+  \hline\hline
+  \multicolumn{5}{l}{\footnotesize Notes: t-values are reported in parantheses.} \\
+  \end{tabular}
+  \end{adjustbox}
+  
+  \endgroup
+  
+  \end{frame}
+
+  \begin{frame}[label=income_risk_sharing]{Appendix: Consumption risk sharing and foreign asset holdings}
+\underline{Replication of Income Risk Sharing}
+  \begin{figure}[htbp]
+    \centering
+    \begin{minipage}[b]{0.48\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{../output/rs_cs_rep_i.pdf}
+    \end{minipage}\hfill
+    \begin{minipage}[b]{0.48\textwidth}
+      \centering
+      \raisebox{0.7cm}{\includegraphics[width=\textwidth]{../output/main_fig_1.png}}
+    \end{minipage}
+    
+    \caption{Income Risk Sharing and foreign asset holdings}
+  \end{figure}
   \vfill
   \footnotesize
-  \hyperlink{frametitle}{\beamerreturnbutton{Back to main}}
+  \appendixbutton{Volatility}{appendix:volatility_consumption}
 \end{frame}
+
+\begin{frame}[t]{Appendix: Risk Sharing and Foreign Asset Holdings relative to GDP, OECD Sample 1993--2003}
+  \centering
+  
+  \begingroup
+  \tiny
+  \setlength{\tabcolsep}{1pt}
+  \renewcommand{\arraystretch}{0.62}
+  
+  \vspace{0.03cm}
+  
+  {\scriptsize \textbf{Original Paper}}
+  
+  \vspace{0.04cm}
+  
+  \begin{adjustbox}{
+    width=0.98\textwidth,
+    max totalheight=0.28\textheight,
+    keepaspectratio
+  }
+  \begin{tabular}{@{\extracolsep{3pt}}llccccc}
+  \\[-1.8ex]\hline
+  \hline \\[-1.8ex]
+  Outcome 
+  & Measure
+  & Equity 
+  & Debt 
+  & FDI 
+  & Equity + Debt 
+  & All Assets \\
+  \hline \\[-1.8ex]
+  
+  Income
+  & Average risk sharing 
+  & 6 (2.74)
+  & 5 (2.53)
+  & 3 (1.70)
+  & 6 (2.85)
+  & 6 (2.75) \\
+  
+  & Trend 
+  & 0 (0.77)
+  & 0 (0.34)
+  & 0 (0.47)
+  & 0 (0.37)
+  & 0 (0.47) \\
+  
+  & Asset holdings 
+  & 5 (4.50)
+  & 9 (4.46)
+  & 3 (2.70)
+  & 9 (4.65)
+  & 8 (4.35) \\
+  
+  \hline \\[-1.8ex]
+  
+  Consumption
+  & Average risk sharing 
+  & 51 (13.34)
+  & 45 (11.56)
+  & 51 (13.39)
+  & 47 (11.95)
+  & 48 (12.34) \\
+  
+  & Trend 
+  & 1 (0.83)
+  & 0 (0.25)
+  & 0 (0.09)
+  & 0 (0.33)
+  & 0 (0.45) \\
+  
+  & Asset holdings 
+  & 11 (4.02)
+  & 7 (1.64)
+  & 9 (3.79)
+  & 9 (2.26)
+  & 11 (2.74) \\
+  
+  \hline \\[-1.8ex]
+  \multicolumn{7}{l}{\footnotesize Notes: t-values are reported in parantheses.} \\
+  \end{tabular}
+  \end{adjustbox}
+  
+  \vspace{0.18cm}
+  
+  {\scriptsize \textbf{Replication}}
+  
+  \vspace{0.04cm}
+  
+  \begin{adjustbox}{
+    width=0.98\textwidth,
+    max totalheight=0.35\textheight,
+    keepaspectratio
+  }
+  \begin{tabular}{@{\extracolsep{3pt}}llccccc}
+  \\[-1.8ex]\hline
+  \hline \\[-1.8ex]
+  Outcome 
+  & Measure
+  & Equity 
+  & Debt 
+  & FDI 
+  & Equity + Debt 
+  & All Assets \\
+  \hline \\[-1.8ex]
+  
+  Income 
+  & Average risk sharing 
+  & 15.064 (4.145)
+  & 15.784 (4.211)
+  & 9.675 (2.788)
+  & 15.997 (4.253)
+  & 15.709 (4.262) \\
+  
+  & Trend 
+  & 1.202 (1.209)
+  & 0.715 (0.719)
+  & 1.685 (1.634)
+  & 0.733 (0.729)
+  & 1.069 (1.062) \\
+  
+  & Asset holdings 
+  & 12.180 (5.190)
+  & 17.747 (5.154)
+  & 11.726 (3.333)
+  & 17.583 (5.046)
+  & 20.515 (5.142) \\
+  
+  \hline \\[-1.8ex]
+  
+  Consumption 
+  & Average risk sharing 
+  & 56.614 (14.769)
+  & 49.948 (12.157)
+  & 51.790 (12.591)
+  & 52.469 (12.928)
+  & 54.959 (13.589) \\
+  
+  & Trend 
+  & 0.942 (0.903)
+  & 0.172 (0.153)
+  & 0.455 (0.407)
+  & 0.355 (0.322)
+  & 0.497 (0.457) \\
+  
+  & Asset holdings 
+  & 17.834 (8.796)
+  & 21.312 (6.009)
+  & 14.252 (6.160)
+  & 22.576 (6.814)
+  & 24.189 (7.348) \\
+  
+  \hline \\[-1.8ex]
+  \multicolumn{7}{l}{\footnotesize Notes:t-values are reported in parantheses.} \\
+  \end{tabular}
+  \end{adjustbox}
+  
+  \endgroup
+  
+  \end{frame}
+
+  \begin{frame}{Appendix: Income Risk Sharing in the Eurozone}
+  \begin{figure}[htbp]
+    \centering
+    \begin{minipage}[b]{0.48\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{../output/rs_cs_ext_3_i.pdf}
+      \textbf{Eurozone only}
+    \end{minipage}\hfill
+    \begin{minipage}[b]{0.48\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{../output/rs_cs_ext_3b_i.pdf}
+      \textbf{Non-Eurozone}
+    \end{minipage}
+    \caption{Income Risk Sharing cross-sectional estimates}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Appendix: Consumption Risk Sharing Channels in the Eurozone}
+  Applying this methodology, on the basis of \textcite{working_paper_26}: \\
+  \begin{itemize}
+    \item Finding: \alert{80\% of output volatility unsmoothed} (US interstate risk sharing), \alert{6\% via capital markets}, 11\% via credit markets
+  \end{itemize}
+  \begin{figure}
+    \centering
+    \includegraphics[width = 0.5\textwidth]{../output/ea_95_23.pdf}
+    \caption{Risk Sharing Channels in the Eurozone: Panel Estimation 1995 -- 2023}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Appendix: Consumption Risk Sharing Channels}
+  After the time sample between before and after the GFC:
+  \begin{itemize}
+    \item Finding: \alert{risk sharing improves over time through capital and credit markets}.
+  \end{itemize}
+  \begin{figure}[htbp]
+    \centering
+    \begin{minipage}[b]{0.48\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{../output/ea_95_07.pdf}
+      \textbf{1995 -- 2007}
+    \end{minipage}\hfill
+    \begin{minipage}[b]{0.48\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{../output/ea_10_23.pdf}
+      \textbf{2010 -- 2023}
+    \end{minipage}
+    \caption{Risk Sharing Channels across different time periods}
+  \end{figure}
+\end{frame}
+
 
 % ============================================================
 \end{document}

@@ -451,7 +451,7 @@ ehb_top60 |>
   theme(axis.text.y = element_text(size = 7))
 
 ehb_coverage <- ehb_top60 |>
-  filter(year>1993) |>
+  filter(year>1987) |>
   mutate(
     has_data = !is.na(EHB),
     iso  = fct_reorder(iso, gdp, mean)  # order by coverage
@@ -467,7 +467,7 @@ ehb_coverage <- ehb_top60 |>
   theme(axis.text.y = element_text(size = 7))
 
 ggsave(
-  filename = "../output/ehb_coverage.png",
+  filename = "../output_final/ehb_coverage.png",
   plot     = ehb_coverage,
   width    = 6,
   height   = 12,

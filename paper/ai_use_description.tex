@@ -1,0 +1,110 @@
+\documentclass{article}
+\usepackage{booktabs}   
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{placeins}
+\geometry{margin=1in}
+
+\title{Generative AI Use Description - Macroeconomics 3 Project}
+\author{Philipp Cremer, Jannis Stagge, Felix Westerhoff}
+
+\begin{document}
+\maketitle
+
+In the following we will describe for what types of problems/questions we used generative AI and provide example prompts.
+
+1. Discussion of Methodology
+    When we discovered the feasible GLS approach used in the replication paper, we discussed the implementation of this as well as the 
+    consequences for the estimation and whether this might cause problems for the inference/results because while normally residual weighting
+    seems intuitive, in the case of the risk sharing, large residuals show a lot of uninsured risk. Furthermore dominant countries like the US might always
+    fit the trend better leading to higher weights. Additionally, countries with stable grwoth in the short period might just have a better fit but 
+    little interesting variation for the actual risk sharing.
+    To unravel problems like this we analsed our own thoughts and discussions with AI applications.
+
+    Example:
+
+    For the extension on the risk sharing channels we had to understand the sophisticated methodology and assumptions used in the papers establishing this method.
+    To get a thorough understanding of the methods and the underlying math we used AI applications.
+
+    Example:
+
+    We used AI to discuss methods for implementing or testing for structural breaks in panel regressions, an approach we never covered in class before.
+
+    Example:
+
+2. Writing or Correcting Code
+    We used AI extensively to write code or for troubleshooting. This happened in various forms, from prompting questions or demands e.g. for sophisticated plots,
+    to assistants like copilot in vs-code or for finding problems in the code.
+    
+    Example:
+        I have a dataframe in R called "ehb_top60_restr". It contains home bias measuresin column "ehb" and iso codes in "iso" across years ("year").
+        I want to plot unweighted means for 4 different groups, the Euro Area founding members (EA core), the countries that joine dlater (Euro periphery), 
+        the US, and all other countries in the sample. 
+
+    We used applications like Claude Code coding independently only in two instances:
+        1. When the PPP adjusted chained linked volumes OECD data produced negative trends we gave only the raw data to Claude Code and asked to replicate the papers risk sharing regression and plot.
+        With this we wanted to confirm that it is indeed the data and not our code that causes the problems and thus wanted to let the AI agent work from scratch.
+        This gave exactly our results.
+
+        Example:
+        I am replicating equation (4) from Sørensen, Wu, Yosha & Zhu (2007), "Home bias and international risk sharing: Twin puzzles separated at birth", Journal of International Money and Finance 26, 587–605. The working directory contains data_download.R, the paper PDF, and a data/ subfolder that will hold downloaded CSVs.
+        Step 1 — Data preparation Run data_download.R to download (if not already present) the OECD PPP-adjusted chain-linked volume data. Then merge GDP, consumption, and population into a balanced panel for the 24 countries in the paper's OECD sample (Australia, Austria, Belgium, Canada, Denmark, Finland, France, Germany, Greece, Iceland, Ireland, Italy, Japan, Mexico, Netherlands, New Zealand, Norway, Portugal, Spain, Sweden, Switzerland, Turkey, UK, United States) for years 1993–2003. Compute per-capita GDP and consumption by dividing by population. Compute log growth rates: d_log_gdp = log(gdp_pc_t / gdp_pc_{t-1}) and d_log_cons = log(cons_pc_t / cons_pc_{t-1}) — so the regression uses years 1993–2003 (growth from 1992–2003).
+        Step 2 — Year-by-year demeaning For each year t, subtract the cross-sectional (unweighted) mean across countries: d_log_gdp_dm = d_log_gdp - mean(d_log_gdp) and d_log_cons_dm = d_log_cons - mean(d_log_cons). This removes aggregate fluctuations that are uninsurable.
+        Step 3 — Year-by-year OLS regressions (Equation 4) For each year t from 1993 to 2003, run the cross-sectional OLS: d_log_cons_dm ~ d_log_gdp_dm Save the coefficient on d_log_gdp_dm as beta_C_t. Risk sharing in year t is (1 - beta_C_t) * 100 (in percent). Also save the standard error of beta_C_t.
+        Step 4 — Kernel smoothing Smooth the (1 - beta_C_t) series using a Gaussian kernel with bandwidth (standard deviation) = 2 years, exactly as in the paper. Also compute a smoothed version excluding Finland and Sweden.
+        Step 5 — Plot Reproduce Figure 2 from the paper: plot the smoothed consumption risk sharing series (with and without Finland & Sweden) on the left y-axis (percent, roughly 0–60%), over years 1993–2003. Add a clear title, axis labels, and a legend. Save the plot as figure2_replication.png.
+        Step 6 — Sanity check Print a table of the raw (unsmoothed) year-by-year beta_C_t and 1 - beta_C_t values so I can verify them. The smoothed series should rise from roughly 20% in 1993 to roughly 50% by 2000–2003, consistent with Figure 2 of the paper.
+        Please write all code in R, using tidyverse, lm(), and ggplot2. Keep the code modular with clear comments for each step.
+
+        2. When we found the 2005 PDF data published by the OECD in a PDF which was not updated and thus as close as we could get to the data of the paper, we used
+        Claude Code to retrieve the data from the PDF using python code and write a CSV. This was a guided process. The python code as well as the PDF and the resulting CSV is in the GitHub.
+        We manually checked observations to ensure correctness of the CSV.
+
+        Example:
+        I want to extract GDP, GNI, Consumption, PPP adjustment multipliers, exchange rates and price adjustment values from this PDF. First look at the PDFs structure. 
+        The first very extensive parts are all the individual tables for each country. Note that some countries (Japan, Korea, Turkey, USA) are in billions of their currency while all others are in millions. 
+        In part II there are comparative tables where everything is in US dollar with one version in current prices/current exchange rates and one indexed to 2000. However this covers only GDP and actual individual consumption.  
+        Part III is the same now only also PPP adjusted one time in current values and one time with base year 2000. The comparative tables dont cover full consumption with all government consumption but only government consumption directly 
+        affecting individual consumption like health care etc. I need full consumption with all government consumption. So what we could do is the following. We take the US dollar indexed to 2000 data for GDP per capita and actual individual 
+        consumption from tables A.3 and A.4 and the same for PPP with base year 2000 from tables B.3 and B.4. Then we get the GDP, total consumption and all inputs for GNI from the country based tables (take care of the units billions or millions) 
+        and use the exchange rates from part 3 (for real and PPP adjusted) and create the PPP adjusted and real US dollars for 2000 values for total consumption and GNI and also for GDP to have a control that our transformation worked. 
+        Finally we get the population (we can use the table C.4 which reports population in thousands). This should give us all the data I need. 
+        Before writing any new code inspect the PDF and lets see whether everything is clear and whether this process makes sense for you.
+
+    
+3. Discussing Data Problems and Data sources
+    We used AI to discuss potential reasons for the GDP/GNI/Consumption data problems we had and to find solutions. For example we discussed how to best get comparable PPP data to the paper,
+    and what the perks and downsides of the chain-linked volume approach are.
+
+    Example:
+
+    We used AI to find alternative data sources for Stock Market Capitalisation without success.
+
+    Example:
+    I need data on national stock market capitalisation The paper I want to replicate uses Standard and Poors Global Stock Markets Factbook 2003 which I cannot access. The WDI data is
+    incomplete after 2014. The WfE data I cannot access. Where else could I find the data. I have no Bloomber terminal access.
+
+4. Discussing Questions about interpretation
+    We used AI to discuss the findings based on the corrected Asset data. Especially we used AI to disentangle all the effects on the home bias of the various problems in the official data.
+    Upon that we discussed results from the foreign equity share exercise. 
+
+    Example:
+    thoroughly think about the correctness of the following overview of the various data errors on the EHB. Look at them critically.
+        If Euro Area countries hold EA fund shares with Euro Area assets underlying, there is not necessarily a distortion because the equity is labelled foreign which is all that matter for the national EHB, and the misattribution cancels out completely when looking at the Euro Area Aggregate.
+        If Euro Area countries hold EA fund shares with domestic assets underlying the foreign equity position is overstated leading to a too low EHB measure.
+        If Euro Area countries hold EA fund shares with non Euro Area assets underlying, the national EHB is not affected but the Euro Area foreign equity portfolio is too low since an IIP vis a vis a non EA country is labelled as `domestic’. 
+        If non EA countries hold EA fund shares with EA assets underlying, there is no distortion in any groups EHB
+        If non EA countries hold EA fund shares with non EA assets underlying, the Foreign Equity Portfolio of Ireland or Luxembourg is overstated and there EHB is too low. The same is true for the EA aggregate EHB.
+        If debt assets are underlying the fund the foreign equity portfolio is overstated and if domestic debt assets are underlying also domestic equity held by foreigners is overstated (where the former effect should always dominate the latter regarding the computation of total equity portfolio). Overall the foreign equity share is inflated and thus the EHB distorted downwards.
+
+
+5. Exploring new fields of economics / new topics
+    We used AI to become familiar with new topics. Especially the international finance aspects of this paper were relatively new to us.
+    Understanding the different asset positions and classes, fund structures, international financial flows, or approaches of data collection on these kind of topics
+    was easier in a conversation with generative AI than going back to a textbook.
+
+    Example:
+    In one sentence, what is the stock market capitalisation of a country?
+
+
+We did not use generative AI to write final output or to create original thoughts. We used AI only in a supervised manner as assistant for our work.

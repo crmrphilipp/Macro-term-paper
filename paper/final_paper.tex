@@ -1,0 +1,179 @@
+\documentclass[12pt,a4paper]{article}
+
+% ── Encoding & fonts ──
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+% ── Layout ──
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+
+% ── Math ──
+\usepackage{amsmath,amssymb,amsthm}
+
+% ── Graphics & tables ──
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{subcaption}
+
+% ── References ──
+\usepackage[authoryear,round]{natbib}
+
+% ── Hyperlinks ──
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks  = true,
+    linkcolor   = blue!60!black,
+    citecolor   = blue!60!black,
+    urlcolor    = blue!60!black,
+}
+
+% ── Appendix ──
+\usepackage[toc,page]{appendix}
+
+% ── Misc ──
+\usepackage{enumitem}
+\usepackage{caption}
+
+% ══════════════════════════════════════════
+%  TITLE
+% ══════════════════════════════════════════
+\title{Home Bias and International Risk Sharing:\\
+       Empirical Replication and Extension}
+
+\author{
+    Philipp Cremer\thanks{Paris School of Economics.}
+    \and Jannis Stagge\thanks{Paris School of Economics.}
+    \and Felix Westerhoff\thanks{Paris School of Economics.}
+}
+
+\date{\today}
+
+% ══════════════════════════════════════════
+\begin{document}
+\maketitle
+
+\begin{abstract}
+    % Write your abstract here.
+    \noindent
+    \textbf{Keywords:} home bias, risk sharing, equity portfolios, eurozone, financial integration \\
+    \textbf{JEL Codes:} F36, F41, G11, G15
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+% ══════════════════════════════════════════
+%  1  INTRODUCTION
+% ══════════════════════════════════════════
+\section{Introduction}\label{sec:introduction}
+
+
+
+% ══════════════════════════════════════════
+%  2  DATA
+% ══════════════════════════════════════════
+\section{Data}\label{sec:data}
+
+
+% ══════════════════════════════════════════
+%  3  REPLICATION OF SØRENSEN ET AL. (2007)
+% ══════════════════════════════════════════
+\section{Replication of \citet{sorensen2007}}\label{sec:replication}
+
+\subsection{Equity Home Bias}\label{subsec:home_bias}
+
+\subsection{Cross-Section Risk Sharing Estimates}\label{subsec:replication_cs}
+
+\subsection{Panel-Data Regressions}\label{subsec:replication_panel}
+
+
+% ══════════════════════════════════════════
+%  4  EXTENSIONS WITHIN THE ORIGINAL FRAMEWORK
+% ══════════════════════════════════════════
+\section{Extensions by Time and Sample Size}\label{sec:extensions_time}
+
+\subsection{Extension: Equity Home Bias}\label{subsec:ext_home_bias}
+
+\subsection{Extension: Cross-Section Risk Sharing Estimates}\label{subsec:ext_replication_cs}
+
+\subsection{Extension: Panel-Data Regressions}\label{subsec:ext_replication_panel}
+
+\subsection{Extension: Euro Zone in Panel Regression}
+
+\subsection{Extension: Structural Breaks in Panel Regression}
+
+
+% ══════════════════════════════════════════
+%  5  EUROZONE EXTENSION: HOME BIAS
+% ══════════════════════════════════════════
+\section{Eurozone Extension: Equity Home Bias}\label{sec:eurozone_hb}
+
+\subsection{Hypothesis}\label{subsec:ez_hypothesis}
+
+
+
+\subsection{Onshore--Offshore Financial Centres}\label{subsec:oofc}
+
+
+
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        % \includegraphics[width=\textwidth]{figures/fig_ehb_corrected.pdf}
+        \caption{Equity home bias}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        % \includegraphics[width=\textwidth]{figures/fig_bhb_corrected.pdf}
+        \caption{Bond home bias}
+    \end{subfigure}
+    \caption{Corrected home bias dynamics in the Euro Area \citep{beck2024}.}
+    \label{fig:corrected_hb}
+\end{figure}
+
+
+% ══════════════════════════════════════════
+%  7  EUROZONE EXTENSION: RISK SHARING
+% ══════════════════════════════════════════
+\section{Eurozone Extension: Risk Sharing}\label{sec:eurozone_rs}
+
+\subsection{Consumption Risk Sharing around Euro Introduction}\label{subsec:ez_consumption_rs}
+
+\subsection{Variance Decomposition of Risk Sharing Channels}\label{subsec:channels}
+
+
+% ══════════════════════════════════════════
+%  8  CONCLUSION
+% ══════════════════════════════════════════
+\section{Conclusion}\label{sec:conclusion}
+
+
+% ══════════════════════════════════════════
+%  REFERENCES
+% ══════════════════════════════════════════
+\newpage
+
+\bibliographystyle{apalike}
+\bibliography{references}
+
+% ══════════════════════════════════════════
+%  APPENDIX
+% ══════════════════════════════════════════
+\newpage
+\begin{appendices}
+
+\section{Appendix A: Replication}\label{app:replication}
+\section{Appendix B: Within Paper Extension}\label{app:rep_ext}
+\section{Appendix C: Eurozone - Home Bias}\label{app:euro_home_bias}
+\section{Appendix D: Eurozone - Risk Sharing}\label{app:euro_risk_sh}
+
+\end{appendices}
+
+\end{document}

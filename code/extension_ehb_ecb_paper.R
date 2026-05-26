@@ -153,9 +153,9 @@ lux_fund_ownership_levels <- ggplot(fcs_grouped,
 
 # Save both
 ggsave("../output_final/lux_fund_ownership_shares.png", 
-       lux_fund_ownership_shares, width = 7, height = 4.5, dpi = 300)
+       lux_fund_ownership_shares, width = 7, height = 5.5, dpi = 300)
 ggsave("../output_final/lux_fund_ownership_levels.png", 
-       lux_fund_ownership_levels, width = 7, height = 4.5, dpi = 300)
+       lux_fund_ownership_levels, width = 7, height = 5.5, dpi = 300)
 
 
 #===================================================================#
@@ -324,7 +324,7 @@ irl_fund_ownership_shares <- ggplot(fcs_irl,
   guides(fill = guide_legend(nrow = 2))
 
 ggsave("../output_final/irl_fund_ownership_shares.png",
-       irl_fund_ownership_shares, width = 7, height = 4.5, dpi = 300)
+       irl_fund_ownership_shares, width = 7, height = 5.5, dpi = 300)
 
 # ── Absolute amounts plot ──
 irl_fund_ownership_levels <- ggplot(fcs_irl, 
@@ -350,7 +350,7 @@ irl_fund_ownership_levels <- ggplot(fcs_irl,
   guides(fill = guide_legend(nrow = 2))
 
 ggsave("../output_final/irl_fund_ownership_levels.png",
-       irl_fund_ownership_levels, width = 7, height = 4.5, dpi = 300)
+       irl_fund_ownership_levels, width = 7, height = 5.5, dpi = 300)
 
 
 #=====================================================#
@@ -404,7 +404,7 @@ shs_equity <- shs |>
 # we cannot look at the absolute comparison and the round tripping at the same time becaue the DEU-DEU position is huge and would completely destry the chart
 
 # Function to prepare reallocation data for one country 
-prepare_reallocation <- function(data, investor_iso, ref_year = "2020q4", top_n = 10) {
+prepare_reallocation <- function(data, investor_iso, ref_year = "2018q4", top_n = 10) {
   
   df <- data |>
     filter(investor == investor_iso, date_q == ref_year, issuer != investor_iso) |>
@@ -434,7 +434,7 @@ prepare_reallocation <- function(data, investor_iso, ref_year = "2020q4", top_n 
 }
 
 # Plotting function
-plot_reallocation <- function(data, investor_iso, ref_year = "2020q4", top_n = 10) {
+plot_reallocation <- function(data, investor_iso, ref_year = "2018q4", top_n = 10) {
   
   df <- prepare_reallocation(data, investor_iso, ref_year, top_n)
   
@@ -471,17 +471,17 @@ realloc_bel <- plot_reallocation(shs_equity, "BEL")
 realloc_ita <- plot_reallocation(shs_equity, "ITA")
 
 
-ggsave("../output_final/reallocation_deu.png", realloc_deu, width = 7, height = 4.5, dpi = 300)
-ggsave("../output_final/reallocation_fra.png", realloc_fra, width = 7, height = 4.5, dpi = 300)
-ggsave("../output_final/reallocation_bel.png", realloc_bel, width = 7, height = 4.5, dpi = 300)
-ggsave("../output_final/reallocation_ita.png", realloc_ita, width = 7, height = 4.5, dpi = 300)
+ggsave("../output_final/reallocation_deu.png", realloc_deu, width = 7, height = 5.5, dpi = 300)
+ggsave("../output_final/reallocation_fra.png", realloc_fra, width = 7, height = 5.5, dpi = 300)
+ggsave("../output_final/reallocation_bel.png", realloc_bel, width = 7, height = 5.5, dpi = 300)
+ggsave("../output_final/reallocation_ita.png", realloc_ita, width = 7, height = 5.5, dpi = 300)
 
 
 #### now we go to the round trippng part by looking at changes of the position ####
 # we look at changes to see the extent of round tripping
 
 # Function to prepare net reallocation data
-prepare_net_reallocation <- function(data, investor_iso, ref_year = "2020q4", top_n = 12) {
+prepare_net_reallocation <- function(data, investor_iso, ref_year = "2018q4", top_n = 12) {
   
   df <- data |>
     filter(investor == investor_iso, date_q == ref_year) |>
@@ -500,7 +500,7 @@ prepare_net_reallocation <- function(data, investor_iso, ref_year = "2020q4", to
 }
 
 # Plotting function
-plot_net_reallocation <- function(data, investor_iso, ref_year = "2020q4", top_n = 12) {
+plot_net_reallocation <- function(data, investor_iso, ref_year = "2018q4", top_n = 12) {
   
   df <- prepare_net_reallocation(data, investor_iso, ref_year, top_n)
   
@@ -541,10 +541,10 @@ net_realloc_bel <- plot_net_reallocation(shs_equity, "BEL")
 net_realloc_ita <- plot_net_reallocation(shs_equity, "ITA")
 
 
-ggsave("../output_final/net_reallocation_deu.png", net_realloc_deu, width = 7, height = 4.5, dpi = 300)
-ggsave("../output_final/net_reallocation_fra.png", net_realloc_fra, width = 7, height = 4.5, dpi = 300)
-ggsave("../output_final/net_reallocation_bel.png", net_realloc_bel, width = 7, height = 4.5, dpi = 300)
-ggsave("../output_final/net_reallocation_ita.png", net_realloc_bel, width = 7, height = 4.5, dpi = 300)
+ggsave("../output_final/net_reallocation_deu.png", net_realloc_deu, width = 7, height = 5.5, dpi = 300)
+ggsave("../output_final/net_reallocation_fra.png", net_realloc_fra, width = 7, height = 5.5, dpi = 300)
+ggsave("../output_final/net_reallocation_bel.png", net_realloc_bel, width = 7, height = 5.5, dpi = 300)
+ggsave("../output_final/net_reallocation_ita.png", net_realloc_bel, width = 7, height = 5.5, dpi = 300)
 
 
 #=====================================================#
@@ -780,34 +780,56 @@ ea_comparison <- ea_comparison |>
   mutate(omega_resid_ex_oofc = if_else(series == "EA aggregate", 
                                         NA_real_, omega_resid_ex_oofc))
 
+# ── Fund-unwind adjusted, ex-OOFCs ──
+ea_weighted_uw_ex_oofc <- portfolio_shares |>
+  filter(!investor %in% oofcs) |>
+  mutate(total_uw = pos_uw_for + pos_uw_dom) |>
+  group_by(year) |>
+  summarise(
+    omega_uw_ex_oofc = weighted.mean(omega_uw, w = total_uw, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+ea_comparison <- ea_comparison |>
+  select(-any_of("omega_uw_ex_oofc")) |>
+  left_join(ea_weighted_uw_ex_oofc, by = "year") |>
+  mutate(omega_uw_ex_oofc = if_else(series == "EA aggregate", 
+                                     NA_real_, omega_uw_ex_oofc))
+
 # comparison plot with grey reference line
 foreign_share_ea_comparison <- ggplot(ea_comparison, aes(x = year)) +
   geom_ribbon(aes(ymin = omega_uw, ymax = omega_resid), 
               fill = "#E8713A", alpha = 0.2) +
   geom_line(aes(y = omega_resid, color = "Residency-based"), linewidth = 0.8) +
   geom_point(aes(y = omega_resid, color = "Residency-based"), size = 2) +
+  #geom_line(aes(y = omega_resid_ex_oofc, color = "Residency-based (ex. OOFCs)"), 
+  #          linewidth = 0.6, linetype = "dashed") +
+  #geom_point(aes(y = omega_resid_ex_oofc, color = "Residency-based (ex. OOFCs)"), 
+  #           size = 1.5, shape = 1) +
+  #geom_line(aes(y = omega_uw_ex_oofc, color = "Fund-unwind adj. (ex. OOFCs)"), 
+  #          linewidth = 0.6, linetype = "dashed") +
+  #geom_point(aes(y = omega_uw_ex_oofc, color = "Fund-unwind adj. (ex. OOFCs)"), 
+  #           size = 1.5, shape = 1) +
   geom_line(aes(y = omega_uw, color = "Fund-unwind adjusted"), linewidth = 0.8) +
   geom_point(aes(y = omega_uw, color = "Fund-unwind adjusted"), size = 2) +
-  geom_line(aes(y = omega_resid_ex_oofc, color = "Residency-based (ex. OOFCs)"), 
-            linewidth = 0.6, linetype = "dashed") +
-  geom_point(aes(y = omega_resid_ex_oofc, color = "Residency-based (ex. OOFCs)"), 
-             size = 1.5, shape = 1) +
   facet_wrap(~ series) +
   scale_color_manual(values = c("Residency-based"              = "#8B0000",
-                                "Fund-unwind adjusted"          = "#08519C",
-                                "Residency-based (ex. OOFCs)"   = "grey50")) +
+                                "Fund-unwind adjusted"          = "#08519C"#,
+                              #  "Residency-based (ex. OOFCs)"   = "grey50",
+                              #  "Fund-unwind adj. (ex. OOFCs)"  = "black"
+                              )
+                              ) +
   scale_x_continuous(breaks = c(2015, 2019, 2023)) +
   scale_y_continuous(labels = scales::percent_format()) +
   labs(
     x       = "Year",
     y       = "Foreign Equity Portfolio Share",
     color   = NULL,
-    caption = paste0(
-      "Note: Left panel — EA treated as single entity (intra-EA = domestic). ",
-      "Right panel — portfolio-weighted average of individual EA countries.\n",
-      "Dashed grey line shows residency-based average excluding Luxembourg, Ireland, and the Netherlands.\n",
-      "Source: Beck et al. (2024), SHS-based restated bilateral portfolios."
-    )
+   # caption = paste0(
+   #   "Note: Left panel — EA as single entity. Right panel — portfolio-weighted average.\n",
+   #   "Solid lines include all EA countries; dashed lines exclude LUX, IRL, NLD.\n",
+   #   "Source: Beck et al. (2024), SHS-based restated bilateral portfolios."
+   # )
   ) +
   theme_classic() +
   theme(
@@ -822,4 +844,53 @@ foreign_share_ea_comparison <- ggplot(ea_comparison, aes(x = year)) +
   guides(color = guide_legend(nrow = 2))
 
 ggsave("../output_final/foreign_share_ea_comparison.png",
-       foreign_share_ea_comparison, width = 9, height = 9, dpi = 300)
+       foreign_share_ea_comparison, width = 9, height = 3.5, dpi = 300)
+
+#ggsave("../output_final/foreign_share_ea_comparison.png",
+#       foreign_share_ea_comparison, width = 9, height = 9, dpi = 300)
+
+
+
+
+# ── Recompute with full correction (nationality + fund unwind) ──
+portfolio_shares_natuw <- shs_equity |>
+  filter(investor %in% ea_investors) |>
+  mutate(is_domestic = (investor == issuer)) |>
+  group_by(date_q, investor, is_domestic) |>
+  summarise(
+    pos_natuw = sum(restatement_nat_uw, na.rm = TRUE),
+    .groups   = "drop"
+  ) |>
+  pivot_wider(
+    names_from  = is_domestic,
+    values_from = pos_natuw,
+    names_glue  = "pos_natuw_{ifelse(is_domestic, 'dom', 'for')}"
+  ) |>
+  mutate(
+    omega_natuw = pos_natuw_for / (pos_natuw_for + pos_natuw_dom),
+    year        = as.integer(substr(date_q, 1, 4))
+  )
+
+# ── Quick comparison: EA aggregate ──
+ea_agg_natuw <- shs_equity |>
+  filter(investor %in% ea_investors, investor != "ROW") |>
+  mutate(is_ea_issuer = issuer %in% ea_investors,
+         year = as.integer(substr(date_q, 1, 4))) |>
+  group_by(year, is_ea_issuer) |>
+  summarise(
+    pos_uw    = sum(restatement_uw, na.rm = TRUE),
+    pos_natuw = sum(restatement_nat_uw, na.rm = TRUE),
+    .groups   = "drop"
+  ) |>
+  pivot_wider(
+    names_from  = is_ea_issuer,
+    values_from = c(pos_uw, pos_natuw),
+    names_glue  = "{.value}_{ifelse(is_ea_issuer, 'ea', 'non_ea')}"
+  ) |>
+  mutate(
+    omega_uw    = pos_uw_non_ea    / (pos_uw_non_ea    + pos_uw_ea),
+    omega_natuw = pos_natuw_non_ea / (pos_natuw_non_ea + pos_natuw_ea)
+  )
+
+# ── Print side by side ──
+ea_agg_natuw |> select(year, omega_uw, omega_natuw) |> print(n = 12)
