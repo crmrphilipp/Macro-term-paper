@@ -1,6 +1,7 @@
-
 # ============================================
-# 1. Cleaning data and preparing data for regression
+# Preparing the data for the panel regression for our first extention.
+# Same sample of 22 OECD Countries as in the original paper.
+# EXTENTION 1: Sample Period 1987 - 2017
 #=============================================
 
 rm(list = ls())
@@ -146,6 +147,8 @@ write.csv(
   "../data/reg_gni_df_ext_1.csv",
   row.names = FALSE
 )
+
+
 
 
 

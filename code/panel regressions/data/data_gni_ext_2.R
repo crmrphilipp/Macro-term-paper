@@ -1,6 +1,8 @@
 # ============================================
-# Extention 2: As many oecd countries as possible
-# 1987 - 2017
+# Preparing data for the panel regression. Using today's 
+# OECD Data
+# EXTENTION 2: Extentding the sample to 29 OECD Countries
+# Sample period 1987 - 2007
 #=============================================
 
 
@@ -152,6 +154,8 @@ write.csv(
   "../data/reg_gni_df_ext_2.csv",
   row.names = FALSE
 )
+
+
 
 
 

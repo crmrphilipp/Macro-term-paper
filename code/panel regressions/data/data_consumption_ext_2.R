@@ -1,7 +1,8 @@
 # ============================================
-#The main regression: Consumption Risk Sharing
-#Table 3 & Table 5 in the paper 
-#EXTENTION 2 As Many OECD Countries as we could get but 1993 - 2019
+# Preparing data for the panel regression. Using today's 
+# OECD Data
+# EXTENTION 2: Extentding the sample to 29 OECD Countries
+# Sample period 1987 - 2007
 #=============================================
 
 # ============================================
@@ -159,4 +160,6 @@ write.csv(
   "../data/reg_cons_df_ext_2.csv",
   row.names = FALSE
 )
+
+
 

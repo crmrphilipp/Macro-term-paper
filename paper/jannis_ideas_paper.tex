@@ -1,0 +1,258 @@
+\documentclass[12pt,a4paper]{article}
+
+% ------------------------------------------------------------
+% Basic packages
+% ------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+% Page layout
+\usepackage{geometry}
+\geometry{margin=1in}
+
+% Math
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+% Tables and figures
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{adjustbox}
+\usepackage{float}
+
+% References and links
+\usepackage[hidelinks]{hyperref}
+
+% Optional: better spacing
+\usepackage{setspace}
+\onehalfspacing
+
+% ------------------------------------------------------------
+% Title information
+% ------------------------------------------------------------
+\title{Home Bias and International Risk Sharing}
+\author{Your Name}
+\date{\today}
+
+% ------------------------------------------------------------
+% Document starts here
+% ------------------------------------------------------------
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This paper investigates the relationship between equity home bias and international risk sharing.
+The analysis is based on panel-data regressions using OECD national accounts data and foreign asset holdings.
+\end{abstract}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+% ============================================================
+\section{Introduction}
+% ============================================================
+In their 2007 Paper Sørensen et al. argue that risk sharing and home bias, are two economic patterns 
+that were analysed seperately before but "may be manifestations of the same underlying
+behavior".
+
+After replicating the main results of the paper, and extending it by time and sample size\footnote{As much as possible,
+constrained by data availability.} we shift our focus the eurozone as an interesting case study, to further investigate how 
+home bias and international risk sharing develops. European Integration during the original papers sample period (1993--2003) 
+and afterwards presents a fascinating opportunity to investigate, whether a decline in the exchange rate risk and 
+transaction costs, two main reasons for Home Bias, is actually associated with a declining Home Bias and increasing 
+risk sharing. Naive data analysis finds that the Euroarea countries became more diversified during 
+their integration, but not within themselves, but rather with countries outside the Eurozone. This highly puzzling result
+motivated us to analyse the subject further, finding that Financial Centers inside Europe are the main drivers of this trend 
+and present a major unsolved challange to the original Sorensen et al. paper. Hence, rather than doing a single case study, we 
+shifted our papers focus to analyse this shortcoming more throughoutly.
+
+% ============================================================
+\section{Panel regressions}
+% ============================================================
+\subsection{Theoretical outline}
+
+The outhors use a panel regression setting to analyse
+their central question - whether a lower home bias is associated
+with a higher level of income risk sharing and consumption risk sharing. 
+To do so, they regress the log growth rates of country specific Gross National 
+Income (GNI) or Consumption (C) relative to the full sample's log growth rate of GNI 
+or Consumption on the country specific log Gross National Product (GDP) growth rate, 
+relative to the full samples GDP growth rate.  
+ The baseline regressions are
+
+\begin{equation}
+\Delta \log GNI_{it} - \Delta \log GNI_t
+=
+\alpha_i
++
+\kappa
+\left(
+\Delta \log GDP_{it} - \Delta \log GDP_t
+\right)
++
+\epsilon_{it}
+\end{equation}
+
+and 
+\begin{equation}
+\Delta \log C_{it} - \Delta \log C_t
+=
+\alpha_i
++
+\eta
+\left(
+\Delta \log GDP_{it} - \Delta \log GDP_t
+\right)
++
+\epsilon_{it}.
+\end{equation}
+
+As in the cross sectional regressions,
+one minus the respective risk sharing coefficents \(\kappa\) and \(\eta\) measures the 
+average amount of risk sharing of a country.\\
+To include the equity home bias into this regression, the authors apply
+an interaction term for the equity home bias of a country, relative to 
+the average equity home bias in the sample and an interaction term for a 
+potential time trend. 
+
+\begin{equation}
+\kappa
+=
+\kappa_0
++
+\kappa_1(t - \overline{t})
++
+\kappa_2(EHB_{it} - \overline{EHB}_t)
+\end{equation}
+
+and 
+
+\begin{equation}
+\eta
+=
+\eta_0
++
+\eta_1(t - \overline{t})
++
+\eta_2(EHB_{it} - \overline{EHB}_t).
+\end{equation} 
+
+Once again it is most intuitive to interpret the average risk sharing 
+coefficient of a country: 
+\begin{equation}
+AverageIncomeRiskSharing
+=
+1 -\kappa_0
+-
+\kappa_1(t - \overline{t})
+-
+\kappa_2(EHB_{it} - \overline{EHB}_t)
+\end{equation}
+
+and 
+
+\begin{equation}
+AverageConsumptionRiskSharing
+=
+1 - \eta_0
+-
+\eta_1(t - \overline{t})
+-
+\eta_2(EHB_{it} - \overline{EHB}_t).
+\end{equation} 
+For the hypothesis of a potential co-movement between
+the equity home bias and risk sharing we must focus on the third coefficients \(-\kappa_2\) and \(- \eta_2\), 
+implying that an increase in the equity home bias by 0.1 increases income risk sharing by \(-\kappa_2\)
+and consumption risk sharing by \(- \eta_2\).
+
+
+All panel regressions are run as two-stage feasable Ordinary Least Squares Estimations.
+In the second stage regression each country is attributed
+a weight relative to 1 over its error terms standard deviation in the
+first stage regression.\footnote{Since this is weakly documented in the original paper, 
+we compared the first and second stage regression results and conclude that the differences have no impact on the 
+direction and significance of coefficients.}
+
+\subsection{Empirical results}
+When reporting the results of the panel regressions, we follow
+the authors standard and report the easier to interpret 
+coefficients \(1-\kappa_0/1-\eta_0\), \(-\kappa_1/-\eta_1\) and \(-\kappa_2/-\eta_2\) multiplied
+by 100 to interpret them as percentage effects. Reassuringly, our panel regression results 
+mainly follow the key results of the Sorensen et. al (HIER LINK EINFÜGEN) paper, with a statistically 
+non-different to zero estimate for the time trend and a highly significant coefficient
+for the equity home bias on both income and consumption risk sharing. An increase in the equity home bias by 0.1 
+is now associated with an increase in income risk sharing by roughly 13 percent and consumption risk sharing by 
+roughly 20 percent. Given that our point estimates for the coefficient are larger than 100 and 
+notably higher than the point estimates found
+in the Sorensen et al (HIER LINK EINFÜGEN) paper, we believe that data revisions and the choice of the 
+base year (AS EXPLAINED ABOVE) play an important role. Further, we rely on an interpretation
+offered by the authors themseves, believing that: "a large decline in home bias is not 
+likely to lead to more than 100 percent risk sharing [...] and we interpret the coefficient to imply that declining home bias has been associated
+with strongly increasing [...] risk sharing, even if the actual value is likely to not be valid for very large changes in home bias."
+Further, our coefficient for the average income risk sharing is highly significant, while it is not 
+in the original paper, something that we blame on data revisions and the choice of the base year. \\
+
+In table 5, we follow the papers approach and run similar income risk sharing and consumption 
+risk sharing regressions on terms of certain foreign asset holdings over GDP.\footnote{Note that a positive 
+sign of \(-\kappa_2/ -\eta_2\) is now associated with a higher level of risk sharing.} 
+We treat these regressions merely as an robustness check, and find postive \(-\kappa_2, -\eta_2\)coefficients 
+for all forms of asset holdings, and statistically non signfiicant estimates for the time trend.\\
+
+Even though we find partly differing point estimates, due to data revisions or the choice of the different base year, 
+our findings is mainly in line with the authors finding for the same country and time sample. 
+Therefore, we conclude that the main findings of the Sorensen et al (HIER PAPER EINFÜGEN) panel regression can be replicated. 
+
+% ============================================================
+\section{Extentions}
+% ============================================================
+
+% ============================================================
+\subsection{First Extention: Similar Country Sample 1987--2017}
+% ============================================================
+We aim to analyse how the 22 countries of the original analysis have developed during a by 
+20 years extended time period from 1987 to 2017. This extention is particularly interesting
+as the original period of analysis of 11 years is rather short. 
+
+We find that the results of the authors analysis and our replication largely hold when extending the 
+time period by 20 years. A 0.1 decrease of the equity home bias is now associated with a roughtly 3 percent increase 
+in income risk sharing (HIER TABELLE VERLINKEN) and a 8 percent increase in consumption risk sharing. 
+
+The estimate for the time trend remains statistically non-significant and the average risk sharing coefficient 
+for income and consumption risk sharing decreases notably with the coefficient for average income risk sharing becoming
+statistically non significant whilst the coefficient for average consumption risk sharing remains highly significant. 
+Given that the average income risk sharing coefficient was non-significant in the Sorensen et al (HIER LINK EINFÜGEN) paper 
+in the original sample, we belive that the change may potentially come from data differences and the choice of base years.\\
+
+Looking at table 5 we can see that the same results hold for the foreign assets over GDP regressions, giving us confidence to 
+conclude that the negative relationship between Home Bias and Income and Consumption Risk sharing holds for the extended period 
+of 30 years between 1987--2017.
+
+% ============================================================
+\subsection{Second Extention: Extended Country Sample 1987--2017}
+% ============================================================
+Further, we aim do analyse how the statistical relationship holds between 1987 and 2017 for a larger sample of 
+OECD countries. With respect to the panel regressions, extending the sample period beyond 29 countries was not 
+possible due to lacking data coverage either for GNI or for the Equity Home Bias measures. A starting point for
+future research would defenitely be a larger extention for economies not included in our dataset, especially given the 
+fact that the relative importance of non OECD economies has increased over the past two decades since the paper was published. 
+The panel-regression results of the (slightly) extended sample between 1987 and 2017 confirm the same results as shown in the 
+two regressions before. 
+An decrease in the Equity Home Bias by 0.1 is associated with an increase of income risk sharing by roughly 3 percent and
+an increase in consumption risk sharing by roughly 8 percent. 
+again, the panel regressions for foreign Asset holdings relative to GDP confirm this estimation, with highly significant estimations 
+for the asset holdings themselves, and non significant estimations for the time trend. Again, the average risk sharing coefficient for 
+income is non significant in both specifications, while it is highly significant for consumption in both specifications.
+
+% ============================================================
+\section*{References}
+% ============================================================
+
+Add references manually here, or set up BibTeX/BibLaTeX later.
+
+\end{document}

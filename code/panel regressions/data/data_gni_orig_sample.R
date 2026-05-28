@@ -1,6 +1,7 @@
 
 # ============================================
-# 1. Cleaning data and preparing data for regression
+# Data for panel data regression, Using today's OECD data
+# Original sample size and original sample period. 
 #=============================================
 
 rm(list = ls())
@@ -146,4 +147,6 @@ write.csv(
   "../data/reg_gni_df_original_sample.csv",
   row.names = FALSE
 )
+
+
 

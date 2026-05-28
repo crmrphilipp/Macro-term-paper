@@ -1,3 +1,10 @@
+#============================================
+# Code for the panel regressions to recreate panel 3 
+# and panel 5 of the paper. 
+# Using current OECD data. 
+# EXTENTION 2:  Sample of 29 OECD countries,
+#  time extention 1987 - 2017
+#=============================================
 
 rm(list = ls())
 library(dplyr)
@@ -14,30 +21,29 @@ setwd(
 )
 
 # load data
-reg_gni_df <- read.csv("../data/reg_gni_df_ext_5a.csv")
+reg_cons_df <- read.csv("../data/reg_cons_df_ext_2.csv")
+merged_df <- reg_cons_df
 
-merged_df <- reg_gni_df
-
-
-# ============================================
-# 2. Run Table 3 GNI regression
+#=============================================
+# Table 3, Panel Regressions, Two step regression to 
+# use feasable OLS weighted by the inverse of the standard 
+# errors 
 #=============================================
 
-# First step regression with country FE
-panel_gni_df <- pdata.frame(reg_gni_df, index = c("iso", "year"))
+panel_cons_df <- pdata.frame(reg_cons_df, index = c("iso", "year"))
 
-reg_gni_stage1 <- plm(
-  gni_dev ~ gdp_dev + I(time * gdp_dev) + I(EHB_dev * gdp_dev),
-  data   = panel_gni_df,
+reg_cons_stage1 <- plm(
+  cons_dev ~ gdp_dev + I(time * gdp_dev) + I(EHB_dev * gdp_dev),
+  data   = panel_cons_df,
   model  = "within",
   effect = "individual"
 )
 
 
 # Error term SD
-reg_gni_df$resid_stage1 <- as.numeric(residuals(reg_gni_stage1))
+reg_cons_df$resid_stage1 <- as.numeric(residuals(reg_cons_stage1))
 
-sigma_by_country <- reg_gni_df %>%
+sigma_by_country <- reg_cons_df %>%
   group_by(iso) %>%
   summarise(
     sigma_i = sd(resid_stage1, na.rm = TRUE),
@@ -47,33 +53,38 @@ sigma_by_country <- reg_gni_df %>%
 
 
 # Creating country weights
-reg_gni_df_w <- reg_gni_df %>%
+reg_cons_df_w <- reg_cons_df %>%
   left_join(sigma_by_country, by = "iso") %>%
   mutate(weight_i = 1 / sigma_i)
 
 
 # Second step regression
-panel_gni_df_w <- pdata.frame(reg_gni_df_w, index = c("iso", "year"))
+panel_cons_df_w <- pdata.frame(reg_cons_df_w, index = c("iso", "year"))
 
-reg_gni_stage2 <- plm(
-  gni_dev ~ gdp_dev + I(time * gdp_dev) + I(EHB_dev * gdp_dev),
-  data    = panel_gni_df_w,
+reg_cons_stage2 <- plm(
+  cons_dev ~ gdp_dev + I(time * gdp_dev) + I(EHB_dev * gdp_dev),
+  data    = panel_cons_df_w,
   model   = "within",
   effect  = "individual",
   weights = weight_i
 )
 
+
+
+
 # ============================================
-# 3. Table 5 GNI regression: Foreign Assets over GDP
+# Table 5 consumption regression: Foreign Assets over GDP
+# Once again run as a two stage feasable GLS weighted by the 
+# inverse of the standard deviation. 
 #=============================================
 
-estimate_table5_gni <- function(data, asset_var) {
+estimate_table5_cons <- function(data, asset_var) {
   
   # Clean estimation sample for this specific asset variable
-  reg_gni_df_tmp <- data %>%
+  reg_cons_df_tmp <- data %>%
     mutate(asset_dev = .data[[asset_var]]) %>%
     filter(
-      is.finite(gni_dev),
+      is.finite(cons_dev),
       is.finite(gdp_dev),
       is.finite(asset_dev),
       is.finite(time)
@@ -81,19 +92,19 @@ estimate_table5_gni <- function(data, asset_var) {
     arrange(iso, year)
   
   # First-stage country FE regression
-  panel_gni_df_tmp <- pdata.frame(reg_gni_df_tmp, index = c("iso", "year"))
+  panel_cons_df_tmp <- pdata.frame(reg_cons_df_tmp, index = c("iso", "year"))
   
   reg_stage1_tmp <- plm(
-    gni_dev ~ gdp_dev + I(time * gdp_dev) + I(asset_dev * gdp_dev),
-    data   = panel_gni_df_tmp,
+    cons_dev ~ gdp_dev + I(time * gdp_dev) + I(asset_dev * gdp_dev),
+    data   = panel_cons_df_tmp,
     model  = "within",
     effect = "individual"
   )
   
   # Country-specific residual standard deviation
-  reg_gni_df_tmp$resid_stage1 <- as.numeric(residuals(reg_stage1_tmp))
+  reg_cons_df_tmp$resid_stage1 <- as.numeric(residuals(reg_stage1_tmp))
   
-  sigma_by_country_tmp <- reg_gni_df_tmp %>%
+  sigma_by_country_tmp <- reg_cons_df_tmp %>%
     group_by(iso) %>%
     summarise(
       sigma_i = sd(resid_stage1, na.rm = TRUE),
@@ -102,7 +113,7 @@ estimate_table5_gni <- function(data, asset_var) {
     )
   
   # Second-stage weights
-  reg_gni_df_tmp_w <- reg_gni_df_tmp %>%
+  reg_cons_df_tmp_w <- reg_cons_df_tmp %>%
     left_join(sigma_by_country_tmp, by = "iso") %>%
     mutate(weight_i = 1 / sigma_i) %>%
     filter(
@@ -111,11 +122,11 @@ estimate_table5_gni <- function(data, asset_var) {
     )
   
   # Second-stage weighted country FE regression
-  panel_gni_df_tmp_w <- pdata.frame(reg_gni_df_tmp_w, index = c("iso", "year"))
+  panel_cons_df_tmp_w <- pdata.frame(reg_cons_df_tmp_w, index = c("iso", "year"))
   
   reg_stage2_tmp <- plm(
-    gni_dev ~ gdp_dev + I(time * gdp_dev) + I(asset_dev * gdp_dev),
-    data    = panel_gni_df_tmp_w,
+    cons_dev ~ gdp_dev + I(time * gdp_dev) + I(asset_dev * gdp_dev),
+    data    = panel_cons_df_tmp_w,
     model   = "within",
     effect  = "individual",
     weights = weight_i
@@ -126,47 +137,47 @@ estimate_table5_gni <- function(data, asset_var) {
 #==========================================================
 #### Estimate the five Table 5-style regressions
 #Note:
-# eq_ehb_crude_dev_non_ppp        <- Equity assets / GDP deviation
-# debt_ehb_crude_dev_non_ppp      <- Debt assets / GDP deviation
-# fdi_ehb_crude_dev_non_ppp       <- FDI assets / GDP deviation
-# eq_debt_ehb_crude_dev_non_ppp   <- Equity + Debt assets / GDP deviation
-# ehb_crude_dev_non_ppp           <- All assets deviation
+# eq_ehb_crude_dev       <- Equity assets / GDP deviation
+# debt_ehb_crude_dev     <- Debt assets / GDP deviation
+# fdi_ehb_crude_dev     <- FDI assets / GDP deviation
+# eq_debt_ehb_crude_dev   <- Equity + Debt assets / GDP deviation
+# ehb_crude_dev          <- All assets deviation
 #==========================================================
 
-reg_gni_eq_assets <- estimate_table5_gni(
+reg_cons_eq_assets <- estimate_table5_cons(
   merged_df,
   "eq_ehb_crude_dev"
 )
 
-reg_gni_debt_assets <- estimate_table5_gni(
+reg_cons_debt_assets <- estimate_table5_cons(
   merged_df,
   "debt_ehb_crude_dev"
 )
 
-reg_gni_fdi_assets <- estimate_table5_gni(
+reg_cons_fdi_assets <- estimate_table5_cons(
   merged_df,
   "fdi_ehb_crude_dev"
 )
 
-reg_gni_eq_debt_assets <- estimate_table5_gni(
+reg_cons_eq_debt_assets <- estimate_table5_cons(
   merged_df,
   "eq_debt_ehb_crude_dev"
 )
 
-reg_gni_all_assets <- estimate_table5_gni(
+reg_cons_all_assets <- estimate_table5_cons(
   merged_df,
   "ehb_crude_dev"
 )
 
-summary(reg_gni_eq_assets)
-summary(reg_gni_debt_assets)
-summary(reg_gni_fdi_assets)
-summary(reg_gni_eq_debt_assets)
-summary(reg_gni_all_assets)
+summary(reg_cons_eq_assets)
+summary(reg_cons_debt_assets)
+summary(reg_cons_fdi_assets)
+summary(reg_cons_eq_debt_assets)
+summary(reg_cons_all_assets)
 
 
-# ============================================
-# 4. Creating the tables
+#============================================
+# Creating Regression outputs
 #=============================================
 
 # Table 3 Regression results
@@ -180,7 +191,7 @@ if (!dir.exists(output_dir)) {
 }
 
 # Extract coefficient table from regression 2
-coef_table_stage2 <- summary(reg_gni_stage2)$coefficients
+coef_table_stage2 <- summary(reg_cons_stage2)$coefficients
 
 # Check coefficient names
 print(rownames(coef_table_stage2))
@@ -211,19 +222,17 @@ se_k0 <- coef_table_stage2["gdp_dev", "Std. Error"]
 se_k1 <- coef_table_stage2["I(time * gdp_dev)", "Std. Error"]
 se_k2 <- coef_table_stage2["I(EHB_dev * gdp_dev)", "Std. Error"]
 
-# Transform coefficients as in Table 3
+# Transform coefficients (to follow what they do in the paper)
 table3_coef <- c(
   100 * (1 - k0),
   -100 * k1,
   -100 * k2
 )
 
-# IMPORTANT:
-# Names must match the original coefficient names,
-# not the pretty labels.
 names(table3_coef) <- required_terms
 
-# Transform t-values
+# The paper reports t-value in paranthesis. Therefore, 
+# I follow their approach. 
 # First t-value tests k0 = 1, because average risk sharing is 100 * (1 - k0)
 table3_t <- c(
   (1 - k0) / se_k0,
@@ -239,12 +248,12 @@ print(table3_t)
 
 # Stargazer output
 stargazer(
-  reg_gni_stage2,
+  reg_cons_stage2,
   type = "latex",
-  out = file.path(output_dir, "3panel_reg_gni_ext_5a.tex"),
-  title = "Ext 5a GNI Risk Sharing and Equity Home Bias",
-  dep.var.labels = "GNI Risk Sharing",
-  column.labels = c("GNI"),
+  out = file.path(output_dir, "3_panel_reg_cons_ext_2.tex"),
+  title = "Extended Sample and Extended Time Period Consumption Risk Sharing and Equity Home Bias",
+  dep.var.labels = "Consumption Risk Sharing",
+  column.labels = c("Consumption"),
   model.numbers = FALSE,
   coef = list(table3_coef),
   t = list(table3_t),
@@ -260,14 +269,13 @@ stargazer(
   header = FALSE
 )
 
-file.exists(file.path(output_dir, "3panel_reg_gni_ext_5a.tex"))
+file.exists(file.path(output_dir, "3panel_reg_cons_ext_2.tex"))
 
 # ============================================
 # Table 5 regression results
-#Function: transform coefficients into Table 5 format
 # ============================================
 
-get_table5_gni_estimates <- function(model) {
+get_table5_cons_estimates <- function(model) {
   
   coef_table <- summary(model)$coefficients
   
@@ -288,20 +296,6 @@ get_table5_gni_estimates <- function(model) {
   
   # --------------------------------------------
   # Extract original coefficients
-  # --------------------------------------------
-  # The regression estimates:
-  #
-  # gni_dev = k0 * gdp_dev
-  #          + k1 * time * gdp_dev
-  #          + k2 * asset_dev * gdp_dev
-  #          + country fixed effects
-  #          + error
-  #
-  # But Table 5 reports risk-sharing coefficients:
-  #
-  # Average risk sharing =  100 * (1 - k0)
-  # Trend                = -100 * k1
-  # Asset interaction    = -100 * k2
   # --------------------------------------------
   
   k0 <- coef_table["gdp_dev", "Estimate"]
@@ -340,45 +334,44 @@ get_table5_gni_estimates <- function(model) {
   )
 }
 
-
 # ============================================
 # Prepare transformed coefficients and t-values
 # ============================================
 
-table5_gni_models <- list(
-  reg_gni_eq_assets,
-  reg_gni_debt_assets,
-  reg_gni_fdi_assets,
-  reg_gni_eq_debt_assets,
-  reg_gni_all_assets
+table5_cons_models <- list(
+  reg_cons_eq_assets,
+  reg_cons_debt_assets,
+  reg_cons_fdi_assets,
+  reg_cons_eq_debt_assets,
+  reg_cons_all_assets
 )
 
-table5_gni_output <- lapply(
-  table5_gni_models,
-  get_table5_gni_estimates
+table5_cons_output <- lapply(
+  table5_cons_models,
+  get_table5_cons_estimates
 )
 
-table5_gni_coef <- lapply(
-  table5_gni_output,
+table5_cons_coef <- lapply(
+  table5_cons_output,
   function(x) x$coef
 )
 
-table5_gni_t <- lapply(
-  table5_gni_output,
+table5_cons_t <- lapply(
+  table5_cons_output,
   function(x) x$t
 )
 
 
 # ============================================
-# Stargazer output: Table 5 GNI regression
+# Stargazer output: Table 5 consumption regression
 # ============================================
 
 stargazer(
-  table5_gni_models,
+  table5_cons_models,
   type = "latex",
-  out = file.path(output_dir, "5panel_reg_gni_ext_5a.tex"),
-  title = "Ext 5a GNI Risk Sharing and Foreign Asset Holdings Relative to GDP",
-  dep.var.labels = "GNI Risk Sharing",
+  out = file.path(output_dir, "5_panel_reg_cons_ext_2.tex"),
+  title = "Extended Sample and Extended Time Period Consumption Risk Sharing and Foreign Asset Holdings Relative to GDP",
+  dep.var.labels = "Consumption Risk Sharing",
   column.labels = c(
     "Equity",
     "Debt",
@@ -387,8 +380,8 @@ stargazer(
     "All Assets"
   ),
   model.numbers = FALSE,
-  coef = table5_gni_coef,
-  t = table5_gni_t,
+  coef = table5_cons_coef,
+  t = table5_cons_t,
   report = "vct",
   covariate.labels = c(
     "Average risk sharing",
@@ -407,5 +400,10 @@ stargazer(
 # ============================================
 
 file.exists(
-  file.path(output_dir, "5panel_reg_gni_ext_5a.tex")
+  file.path(output_dir, "5_panel_reg_cons_ext_2.tex")
 )
+
+file.exists(
+  file.path(output_dir, "5_panel_reg_cons_ext_2.tex")
+)
+

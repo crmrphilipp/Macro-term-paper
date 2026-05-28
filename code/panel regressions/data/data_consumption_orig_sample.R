@@ -1,5 +1,10 @@
 # ============================================
-# 1. Cleaning data and preparing data for regression
+# Merging the data frames for the panel regressions
+# using today's OECD data
+# Original Sample, restricting the sample to the 22 
+# countries used in the paper. 
+# Restricting the time period to 1993 - 2003
+# 
 #=============================================
 
 rm(list = ls())
@@ -11,7 +16,7 @@ setwd(
   normalizePath(
     file.path(
       dirname(rstudioapi::getActiveDocumentContext()$path),
-      "..", "..", "data"
+      "..", "..", "..", "data"
     )
   )
 )
@@ -144,3 +149,5 @@ write.csv(
   "../data/reg_cons_df_original_sample.csv",
   row.names = FALSE
 )
+
+

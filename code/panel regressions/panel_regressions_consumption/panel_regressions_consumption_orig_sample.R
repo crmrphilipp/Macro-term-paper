@@ -1,11 +1,9 @@
 #============================================
-# Normal sample, 22 OECD countries, 1993 - 2003
+# Code for the panel regressions to recreate panel 3 
+# and panel 5 of the paper. 
+# Using current OECD data. 
+# Original Sample 22 OECD countries, 1993 - 2003
 #=============================================
-
-#============================================
-# Run Table 3 Consumption regression
-#============================================
-
 
 rm(list = ls())
 library(dplyr)
@@ -20,11 +18,16 @@ setwd(
     )
   )
 )
-
 # load data
 reg_cons_df <- read.csv("../data/reg_cons_df_original_sample.csv")
 
 merged_df <- reg_cons_df
+#=============================================
+# Table 3, Panel Regressions, Two step regression to 
+# use feasable OLS weighted by the inverse of the standard 
+# errors 
+#=============================================
+
 # First step regression with country FE
 panel_cons_df <- pdata.frame(reg_cons_df, index = c("iso", "year"))
 
@@ -35,8 +38,7 @@ reg_cons_stage1 <- plm(
   effect = "individual"
 )
 
-
-# Error term SD
+# Error term Standarderror
 reg_cons_df$resid_stage1 <- as.numeric(residuals(reg_cons_stage1))
 
 sigma_by_country <- reg_cons_df %>%
@@ -46,7 +48,6 @@ sigma_by_country <- reg_cons_df %>%
     n_resid = sum(!is.na(resid_stage1)),
     .groups = "drop"
   )
-
 
 # Creating country weights
 reg_cons_df_w <- reg_cons_df %>%
@@ -65,16 +66,16 @@ reg_cons_stage2 <- plm(
   weights = weight_i
 )
 
-
-
+# investigating the output
+summary(reg_cons_stage2)
 
 # ============================================
-# 3. Table 5 consumption regression: Foreign Assets over GDP
+# Table 5 consumption regression: Foreign Assets over GDP
+# Once again run as a two stage feasable GLS weighted by the 
+# inverse of the standard deviation. 
 #=============================================
 
 estimate_table5_cons <- function(data, asset_var) {
-  
-  # Clean estimation sample for this specific asset variable
   reg_cons_df_tmp <- data %>%
     mutate(asset_dev = .data[[asset_var]]) %>%
     filter(
@@ -130,7 +131,7 @@ estimate_table5_cons <- function(data, asset_var) {
 }
 #==========================================================
 #### Estimate the five Table 5-style regressions
-#Note:
+# Note:
 # eq_ehb_crude_dev_non_ppp        <- Equity assets / GDP deviation
 # debt_ehb_crude_dev_non_ppp      <- Debt assets / GDP deviation
 # fdi_ehb_crude_dev_non_ppp       <- FDI assets / GDP deviation
@@ -171,7 +172,7 @@ summary(reg_cons_all_assets)
 
 
 # ============================================
-# 4. Creating the tables
+# Creating Regression outputs
 #=============================================
 
 # Table 3 Regression results
@@ -216,19 +217,17 @@ se_k0 <- coef_table_stage2["gdp_dev", "Std. Error"]
 se_k1 <- coef_table_stage2["I(time * gdp_dev)", "Std. Error"]
 se_k2 <- coef_table_stage2["I(EHB_dev * gdp_dev)", "Std. Error"]
 
-# Transform coefficients as in Table 3
+# Transform coefficients (to follow what they do in the paper)
 table3_coef <- c(
   100 * (1 - k0),
   -100 * k1,
   -100 * k2
 )
 
-# IMPORTANT:
-# Names must match the original coefficient names,
-# not the pretty labels.
 names(table3_coef) <- required_terms
 
-# Transform t-values
+# The paper reports t-value in paranthesis. Therefore, 
+# I follow their approach. 
 # First t-value tests k0 = 1, because average risk sharing is 100 * (1 - k0)
 table3_t <- c(
   (1 - k0) / se_k0,
@@ -246,8 +245,8 @@ print(table3_t)
 stargazer(
   reg_cons_stage2,
   type = "latex",
-  out = file.path(output_dir, "3panel_reg_cons_orig_sample.tex"),
-  title = "Original Sample 1993 - 2003 Consumption Risk Sharing and Equity Home Bias",
+  out = file.path(output_dir, "3_panel_reg_cons_orig_sample.tex"),
+  title = "Original Sample and Time Period Consumption Risk Sharing and Equity Home Bias",
   dep.var.labels = "Consumption Risk Sharing",
   column.labels = c("Consumption"),
   model.numbers = FALSE,
@@ -269,7 +268,6 @@ file.exists(file.path(output_dir, "3panel_reg_cons_orig_sample.tex"))
 
 # ============================================
 # Table 5 regression results
-# Function: transform coefficients into Table 5 format
 # ============================================
 
 get_table5_cons_estimates <- function(model) {
@@ -293,20 +291,6 @@ get_table5_cons_estimates <- function(model) {
   
   # --------------------------------------------
   # Extract original coefficients
-  # --------------------------------------------
-  # The regression estimates:
-  #
-  # cons_dev = k0 * gdp_dev
-  #          + k1 * time * gdp_dev
-  #          + k2 * asset_dev * gdp_dev
-  #          + country fixed effects
-  #          + error
-  #
-  # But Table 5 reports risk-sharing coefficients:
-  #
-  # Average risk sharing =  100 * (1 - k0)
-  # Trend                = -100 * k1
-  # Asset interaction    = -100 * k2
   # --------------------------------------------
   
   k0 <- coef_table["gdp_dev", "Estimate"]
@@ -345,7 +329,6 @@ get_table5_cons_estimates <- function(model) {
   )
 }
 
-
 # ============================================
 # Prepare transformed coefficients and t-values
 # ============================================
@@ -381,8 +364,8 @@ table5_cons_t <- lapply(
 stargazer(
   table5_cons_models,
   type = "latex",
-  out = file.path(output_dir, "5panel_reg_cons_orig_sample.tex"),
-  title = "OECD ORIGINAL SAMPLE REP Consumption Risk Sharing and Foreign Asset Holdings Relative to GDP",
+  out = file.path(output_dir, "5_panel_reg_cons_orig_sample.tex"),
+  title = "Original Sample Time Period Consumption Risk Sharing and Foreign Asset Holdings Relative to GDP",
   dep.var.labels = "Consumption Risk Sharing",
   column.labels = c(
     "Equity",
@@ -412,5 +395,9 @@ stargazer(
 # ============================================
 
 file.exists(
-  file.path(output_dir, "5panel_reg_cons_orig_sample.tex")
+  file.path(output_dir, "5_panel_reg_cons_orig_sample.tex")
+)
+
+file.exists(
+  file.path(output_dir, "5_panel_reg_cons_orig_sample.tex")
 )

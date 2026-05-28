@@ -1,3 +1,9 @@
+#============================================
+# Code for the panel regressions to recreate panel 3 
+# and panel 5 of the paper. 
+# Using current OECD data. 
+# Original Sample 22 OECD countries, 1993 - 2003
+#=============================================
 
 rm(list = ls())
 library(dplyr)
@@ -19,8 +25,10 @@ reg_gni_df <- read.csv("../data/reg_gni_df_original_sample.csv")
 merged_df <- reg_gni_df
 
 
-# ============================================
-# 2. Run Table 3 GNI regression
+#=============================================
+# Table 3, Panel Regressions for GNI, Two step regression to 
+# use feasable OLS weighted by the inverse of the standard 
+# errors 
 #=============================================
 
 # First step regression with country FE
@@ -34,7 +42,7 @@ reg_gni_stage1 <- plm(
 )
 
 
-# Error term SD
+# Error term Standard errors
 reg_gni_df$resid_stage1 <- as.numeric(residuals(reg_gni_stage1))
 
 sigma_by_country <- reg_gni_df %>%
@@ -64,12 +72,12 @@ reg_gni_stage2 <- plm(
 )
 
 # ============================================
-# 3. Table 5 GNI regression: Foreign Assets over GDP
+# Table 5 GNI regression: Foreign Assets over GDP
+# Once again run as a two stage feasable GLS weighted by the 
+# inverse of the standard deviation. 
 #=============================================
 
 estimate_table5_gni <- function(data, asset_var) {
-  
-  # Clean estimation sample for this specific asset variable
   reg_gni_df_tmp <- data %>%
     mutate(asset_dev = .data[[asset_var]]) %>%
     filter(
@@ -165,8 +173,8 @@ summary(reg_gni_eq_debt_assets)
 summary(reg_gni_all_assets)
 
 
-# ============================================
-# 4. Creating the tables
+#============================================
+# Creating Regression outputs
 #=============================================
 
 # Table 3 Regression results
@@ -211,19 +219,17 @@ se_k0 <- coef_table_stage2["gdp_dev", "Std. Error"]
 se_k1 <- coef_table_stage2["I(time * gdp_dev)", "Std. Error"]
 se_k2 <- coef_table_stage2["I(EHB_dev * gdp_dev)", "Std. Error"]
 
-# Transform coefficients as in Table 3
+# Transform coefficients (to follow what they do in the paper)
 table3_coef <- c(
   100 * (1 - k0),
   -100 * k1,
   -100 * k2
 )
 
-# IMPORTANT:
-# Names must match the original coefficient names,
-# not the pretty labels.
 names(table3_coef) <- required_terms
 
-# Transform t-values
+# The paper reports t-value in paranthesis. Therefore, 
+# I follow their approach. 
 # First t-value tests k0 = 1, because average risk sharing is 100 * (1 - k0)
 table3_t <- c(
   (1 - k0) / se_k0,
@@ -233,7 +239,6 @@ table3_t <- c(
 
 names(table3_t) <- required_terms
 
-# Optional: print transformed values before exporting
 print(table3_coef)
 print(table3_t)
 
@@ -241,8 +246,8 @@ print(table3_t)
 stargazer(
   reg_gni_stage2,
   type = "latex",
-  out = file.path(output_dir, "3panel_reg_gni_orig_sample.tex"),
-  title = "Original Sample GNI Risk Sharing and Equity Home Bias",
+  out = file.path(output_dir, "3_panel_reg_gni_orig_sample.tex"),
+  title = "Original Sample and Time Period GNI Risk Sharing and Equity Home Bias",
   dep.var.labels = "GNI Risk Sharing",
   column.labels = c("GNI"),
   model.numbers = FALSE,
@@ -260,11 +265,10 @@ stargazer(
   header = FALSE
 )
 
-file.exists(file.path(output_dir, "3panel_reg_gni_orig_sample.tex"))
+file.exists(file.path(output_dir, "3_panel_reg_gni_orig_sample.tex"))
 
 # ============================================
 # Table 5 regression results
-#Function: transform coefficients into Table 5 format
 # ============================================
 
 get_table5_gni_estimates <- function(model) {
@@ -289,20 +293,6 @@ get_table5_gni_estimates <- function(model) {
   # --------------------------------------------
   # Extract original coefficients
   # --------------------------------------------
-  # The regression estimates:
-  #
-  # gni_dev = k0 * gdp_dev
-  #          + k1 * time * gdp_dev
-  #          + k2 * asset_dev * gdp_dev
-  #          + country fixed effects
-  #          + error
-  #
-  # But Table 5 reports risk-sharing coefficients:
-  #
-  # Average risk sharing =  100 * (1 - k0)
-  # Trend                = -100 * k1
-  # Asset interaction    = -100 * k2
-  # --------------------------------------------
   
   k0 <- coef_table["gdp_dev", "Estimate"]
   k1 <- coef_table["I(time * gdp_dev)", "Estimate"]
@@ -322,8 +312,7 @@ get_table5_gni_estimates <- function(model) {
   names(coef_out) <- required_terms
   
   # Corresponding t-values
-  # For average risk sharing, the relevant null is:
-  # 100 * (1 - k0) = 0, which is equivalent to k0 = 1.
+  # For average risk sharing, the relevant null is equivalent to k0 = 1.
   t_out <- c(
     (1 - k0) / se_k0,
     (-k1) / se_k1,
@@ -339,8 +328,6 @@ get_table5_gni_estimates <- function(model) {
     )
   )
 }
-
-
 # ============================================
 # Prepare transformed coefficients and t-values
 # ============================================
@@ -376,8 +363,8 @@ table5_gni_t <- lapply(
 stargazer(
   table5_gni_models,
   type = "latex",
-  out = file.path(output_dir, "5panel_reg_gni_orig_sample.tex"),
-  title = "Original Sample GNI Risk Sharing and Foreign Asset Holdings Relative to GDP",
+  out = file.path(output_dir, "5_panel_reg_gni_orig_sample.tex"),
+  title = "Original Sample and Time Period GNI Risk Sharing and Foreign Asset Holdings Relative to GDP",
   dep.var.labels = "GNI Risk Sharing",
   column.labels = c(
     "Equity",
@@ -407,5 +394,9 @@ stargazer(
 # ============================================
 
 file.exists(
-  file.path(output_dir, "5panel_reg_gni_orig_sample.tex")
+  file.path(output_dir, "5_panel_reg_gni_orig_sample.tex")
+)
+
+file.exists(
+  file.path(output_dir, "5_panel_reg_gni_orig_sample.tex")
 )
