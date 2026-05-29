@@ -375,8 +375,8 @@ ehb_deviation_by_country <- ggplot(ehb_reg, aes(x = year, y = EHB_dev, group = i
     data          = ehb_labels,
     aes(label     = iso),
     size          = 2.5,
-    nudge_x       = 0.4,          # push labels to the right of 2003
-    direction     = "y",          # only repel vertically
+    nudge_x       = 0.4,          
+    direction     = "y",          
     hjust         = 0,
     segment.size  = 0.3,
     segment.color = "grey70",
@@ -384,8 +384,8 @@ ehb_deviation_by_country <- ggplot(ehb_reg, aes(x = year, y = EHB_dev, group = i
   ) +
   scale_x_continuous(
     breaks = 1993:2003,
-    limits = c(1993, 2006)        # extra room on the right for labels
-  ) +
+    limits = c(1993, 2006)       
+  ) 
   labs(
     x       = "Year",
     y       = "EHB Deviation from Yearly Mean",

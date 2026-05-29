@@ -438,7 +438,7 @@ cov_ehb_short |>
 ehb_top60 |>
   mutate(
     has_data = !is.na(EHB),
-    iso  = fct_reorder(iso, has_data, mean)  # order by coverage
+    iso  = fct_reorder(iso, has_data, mean)  
   ) |>
   ggplot(aes(x = year, y = iso, fill = has_data)) +
   geom_tile(color = "white", linewidth = 0.3) +
@@ -454,7 +454,7 @@ ehb_coverage <- ehb_top60 |>
   filter(year>1987) |>
   mutate(
     has_data = !is.na(EHB),
-    iso  = fct_reorder(iso, gdp, mean)  # order by coverage
+    iso  = fct_reorder(iso, gdp, mean)    
   ) |>
   ggplot(aes(x = year, y = iso, fill = has_data)) +
   geom_tile(color = "white", linewidth = 0.3) +
@@ -625,7 +625,7 @@ ggsave(
 # Group definitions
 euro_core_iso <- c(
   "AUT", "BEL", "FIN", "FRA", "DEU",
-  "IRL", "ITA", "LUX", "NLD", "PRT", "ESP"   # founding 1999 members
+  "IRL", "ITA", "LUX", "NLD", "PRT", "ESP"   
 )
 
 euro_periphery_iso <- c(
@@ -918,7 +918,7 @@ p6 <- ggplot(means_long, aes(x = year, y = value, color = variable, shape = vari
     axis.title      = element_text(size = 10),
     legend.position = "bottom",
     legend.text     = element_text(size = 9),
-    legend.key.width = unit(1.5, "cm"),    # wider legend keys so line style is visible
+    legend.key.width = unit(1.5, "cm"),    
     plot.caption    = element_text(hjust = 0, size = 8, color = "grey30"),
     panel.border    = element_rect(color = "black", fill = NA, linewidth = 0.5)
   ) +
@@ -1304,12 +1304,12 @@ p8 <- ggplot(means_long_orig, aes(x = year, y = value, color = variable, shape =
     axis.title      = element_text(size = 10),
     legend.position = "bottom",
     legend.text     = element_text(size = 9),
-    legend.key.width = unit(1.5, "cm"),    # wider legend keys so line style is visible
+    legend.key.width = unit(1.5, "cm"),    
     plot.caption    = element_text(hjust = 0, size = 8, color = "grey30"),
     panel.border    = element_rect(color = "black", fill = NA, linewidth = 0.5)
   ) +
   guides(
-    color = guide_legend(nrow = 2),   # wrap legend to 2 rows if needed
+    color = guide_legend(nrow = 2),   
     shape = guide_legend(nrow = 2)
   )
 

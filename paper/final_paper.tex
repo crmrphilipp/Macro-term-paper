@@ -73,6 +73,29 @@
 % ══════════════════════════════════════════
 \section{Introduction}\label{sec:introduction}
 
+In their 2007 Paper Sørensen et al. argue that risk sharing and home bias, are two economic patterns 
+that were analysed separately before but "may be manifestations of the same underlying
+behavior". Home bias refers to the observation that investors hold disproportionally larger shares of domestic assets in their portfolio compared to theoretical predictions \cite{FrenchPoterba1991}.
+Risk sharing denotes how countries stabilise their consumption or income from idiosyncratic output shocks via international financial markets \cite{Obstfeld1994}.
+To analyse the potential link \textcite{main} use panel data for 24 OECD countries between 1993 and 2003. In their key regression,
+they interact home bias measures with idiosyncratic GDP growth deviations in panel regressions of consumption and GNI growth. The results support their
+hypothesis regarding the close connection of both phenomena showing that a decreasing home bias is statistically significant associated with increasing risk sharing without claiming causality.
+With over 500 citations the paper has become an important reference linking portfolio allocation and risk sharing.
+
+In this paper we replicate their main results, assess their robustness, and further extend their analytical framework by time and sample size\footnote{As much as possible,
+constrained by data availability.} To deepen our understading of the empirical and economic relatonship between international financial integration
+and macroeconomic risk sharing we shift our focus the Euro Area (EA) as case study. European Integration during the original papers sample period (1993--2003) 
+and afterwards presents a fascinating opportunity to investigate, whether a decline in the exchange rate risk and 
+transaction costs, two main reasons for home bias, is actually associated with a declining home bias and increasing risk sharing. 
+
+Starting with the panel regression from \textcite{main}, our results are at odds with economic intuition. After relating it to findings in \textcite{main} for the European Union,
+we thus disaggregate the analysis looking at home bias and risk sharing separately. The descriptive analysis of the EA's home bias trajectory creates new puzzles. Hence we turn to the literature,
+finding that in fact, the data for the home bias construction in the EA is severely distorted from EU financial centers \cite{NBERw32275}. Due to data limitations we are not able
+to construct corrected home bias measures. Thus we continue focussing on risk sharing. Because the risk sharing regressions do not provide sufficient
+insights on diverging trajectoreis of the EA compared to comparable economies, nor on the relation to home bias we use a well established method to disentangle the different channels of risk sharing. Based on the hypothesized
+connection between home bias and risk sharing, the capital markets channel of risk sharing should gain importance in the course of European integration.
+Confirming this hypothesis we summarize the indicative evidence that indeed, with the introduction of the EA, home bias in the EA decreased stronger than in 
+comparable countries while risk sharing increased.
 
 
 % ══════════════════════════════════════════
@@ -81,12 +104,60 @@
 \section{Data}\label{sec:data}
 
 
+
 % ══════════════════════════════════════════
 %  3  REPLICATION OF SØRENSEN ET AL. (2007)
 % ══════════════════════════════════════════
 \section{Replication of \citet{sorensen2007}}\label{sec:replication}
 
 \subsection{Equity Home Bias}\label{subsec:home_bias}
+
+Based on data from the External Wealth of Nations Database \textcite{main} first report country-level foreign asset and liability holdings of equity, debt, and foreign direct investment 
+relative to GDP for the 24 country sample. Using the same data from \texcite{lane2018external} we are able to replicate their Table 1 precisely with only minor deviations 
+presumably due to data correction (see Table \ref{tab:table_1_repl} in Appendix \ref{app:replication}). In they following the establish a Home Bias measure.
+
+Home bias conceptually builds on a standard Capital Asset Pricing Model (CAPM) implying that all investors hold equal shares of risky assets. Adapted to the country level, a country $i$ will
+hold a share of domestic equity- (debt-) assets relative to the total portfolio equivalent to their world market share of equity- (debt-) assets. However, empirically domestic assets 
+normally account for a higher proportion in the portfolio resulting in international home bias. Potential causes for home bias named in the literature are currency risk \cite{AdlerDumas1983}, 
+transaction costs \cite{CooperKaplanis1994} as well as lack of information or market access.
+\textcite{main} use a standard measure in the literature for the home bias. The index goes from 0 to 1 where 0 is international diversification in line with the CAPM prediction and 1 is full home bias. 
+More specifically, they compute:
+
+\begin{equation}
+      \text{Equity Home Bias}_i = 1 - \frac{w_i^{\text{foreign}}}{1 - A_i}
+\end{equation}
+
+    where:
+
+\begin{equation*}
+      w_i^{\text{foreign}} = \frac{\text{Foreign equity held by country } i}{\text{Country } i\text{'s total equity portfolio}}
+\end{equation*}
+
+\begin{equation*}
+      A_i = \frac{\text{Stock market capitalization of country } i}{\text{Stock market capitalization of the world}}
+\end{equation*}
+
+    and
+
+\begin{equation*}
+      \text{Total equity portfolio}_i = \text{Market cap}_i + \text{Foreign equity held}_i - \text{Domestic equity held by foreigners}_i
+\end{equation*}
+
+While the authors in our main replication paper compute an equity home bias and a debt home bias using the latter for robustness checks, we limit our analysis on the Equity Home Bias (EHB) due to data constraints. 
+Closely following the paper we use data on equity holdings from \textcite{lane2018external}. Since the Standard and Poor Global Stock Markets Facebooks were not accessible for us, deviating from 
+the original paper we used stock market capitalisation from the World Development Indicator Database by the World Bank which's coverage is fairly well for the 1993 to 2003 time period.
+Using their methodology we can replicate columns (1) and (2) of their Table 2, descriptively showing percentage of foreign equity in portfolio (numerator of the EHB measure) and the EHB. The results align closely (see Table \ref{tab:table_2_rep} in Appendix \ref{app:replication}). 
+Small deviations could come from data updates or the deviating source for stock market capitalisation. The EHB exhibits a consistent decline across countries from 1993 to 2003.
+
+Next to some missing data points leading to missing EHB values for example for Ireland we excluded some observations. First, in few cases the total equity portfolio was negative leading to EHB values larger 1. 
+Secondly, in even less cases EHB was negative which would be equivalent to a foreign bias. Both problems are most probably due to the data mismatch combining the EWN and WDI data. 
+Problems arised in Finland from 1999 to 2003 potentially still related to the Finnish Banking crisis \cite{HonkapohjaKoskela1999} and in Italy, Austria and France for 1998 where each countries stock market capitalisation rapidly dropped 
+before going back to the old level the next year. In 1998, both the Italian and the Austrian stock exchange was restructured or privatised potentially causing these data discontinuities \cite{WienerBoerse2026, BorsaItaliana2026}. Ireland had both, years with negative total equity or negative EHB. 
+We completely discarded Ireland from the analysis. Potential explanations for this will be discussed in Section \ref{subsec:oofc}. 
+
+Note that for the exploratory plots the original paper does not use the home bias measures but rather a rough proxy by looking at assets over GDP. This measure is also used for robustness checks. 
+As can be seen in Appendix Table \ref{tab:table_1_repl} and Figure \ref{} we recover their results in trend and level.
+
 
 \subsection{Cross-Section Risk Sharing Estimates}\label{subsec:replication_cs}
 
@@ -98,32 +169,95 @@
 % ══════════════════════════════════════════
 \section{Extensions by Time and Sample Size}\label{sec:extensions_time}
 
+As a logical extension and robustness check of the results in \textcite{main} we apply the entire methodology to a longer sample with the original countries and 
+additionally a longer sample with broader country coverage. The time period and country sample chosen was partly defined by data restrictions for the EHB as desrcibed in the following.
+
 \subsection{Extension: Equity Home Bias}\label{subsec:ext_home_bias}
+
+For the time and country coverage extension the methodology for the home bias remains the same. Due to limited data coverage before the 1980s we decided to start the series in 1987, five years before the Maastricht Treaty. 
+In the second half of the 2010s the WDI world market capitalisation is less complete especially for EU countries. Hence, we limited the long sample to 2017 also considering potential irregular patterns during Covid and Ukraine crisis. 
+For the broader country sample to address the coverage we first limited the data to the joint subset of the top 50 economies based on the EWN reported GDP values combined with all EU27 countries. 
+Starting from there we analysed irregularities in the EHB index as before (excluding e.g. Luxembourg and Ireland due to negative total equity portfolio values).
+Because the regression uses deviations from the mean we tried to avoid frequent drop ins or outs. Instead of keeping countries with very few non NA values for EHB, we eventually excluded Ireland, 
+Luxembourg, Finland, Malta, Cyprus, Lithuania, Latvia and Estonia as well as Taiwan from the broader sample. All remaining countries in the broad sample have an EHB coverage of at least 40\%. 
+For a visual analysis of the data coverage after excluding irregular observations see Figure \ref{fig:app_cover_ehb} in Appenix \ref{app:rep_ext}.
+
 
 \subsection{Extension: Cross-Section Risk Sharing Estimates}\label{subsec:ext_replication_cs}
 
 \subsection{Extension: Panel-Data Regressions}\label{subsec:ext_replication_panel}
 
-\subsection{Extension: Euro Zone in Panel Regression}
-
-\subsection{Extension: Structural Breaks in Panel Regression}
-
-
 % ══════════════════════════════════════════
-%  5  EUROZONE EXTENSION: HOME BIAS
+%  5  EUROZONE EXTENSION
 % ══════════════════════════════════════════
-\section{Eurozone Extension: Equity Home Bias}\label{sec:eurozone_hb}
+\section{Case Study Euro Area}\label{sec:euro_case}
 
-\subsection{Hypothesis}\label{subsec:ez_hypothesis}
+As our main extension, we examine the EA as a case study. The introduction of the euro eliminated exchange rate risk among member states and, fueled by further European Integration, 
+transaction costs for cross border financial flows fell. As introduced in Section \ref{subsec:home_bias} those are commonly seen as drivers of home bias.
+The EA therefore provides a setting where we would expect a pronounced decline in home bias compared to similar countries. Following the established association, risk sharing should increase correspondingly.
+Based on our longer sample we can leverage a considerably long period of EA integration and expansion.
+
+\subsection{Case Study Euro Area: Panel Regression}
 
 
 
-\subsection{Onshore--Offshore Financial Centres}\label{subsec:oofc}
+\subsection{Case Study Euro Area: Equity Home Bias}\label{subsec:eurozone_hb}
 
+To simplfy the joint analysis and find potential reasons for the surprising results we start with the home bias in the EA.
+As argued before, we expect a stronger home bias decrease of Eurozone countries than other developed economies after the introduction of the euro. Following this logic, the home bias of the eurozone as an aggregate entity should decrease 
+to a much lesser extent if asset holding diversification mainly occurs within the euro zone.
+Surprisingly this is not in line with the equity home bias based on EWN data we observe. Indeed, both, the cross country average weighted by total equity portfolio and the EA-aggregate home bias, decrease as can be seen in Figure \ref{fig_euro_area_country_ehb} and Figure \ref{euro_area_aggregate_ehb}. 
+But the decline of the aggregate group is stronger in absolute terms as well as in comparison to other developed economies and the US. This implies that European portfolios became more diversified but most diversification happened outside the Euro Area and not within.
 
+Based on this result at odds with theory and the in general suspiciously strong decline in EA-aggregate EHB approaching 0, we further investigated related research.
 
+\subsubsection{Onshore--Offshore Financial Centres}\label{subsubsec:oofc}
 
-\begin{figure}[H]
+An interesting explanation for this counter intuitive observation can be found in \textcite{NBERw32275}. This ECB working paper explores the role of so called „Onshore Offshore Financial Centres“ (OOFCs) in the Euro Area and how they distort foreign equity positions and Home Bias measures. 
+Ireland, Luxembourg and (lesser) the Netherlands host large finance industries and more specifically investment funds and centers for securities issuance for foreign firms due to regulatory and tax reasons. 
+Standard international investment positions (IIP) like those reported in the EWN database only consider the country of residency of a) the holder and of b) the fund or financing subsidiary but ignore the location of the underlying assets. 
+Additionally, fund shares are classified as equity under BPM6\footnote{Balance of Payments and International Investment Position Manual, 6th edition \cite{IMF2009BPM6}.} regardless of underlying assets. This leads to various distortions in the data and EHB measures: 
+\begin{itemize}
+\item If Euro Area countries hold EA fund shares with non-domestic Euro Area assets underlying, there is no distortion because the equity is labelled foreign which is all that matter for the national EHB, and the misattribution cancels out completely when looking at the Euro Area Aggregate.
+\item If Euro Area countries hold EA fund shares with domestic assets underlying (round-tripping) the foreign equity position is overstated leading to a too low EHB measure.
+\item If Euro Area countries hold EA fund shares with non Euro Area assets underlying, the national EHB is not affected neither is the Euro Area because the effects on foreign equity portfolio cancel out. While e.g. Germanys position against Luxembourg is now `domestic’, still the respective Luxembourg against e.g. US position captures the non EA exposure.
+\item If non-EA countries hold EA fund shares with EA assets underlying, there is no distortion to the non-EA country's EHB. The EHB of the fund domiciled country (e.g. Luxembourg) is downward biased because its foreign equity portfolio is higher by intermediating the extra EAs position to the owner country of the underlying asset. For the EA aggregate these effects cancel out.
+\item If non EA countries hold EA fund shares with non EA assets underlying, the Foreign Equity Portfolio of Ireland or Luxembourg is overstated and there EHB is too low. The same is true for the EA aggregate EHB.
+\item If debt assets are underlying the fund the foreign equity portfolio is overstated. subsequently, the foreign equity share is inflated and thus the EHB distorted downwards.
+\end{itemize}
+
+\subsubsection{Data Analysis}
+
+To get a better impression of the misattribution and the true relations underneath the surface we explore the unwind data provided by \textcite{NBERw32275}. 
+As a first step it is important to note that the volume traded in these funds and thus the magnitude of the underlying problem strongly increased over time. In 1998 the volume of Luxembourg domiciled funds was below \euro 500 billion increasing to below \euro 1000 billion in 2003 (end of main papers sample period). 
+By 2014 the volume already increased by more than 150\% to over \euro 2500 billion eventually reaching more than \euro 5.500 billion in 2021. While lower in absolute volume the trend is very similar for Ireland. See Figure \ref{} in Appendix \ref{app:euro_home_bias} for a graphical analysis. 
+This implies that the EHB data used for the original paper is only partly affected. Ireland was excluded due to data problems anyways and Luxembourg was never part of the sample. Hence the problem is restricted to round tripping of other countries via these funds. 
+While the two countries are still excluded from the sample when looking at the prolonged period on the one hand, the distortion of other countries EHB increased with the volume of the funds (assuming a slower growth of other equity positions) and on the other hand the Euro Area observation is affected as discussed before.
+
+As a second step we look at Germany as an example to illustrate the dynamics. Panel 1 in Figure \ref{fig_data_disentangled} shows the IIP of Germany vis a vis other countries before (red) and after (blue) the data correction. 
+While the position increases against most other countries it drops dramatically for Ireland and especially Luxembourg. Equity that was attributed to Luxembourg is now correctly attributed to e.g. the US. On the right panel is the net change of Germany’s investment positions (corrected data minus standard data). 
+Again, we see a strong negative net change for Ireland and Luxembourg and a positive change for the US. But most interestingly this shows how the foreign equity holding for Germany is overstated if the underlying securities are themselves German. 
+
+%\includegraphics
+
+Due to missing market capitalisation data in the WDI database for many large EA countries after 2014, we were not able to compute corrected EHB values and restricted the analysis to the foreign equity portfolio share, one of the two components of the EHB.
+Figure \ref{fig:corr_eq_share} shows the reported and the corrected foreign equity portfolio share for the EA on the left panel. The right panel displays the same for the cross country average weighted by total equity portfolio. The dotted grey and blue lines show the same excluding Ireland and Luxembourg as it was in Figure \ref{fig:euro_area_country_ehb}. 
+The corrected line for the EA average is higher than for the aggregate but with a similar slope which intuitively makes sense because the foreign equity portfolio is relatively smaller when considering all EA as domestic. 
+Because the data only start in 2014 and the trends are similar, we cannot infer whether this level difference comes from Euro integration or pre-existed simply due to proximity. Furthermore the level difference does not allow for conclusions about the EHB level differences because the second part of equation \ref{eq:ehb} namely (1-A) is smaller for the EA as for the cross country average.
+The correction is very large across countries, independent of including Ireland and Luxembourg. Since we saw the rather small magnitude of round tripping which distorts the national EHB, most of this correction presumably comes from re-classification of equity to debt assets if the underlying security of the fund are bonds as described in \textcite{NBERw32275}. 
+The small correction for the EA aggregate however is somewhat surprising given the strong decreasing trend in the EA aggregate that initially motivated this analysis. Potentially, there are other erroneous forces driving the strong observed decline for example the stock market capitalisation data. 
+
+\subsubsection{Home Bias Trajectory}
+
+To look at the true development of the home bias we turn to results from \textcite{NBERw32275}.
+
+Their EHB results with the raw data using the same formula shows a similar pattern for EA countries and the US as in Figure \ref{fig:euro_area_country_ehb}. However, after correction of the data, the cross country average exhibits a very similar decline as the US as shown in the left panel of Figure \ref{fig:ecb_paper_9_and_11}. 
+Nontheless, for the Debt Home Bias even after correcting the data, the bias strongly declines around the introduction of the Euro and stabilises on a significantly lower level than the US displayed in the right panel of Figure \ref{fig:ecb_paper_9_and_11}. 
+The paper does not report the corrections for the EA aggregate leaving the question open, how much of the (Debt) Home Bias decline came from EA integration or from a general trend for internationalisation of asset holdings.
+
+%\includegraphics
+
+\begin{figure}[H]\label{fig:ecb_paper_9_and_11}
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
         % \includegraphics[width=\textwidth]{figures/fig_ehb_corrected.pdf}
@@ -134,19 +268,16 @@
         % \includegraphics[width=\textwidth]{figures/fig_bhb_corrected.pdf}
         \caption{Bond home bias}
     \end{subfigure}
-    \caption{Corrected home bias dynamics in the Euro Area \citep{beck2024}.}
+    \caption{Corrected home bias dynamics in the Euro Area \citep{NBERw32275}.}
     \label{fig:corrected_hb}
 \end{figure}
 
+Concluding, we can neither reconstruct the correct EHB data nor fully prove the hypothesized development of home bias across EA countries and for the EA aggregate.
+However, the analysis gave reason to be cautious about the EWN data for the long sample and the EA panel regression. Furthermore, \textcite{NBERw32275} confirms a strong decline around the 
+Euro introduction in the debt home bias, leading us to stick to the hypothesis of stronger within EA portfolio diversification. Under this premise we now turn to the analysis of risk sharing in the EA.
 
-% ══════════════════════════════════════════
-%  7  EUROZONE EXTENSION: RISK SHARING
-% ══════════════════════════════════════════
-\section{Eurozone Extension: Risk Sharing}\label{sec:eurozone_rs}
 
-\subsection{Consumption Risk Sharing around Euro Introduction}\label{subsec:ez_consumption_rs}
-
-\subsection{Variance Decomposition of Risk Sharing Channels}\label{subsec:channels}
+\subsection{Case Study Euro Area: Risk Sharing}\label{sec:eurozone_rs}
 
 
 % ══════════════════════════════════════════

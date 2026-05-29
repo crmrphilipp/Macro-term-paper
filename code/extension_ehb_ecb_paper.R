@@ -13,7 +13,7 @@ library(kableExtra)
 
 
 
-# ── SHS Restated Bilateral External Portfolios ──
+# SHS Restated Bilateral External Portfolios 
 shs_url  <- "https://globalcapitalallocation.s3.us-east-2.amazonaws.com/SHS_Based_Restated_Bilateral_External_Portfolios.zip"
 shs_dir  <- "../data/beck_et_al/"
 shs_zip  <- paste0(shs_dir, "SHS_Restated.zip")
@@ -27,7 +27,7 @@ if (!file.exists(shs_file)) {
   message("SHS Restated data downloaded and unzipped.")
 }
 
-# ── Fund Counterparty Statistics ──
+# Fund Counterparty Statistics 
 fcs_url <- "https://globalcapitalallocation.s3.us-east-2.amazonaws.com/Fund_Counterparty_Statistics.zip"
 fcs_zip <- paste0(shs_dir, "Fund_Counterparty_Statistics.zip")
 
@@ -51,7 +51,7 @@ list.files("../data/", pattern = "SHS|Holders|Counterparty", recursive = TRUE)
 
 library(haven)
 
-# ── Load Fund Counterparty Statistics (Regional) ──
+# Load Fund Counterparty Statistics (Regional) 
 fcs_region <- read_dta("../data/beck_et_al/Holders_of_LUX_Fund_Shares_by_Counterparty_Region.dta")
 
 # Quick look
@@ -289,7 +289,7 @@ ggsave("../output/irl_lux_fund_ownership_levels.png",
 
 
 
-# ── Ireland-only: filter and aggregate ──
+# Ireland-only: filter and aggregate
 fcs_irl <- fcs_long |>
   filter(fund_domicile == "Ireland") |>
   group_by(year, holder_group) |>
@@ -299,7 +299,7 @@ fcs_irl <- fcs_long |>
   ungroup() |>
   mutate(holder_group = factor(holder_group, levels = group_order_panel))
 
-# ── Share plot ──
+#  Share plot 
 irl_fund_ownership_shares <- ggplot(fcs_irl, 
        aes(x = year, y = share, fill = holder_group)) +
   geom_area() +
@@ -326,7 +326,7 @@ irl_fund_ownership_shares <- ggplot(fcs_irl,
 ggsave("../output_final/irl_fund_ownership_shares.png",
        irl_fund_ownership_shares, width = 7, height = 5.5, dpi = 300)
 
-# ── Absolute amounts plot ──
+#  Absolute amounts plot
 irl_fund_ownership_levels <- ggplot(fcs_irl, 
        aes(x = year, y = holdings, fill = holder_group)) +
   geom_area() +
@@ -802,21 +802,21 @@ foreign_share_ea_comparison <- ggplot(ea_comparison, aes(x = year)) +
               fill = "#E8713A", alpha = 0.2) +
   geom_line(aes(y = omega_resid, color = "Residency-based"), linewidth = 0.8) +
   geom_point(aes(y = omega_resid, color = "Residency-based"), size = 2) +
-  #geom_line(aes(y = omega_resid_ex_oofc, color = "Residency-based (ex. OOFCs)"), 
-  #          linewidth = 0.6, linetype = "dashed") +
-  #geom_point(aes(y = omega_resid_ex_oofc, color = "Residency-based (ex. OOFCs)"), 
-  #           size = 1.5, shape = 1) +
-  #geom_line(aes(y = omega_uw_ex_oofc, color = "Fund-unwind adj. (ex. OOFCs)"), 
-  #          linewidth = 0.6, linetype = "dashed") +
-  #geom_point(aes(y = omega_uw_ex_oofc, color = "Fund-unwind adj. (ex. OOFCs)"), 
-  #           size = 1.5, shape = 1) +
+  geom_line(aes(y = omega_resid_ex_oofc, color = "Residency-based (ex. OOFCs)"), 
+            linewidth = 0.6, linetype = "dashed") +
+  geom_point(aes(y = omega_resid_ex_oofc, color = "Residency-based (ex. OOFCs)"), 
+             size = 1.5, shape = 1) +
+  geom_line(aes(y = omega_uw_ex_oofc, color = "Fund-unwind adj. (ex. OOFCs)"), 
+            linewidth = 0.6, linetype = "dashed") +
+  geom_point(aes(y = omega_uw_ex_oofc, color = "Fund-unwind adj. (ex. OOFCs)"), 
+             size = 1.5, shape = 1) +
   geom_line(aes(y = omega_uw, color = "Fund-unwind adjusted"), linewidth = 0.8) +
   geom_point(aes(y = omega_uw, color = "Fund-unwind adjusted"), size = 2) +
   facet_wrap(~ series) +
   scale_color_manual(values = c("Residency-based"              = "#8B0000",
                                 "Fund-unwind adjusted"          = "#08519C"#,
-                              #  "Residency-based (ex. OOFCs)"   = "grey50",
-                              #  "Fund-unwind adj. (ex. OOFCs)"  = "black"
+                                "Residency-based (ex. OOFCs)"   = "grey50",
+                                "Fund-unwind adj. (ex. OOFCs)"  = "black"
                               )
                               ) +
   scale_x_continuous(breaks = c(2015, 2019, 2023)) +
@@ -852,7 +852,7 @@ ggsave("../output_final/foreign_share_ea_comparison.png",
 
 
 
-# ── Recompute with full correction (nationality + fund unwind) ──
+#  Recompute with full correction (nationality + fund unwind) 
 portfolio_shares_natuw <- shs_equity |>
   filter(investor %in% ea_investors) |>
   mutate(is_domestic = (investor == issuer)) |>
