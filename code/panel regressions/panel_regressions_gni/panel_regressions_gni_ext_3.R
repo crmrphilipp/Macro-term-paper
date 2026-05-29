@@ -1,10 +1,9 @@
-# ============================================
-#The main regression: GNI Risk Sharing
-#Table 3 & Table 5 in the paper
-#=============================================
-
-# ============================================
-# 1. Cleaning data and preparing data for regression
+#============================================
+# Code for the panel regressions to recreate panel 3
+# and panel 5 of the paper.
+# Using current OECD data.
+# EXTENTION 3:  Sample of 21 Euro Area countries,
+#  Time sample 1987 - 2017
 #=============================================
 
 rm(list = ls())
@@ -12,134 +11,25 @@ library(dplyr)
 library(tidyr)
 library(purrr)
 library(plm)
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+setwd(
+  normalizePath(
+    file.path(
+      dirname(rstudioapi::getActiveDocumentContext()$path),
+      "..", "..", "..", "data"
+    )
+  )
+)
 
 # load data
-gni_rep_raw <- read.csv("../data/data_iy_rep.csv")
+reg_gni_df <- read.csv("../data/reg_gni_df_ext_3.csv")
+
+merged_df <- reg_gni_df
 
 
-# load home bias data
-ehb_data <- read.csv("../data/ehb_reg_small.csv")
-ehb_crude_data <- read.csv("../data/ehb_crude_reg_small.csv")
-
-
-### Regression sample
-reg_sample <- c(
-  "AUS", "AUT", "BEL", "CAN", "DNK", "FIN", "FRA", "DEU",
-  "GRC", "ITA", "JPN", "MEX", "NLD", "NZL", "NOR", "PRT",
-  "ESP", "SWE", "CHE", "TUR", "GBR", "USA"
-)
-# right format
-gni_rep <- gni_rep_raw %>%
-  pivot_wider(
-    id_cols = c(REF_AREA, TIME_PERIOD, Population),
-    names_from = measure,
-    values_from = c(OBS_VALUE, OBS_VALUE_per_capita),
-    names_glue = "{measure}_{.value}"
-  ) %>%
-  rename(
-    GNI = GNI_OBS_VALUE,
-    GDP = GDP_OBS_VALUE,
-    GNI_pc = GNI_OBS_VALUE_per_capita,
-    GDP_pc = GDP_OBS_VALUE_per_capita,
-  )
-
-### Creating deviation variables 
-gni_rep <- gni_rep %>%
-  filter(REF_AREA %in% reg_sample)
-
-#### per capita growth rates: GDP and GNI
-gni_rep <- gni_rep %>%
-  arrange(REF_AREA, TIME_PERIOD) %>%
-  group_by(REF_AREA) %>%
-  mutate(
-    gdp_log_diff = log(GDP_pc) - log(dplyr::lag(GDP_pc)),
-    GNI_log_diff = log(GNI_pc) - log(dplyr::lag(GNI_pc))
-  ) %>%
-  ungroup()
-
-# common country-year sample: GDP, GNI and Population must all be available
-gni_rep_aggregate2 <- gni_rep %>%
-  group_by(TIME_PERIOD) %>%
-  summarise(
-    gdp_total = sum(
-      GDP[!is.na(GDP) & !is.na(GNI) & !is.na(Population)],
-      na.rm = TRUE
-    ),
-    
-    gni_total = sum(
-      GNI[!is.na(GDP) & !is.na(GNI) & !is.na(Population)],
-      na.rm = TRUE
-    ),
-    
-    pop_total = sum(
-      Population[!is.na(GDP) & !is.na(GNI) & !is.na(Population)],
-      na.rm = TRUE
-    ),
-    
-    .groups = "drop"
-  ) %>%
-  arrange(TIME_PERIOD) %>%
-  mutate(
-    gdp_total_pc = gdp_total / pop_total,
-    gni_total_pc = gni_total / pop_total
-  ) %>%
-  mutate(
-    gdp_log_diff_total =
-      log(gdp_total_pc) - log(dplyr::lag(gdp_total_pc)),
-    
-    gni_log_diff_total =
-      log(gni_total_pc) - log(dplyr::lag(gni_total_pc))
-  )
-
-
-# join the aggregate growth rates
-gni_rep <- gni_rep %>%
-  left_join(
-    gni_rep_aggregate2 %>%
-      select(TIME_PERIOD, gdp_log_diff_total, gni_log_diff_total),
-    by = "TIME_PERIOD"
-  )
-
-
-# growth rate deviations
-gni_rep <- gni_rep %>%
-  mutate(
-    gdp_dev = gdp_log_diff - gdp_log_diff_total,
-    gni_dev = GNI_log_diff - gni_log_diff_total
-  )
-
-# keep regression period
-gni_rep <- gni_rep %>%
-  filter(TIME_PERIOD > 1992, TIME_PERIOD < 2004)
-
-# rename identifiers
-gni_rep <- gni_rep %>%
-  rename(
-    iso = REF_AREA,
-    year = TIME_PERIOD
-  )
-
-# merge data
-merged_df <- list(gni_rep, ehb_data, ehb_crude_data) %>%
-  reduce(left_join, by = c("iso", "year"))
-
-merged_df <- merged_df %>%
-  mutate(time = year - 1998)
-
-# clean estimation sample
-reg_gni_df <- merged_df %>%
-  filter(
-    !is.na(gni_dev),
-    !is.na(gdp_dev),
-    !is.na(EHB_dev),
-    !is.na(time)
-  ) %>%
-  arrange(iso, year)
-
-
-# ============================================
-# 2. Run Table 3 GNI regression
+#=============================================
+# Table 3, Panel Regressions for GNI, Two step regression to 
+# use feasable OLS weighted by the inverse of the standard 
+# errors 
 #=============================================
 
 # First step regression with country FE
@@ -153,7 +43,7 @@ reg_gni_stage1 <- plm(
 )
 
 
-# Error term SD
+# Error term Standard errors
 reg_gni_df$resid_stage1 <- as.numeric(residuals(reg_gni_stage1))
 
 sigma_by_country <- reg_gni_df %>%
@@ -183,7 +73,9 @@ reg_gni_stage2 <- plm(
 )
 
 # ============================================
-# 3. Table 5 GNI regression: Foreign Assets over GDP
+# Table 5 GNI regression: Foreign Assets over GDP
+# Once again run as a two stage feasable GLS weighted by the 
+# inverse of the standard deviation. 
 #=============================================
 
 estimate_table5_gni <- function(data, asset_var) {
@@ -245,36 +137,36 @@ estimate_table5_gni <- function(data, asset_var) {
 #==========================================================
 #### Estimate the five Table 5-style regressions
 #Note:
-# eq_ehb_crude_dev_non_ppp        <- Equity assets / GDP deviation
-# debt_ehb_crude_dev_non_ppp      <- Debt assets / GDP deviation
-# fdi_ehb_crude_dev_non_ppp       <- FDI assets / GDP deviation
-# eq_debt_ehb_crude_dev_non_ppp   <- Equity + Debt assets / GDP deviation
-# ehb_crude_dev_non_ppp           <- All assets deviation
+# eq_ehb_crude_dev       <- Equity assets / GDP deviation
+# debt_ehb_crude_dev     <- Debt assets / GDP deviation
+# fdi_ehb_crude_dev     <- FDI assets / GDP deviation
+# eq_debt_ehb_crude_dev  <- Equity + Debt assets / GDP deviation
+# ehb_crude_dev        <- All assets deviation
 #==========================================================
 
 reg_gni_eq_assets <- estimate_table5_gni(
   merged_df,
-  "eq_ehb_crude_dev_non_ppp"
+  "eq_ehb_crude_dev"
 )
 
 reg_gni_debt_assets <- estimate_table5_gni(
   merged_df,
-  "debt_ehb_crude_dev_non_ppp"
+  "debt_ehb_crude_dev"
 )
 
 reg_gni_fdi_assets <- estimate_table5_gni(
   merged_df,
-  "fdi_ehb_crude_dev_non_ppp"
+  "fdi_ehb_crude_dev"
 )
 
 reg_gni_eq_debt_assets <- estimate_table5_gni(
   merged_df,
-  "eq_debt_ehb_crude_dev_non_ppp"
+  "eq_debt_ehb_crude_dev"
 )
 
 reg_gni_all_assets <- estimate_table5_gni(
   merged_df,
-  "ehb_crude_dev_non_ppp"
+  "ehb_crude_dev"
 )
 
 summary(reg_gni_eq_assets)
@@ -284,8 +176,8 @@ summary(reg_gni_eq_debt_assets)
 summary(reg_gni_all_assets)
 
 
-# ============================================
-# 4. Creating the tables
+#============================================
+# Creating Regression outputs
 #=============================================
 
 # Table 3 Regression results
@@ -330,19 +222,17 @@ se_k0 <- coef_table_stage2["gdp_dev", "Std. Error"]
 se_k1 <- coef_table_stage2["I(time * gdp_dev)", "Std. Error"]
 se_k2 <- coef_table_stage2["I(EHB_dev * gdp_dev)", "Std. Error"]
 
-# Transform coefficients as in Table 3
+# Transform coefficients (to follow what they do in the paper)
 table3_coef <- c(
   100 * (1 - k0),
   -100 * k1,
   -100 * k2
 )
 
-# IMPORTANT:
-# Names must match the original coefficient names,
-# not the pretty labels.
 names(table3_coef) <- required_terms
 
-# Transform t-values
+# The paper reports t-value in paranthesis. Therefore, 
+# I follow their approach. 
 # First t-value tests k0 = 1, because average risk sharing is 100 * (1 - k0)
 table3_t <- c(
   (1 - k0) / se_k0,
@@ -360,8 +250,8 @@ print(table3_t)
 stargazer(
   reg_gni_stage2,
   type = "latex",
-  out = file.path(output_dir, "reg_GNI_risk_sharing.tex"),
-  title = "OECD REP GNI Risk Sharing and Equity Home Bias",
+  out = file.path(output_dir, "3_panel_reg_gni_ext_3.tex"),
+  title = "Euroarea 1987-2017 GNI Risk Sharing and Equity Home Bias",
   dep.var.labels = "GNI Risk Sharing",
   column.labels = c("GNI"),
   model.numbers = FALSE,
@@ -379,11 +269,10 @@ stargazer(
   header = FALSE
 )
 
-file.exists(file.path(output_dir, "reg_GNI_risk_sharing.tex"))
+file.exists(file.path(output_dir, "3_panel_reg_gni_ext_3.tex"))
 
 # ============================================
 # Table 5 regression results
-#Function: transform coefficients into Table 5 format
 # ============================================
 
 get_table5_gni_estimates <- function(model) {
@@ -408,20 +297,6 @@ get_table5_gni_estimates <- function(model) {
   # --------------------------------------------
   # Extract original coefficients
   # --------------------------------------------
-  # The regression estimates:
-  #
-  # gni_dev = k0 * gdp_dev
-  #          + k1 * time * gdp_dev
-  #          + k2 * asset_dev * gdp_dev
-  #          + country fixed effects
-  #          + error
-  #
-  # But Table 5 reports risk-sharing coefficients:
-  #
-  # Average risk sharing =  100 * (1 - k0)
-  # Trend                = -100 * k1
-  # Asset interaction    = -100 * k2
-  # --------------------------------------------
   
   k0 <- coef_table["gdp_dev", "Estimate"]
   k1 <- coef_table["I(time * gdp_dev)", "Estimate"]
@@ -441,8 +316,7 @@ get_table5_gni_estimates <- function(model) {
   names(coef_out) <- required_terms
   
   # Corresponding t-values
-  # For average risk sharing, the relevant null is:
-  # 100 * (1 - k0) = 0, which is equivalent to k0 = 1.
+  # For average risk sharing, the relevant null is equivalent to k0 = 1.
   t_out <- c(
     (1 - k0) / se_k0,
     (-k1) / se_k1,
@@ -458,8 +332,6 @@ get_table5_gni_estimates <- function(model) {
     )
   )
 }
-
-
 # ============================================
 # Prepare transformed coefficients and t-values
 # ============================================
@@ -495,8 +367,8 @@ table5_gni_t <- lapply(
 stargazer(
   table5_gni_models,
   type = "latex",
-  out = file.path(output_dir, "table5_GNI_foreign_assets.tex"),
-  title = "OECD REP GNI Risk Sharing and Foreign Asset Holdings Relative to GDP",
+  out = file.path(output_dir, "5_panel_reg_gni_ext_3.tex"),
+  title = "Euroarea 1987-2017 GNI Risk Sharing and Foreign Asset Holdings Relative to GDP",
   dep.var.labels = "GNI Risk Sharing",
   column.labels = c(
     "Equity",
@@ -526,5 +398,9 @@ stargazer(
 # ============================================
 
 file.exists(
-  file.path(output_dir, "table5_GNI_foreign_assets.tex")
+  file.path(output_dir, "5_panel_reg_gni_ext_3.tex")
+)
+
+file.exists(
+  file.path(output_dir, "5_panel_reg_gni_ext_3.tex")
 )

@@ -1,0 +1,121 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global/global}
+    \entry{asy1996}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=1e37f5dcef9dadc62112872e7dbaa252}{%
+           family={Asdrubali},
+           familyi={A\bibinitperiod},
+           given={Pierfederico},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ee54c65232c2977ef3101cd5ae6589cf}{%
+           family={Sorensen},
+           familyi={S\bibinitperiod},
+           given={Bent\bibnamedelima E.},
+           giveni={B\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=33e73cd89789b71af09243326fff5d93}{%
+           family={Yosha},
+           familyi={Y\bibinitperiod},
+           given={Oved},
+           giveni={O\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Oxford University Press}%
+      }
+      \strng{namehash}{b97b2e2cc47ec2389e30b93aaecbd0e9}
+      \strng{fullhash}{b97b2e2cc47ec2389e30b93aaecbd0e9}
+      \strng{fullhashraw}{b97b2e2cc47ec2389e30b93aaecbd0e9}
+      \strng{bibnamehash}{b97b2e2cc47ec2389e30b93aaecbd0e9}
+      \strng{authorbibnamehash}{b97b2e2cc47ec2389e30b93aaecbd0e9}
+      \strng{authornamehash}{b97b2e2cc47ec2389e30b93aaecbd0e9}
+      \strng{authorfullhash}{b97b2e2cc47ec2389e30b93aaecbd0e9}
+      \strng{authorfullhashraw}{b97b2e2cc47ec2389e30b93aaecbd0e9}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Quarterly Journal of Economics}
+      \field{number}{4}
+      \field{title}{Channels of Interstate Risk Sharing: United States 1963-1990}
+      \field{volume}{111}
+      \field{year}{1996}
+      \field{pages}{1081\bibrangedash 1110}
+      \range{pages}{30}
+    \endentry
+    \entry{main}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=2e0315cffc37f9410262c9bf838a1f37}{%
+           family={Sørensen},
+           familyi={S\bibinitperiod},
+           given={Bent\bibnamedelima E.},
+           giveni={B\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e2328bb3139b758264c5579540a43ff2}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={Yi-Tsung},
+           giveni={Y\bibinithyphendelim T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=33e73cd89789b71af09243326fff5d93}{%
+           family={Yosha},
+           familyi={Y\bibinitperiod},
+           given={Oved},
+           giveni={O\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1a4cc60974837e41def809152b6f9b88}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={Yu},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{9bbbd8d4b6b53e40665b029bf9561f20}
+      \strng{fullhash}{46bd9040e5aba63cf6523dd976379a37}
+      \strng{fullhashraw}{46bd9040e5aba63cf6523dd976379a37}
+      \strng{bibnamehash}{9bbbd8d4b6b53e40665b029bf9561f20}
+      \strng{authorbibnamehash}{9bbbd8d4b6b53e40665b029bf9561f20}
+      \strng{authornamehash}{9bbbd8d4b6b53e40665b029bf9561f20}
+      \strng{authorfullhash}{46bd9040e5aba63cf6523dd976379a37}
+      \strng{authorfullhashraw}{46bd9040e5aba63cf6523dd976379a37}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of International Money and Finance}
+      \field{note}{Financial Globalization and Integration}
+      \field{number}{4}
+      \field{title}{Home bias and international risk sharing: Twin puzzles separated at birth}
+      \field{volume}{26}
+      \field{year}{2007}
+      \field{pages}{587\bibrangedash 605}
+      \range{pages}{19}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
