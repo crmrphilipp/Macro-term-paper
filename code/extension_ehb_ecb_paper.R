@@ -138,7 +138,7 @@ lux_fund_ownership_levels <- ggplot(fcs_grouped,
     x       = "Year",
     y       = "Holdings of Luxembourg Fund Shares (EUR bn)",
     fill    = NULL,
-    caption = "Note: Holdings of Luxembourg-domiciled fund shares by immediate counterparty region.\nSource: CSSF via Beck et al. (2024)."
+  #  caption = "Note: Holdings of Luxembourg-domiciled fund shares by immediate counterparty region.\nSource: CSSF via Beck et al. (2024)."
   ) +
   theme_classic() +
   theme(
@@ -336,7 +336,7 @@ irl_fund_ownership_levels <- ggplot(fcs_irl,
     x       = "Year",
     y       = "Holdings of Irish Fund Shares (EUR bn)",
     fill    = NULL,
-    caption = "Note: Holdings of Irish-domiciled fund shares by immediate counterparty country.\n'Domestic' = Irish investors. Source: Central Bank of Ireland via Beck et al. (2024)."
+    #caption = "Note: Holdings of Irish-domiciled fund shares by immediate counterparty country.\n'Domestic' = Irish investors. Source: Central Bank of Ireland via Beck et al. (2024)."
   ) +
   theme_classic() +
   theme(
@@ -447,11 +447,11 @@ plot_reallocation <- function(data, investor_iso, ref_year = "2018q4", top_n = 1
       x       = NULL,
       y       = "Equity Position (EUR bn)",
       fill    = NULL,
-      caption = paste0(
-        "Note: Top ", top_n, " foreign equity destinations for ", investor_iso,
-        " (", ref_year, "). Residency-based vs. fund-unwind adjusted.\n",
-        "Source: Beck et al. (2024), SHS-based restated bilateral portfolios."
-      )
+    #  caption = paste0(
+    #    "Note: Top ", top_n, " foreign equity destinations for ", investor_iso,
+    #    " (", ref_year, "). Residency-based vs. fund-unwind adjusted.\n",
+    #    "Source: Beck et al. (2024), SHS-based restated bilateral portfolios."
+    #  )
     ) +
     theme_classic() +
     theme(
@@ -515,13 +515,13 @@ plot_net_reallocation <- function(data, investor_iso, ref_year = "2018q4", top_n
       x       = NULL,
       y       = "Change in Equity Position (EUR bn)",
       fill    = NULL,
-      caption = paste0(
-        "Note: Difference between fund-unwind adjusted and residency-based equity positions for ", 
-        investor_iso, " (", ref_year, ").\n",
-        "Negative = position shrinks after correction; positive = position grows. ",
-        "'(domestic)' captures round-tripping.\n",
-        "Source: Beck et al. (2024), SHS-based restated bilateral portfolios."
-      )
+     # caption = paste0(
+     #   "Note: Difference between fund-unwind adjusted and residency-based equity positions for ", 
+     #   investor_iso, " (", ref_year, ").\n",
+     #   "Negative = position shrinks after correction; positive = position grows. ",
+     #   "'(domestic)' captures round-tripping.\n",
+     #   "Source: Beck et al. (2024), SHS-based restated bilateral portfolios."
+     # )
     ) +
     theme_classic() +
     theme(
@@ -814,7 +814,7 @@ foreign_share_ea_comparison <- ggplot(ea_comparison, aes(x = year)) +
   geom_point(aes(y = omega_uw, color = "Fund-unwind adjusted"), size = 2) +
   facet_wrap(~ series) +
   scale_color_manual(values = c("Residency-based"              = "#8B0000",
-                                "Fund-unwind adjusted"          = "#08519C"#,
+                                "Fund-unwind adjusted"          = "#08519C",
                                 "Residency-based (ex. OOFCs)"   = "grey50",
                                 "Fund-unwind adj. (ex. OOFCs)"  = "black"
                               )

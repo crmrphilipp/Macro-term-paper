@@ -461,8 +461,8 @@ ehb_coverage <- ehb_top60 |>
   scale_fill_manual(values = c("TRUE" = "#1a9850", "FALSE" = "#d73027"),
                     labels = c("TRUE" = "Available", "FALSE" = "Missing"),
                     name = NULL) +
-  labs(title = "EHB data availability by country and year",
-       x = NULL, y = NULL) +
+  #labs(title = "EHB data availability by country and year",
+  #     x = NULL, y = NULL) +
   theme_minimal(base_size = 9) +
   theme(axis.text.y = element_text(size = 7))
 
@@ -698,10 +698,10 @@ broad_ehb_euro_groups <- ggplot(ehb_top60_group_mean_ts, aes(x = year, y = EHB_m
     y       = "Home Bias Index",
     color   = NULL,
     shape   = NULL,
-    caption = paste(
-      "Note: Total Equity Protfolio weighted cross-country mean equity home bias index by country group.",
-      "Eurozone Core = founding 1999 members; Eurozone Periphery = countries that joined 2001–2015."
-    )
+    #caption = paste(
+    #  "Note: Total Equity Protfolio weighted cross-country mean equity home bias index by country group.",
+    #  "Eurozone Core = founding 1999 members; Eurozone Periphery = countries that joined 2001–2015."
+    #)
   ) +
   theme_classic() +
   theme(
@@ -1823,7 +1823,7 @@ p_ea_full_usa <- ggplot(ehb_plot_data_usa, aes(x = year, y = EHB_mean,
     x       = "Year",
     y       = "Home Bias Index",
     color   = NULL,
-    caption = "Note: Total equity portfolio weighted cross-sectional means."
+    #caption = "Note: Total equity portfolio weighted cross-sectional means."
   ) +
   theme_classic() +
   theme(
@@ -1837,7 +1837,6 @@ p_ea_full_usa <- ggplot(ehb_plot_data_usa, aes(x = year, y = EHB_mean,
     legend.key.size = unit(0.5, "lines")
   )
 
-p_ea_full_usa
 
 ggsave(
   filename = "../output_final/equity_home_bias_three_series.png",
