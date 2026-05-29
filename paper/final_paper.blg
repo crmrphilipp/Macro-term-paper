@@ -1,0 +1,19 @@
+[0] Config.pm:328> INFO - This is Biber 2.21
+[0] Config.pm:331> INFO - Logfile is 'final_paper.blg'
+[60] biber-darwin:342> INFO - === Fri May 29, 2026, 23:35:20
+[74] Biber.pm:421> INFO - Reading 'final_paper.bcf'
+[142] Biber.pm:1002> INFO - Found 17 citekeys in bib section 0
+[153] Biber.pm:4487> INFO - Processing section 0
+[161] Biber.pm:4678> INFO - Looking for bibtex file 'reference.bib' for section 0
+[162] bibtex.pm:1713> INFO - LaTeX decoding ...
+[175] bibtex.pm:1519> INFO - Found BibTeX data source 'reference.bib'
+[272] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[272] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[272] Biber.pm:4307> INFO - Sorting list 'nyt/global//global/global/global' of type 'entry' with template 'nyt' and locale 'en-US'
+[272] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
+[290] bbl.pm:676> INFO - Writing 'final_paper.bbl' with encoding 'UTF-8'
+[296] bbl.pm:779> INFO - Output to final_paper.bbl
+[296] Biber.pm:132> WARN - legacy month field 'April' in entry 'notes' is not an integer - this will probably not sort properly.
+[296] Biber.pm:132> WARN - legacy year field 'March 2024' in entry 'NBERw32275' is not an integer - this will probably not sort properly.
+[297] Biber.pm:132> WARN - legacy year field 'March 2026' in entry 'working_paper_26' is not an integer - this will probably not sort properly.
+[297] Biber.pm:134> INFO - WARNINGS: 3

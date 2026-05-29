@@ -1,0 +1,691 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global/global}
+    \entry{AdlerDumas1983}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=25c999f36a39bc3e46042f1024ad5a6f}{%
+           family={Adler},
+           familyi={A\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ed965ce29dab90211ae727342c022a8f}{%
+           family={Dumas},
+           familyi={D\bibinitperiod},
+           given={Bernard},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{5d63646f80fdda2932c0df8fe65f1f8e}
+      \strng{fullhash}{5d63646f80fdda2932c0df8fe65f1f8e}
+      \strng{fullhashraw}{5d63646f80fdda2932c0df8fe65f1f8e}
+      \strng{bibnamehash}{5d63646f80fdda2932c0df8fe65f1f8e}
+      \strng{authorbibnamehash}{5d63646f80fdda2932c0df8fe65f1f8e}
+      \strng{authornamehash}{5d63646f80fdda2932c0df8fe65f1f8e}
+      \strng{authorfullhash}{5d63646f80fdda2932c0df8fe65f1f8e}
+      \strng{authorfullhashraw}{5d63646f80fdda2932c0df8fe65f1f8e}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Finance}
+      \field{number}{3}
+      \field{title}{International Portfolio Choice and Corporation Finance: A Synthesis}
+      \field{volume}{38}
+      \field{year}{1983}
+      \field{pages}{925\bibrangedash 984}
+      \range{pages}{60}
+    \endentry
+    \entry{asy1996}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=1e37f5dcef9dadc62112872e7dbaa252}{%
+           family={Asdrubali},
+           familyi={A\bibinitperiod},
+           given={Pierfederico},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ee54c65232c2977ef3101cd5ae6589cf}{%
+           family={Sorensen},
+           familyi={S\bibinitperiod},
+           given={Bent\bibnamedelima E.},
+           giveni={B\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=33e73cd89789b71af09243326fff5d93}{%
+           family={Yosha},
+           familyi={Y\bibinitperiod},
+           given={Oved},
+           giveni={O\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Oxford University Press}%
+      }
+      \strng{namehash}{b97b2e2cc47ec2389e30b93aaecbd0e9}
+      \strng{fullhash}{b97b2e2cc47ec2389e30b93aaecbd0e9}
+      \strng{fullhashraw}{b97b2e2cc47ec2389e30b93aaecbd0e9}
+      \strng{bibnamehash}{b97b2e2cc47ec2389e30b93aaecbd0e9}
+      \strng{authorbibnamehash}{b97b2e2cc47ec2389e30b93aaecbd0e9}
+      \strng{authornamehash}{b97b2e2cc47ec2389e30b93aaecbd0e9}
+      \strng{authorfullhash}{b97b2e2cc47ec2389e30b93aaecbd0e9}
+      \strng{authorfullhashraw}{b97b2e2cc47ec2389e30b93aaecbd0e9}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Quarterly Journal of Economics}
+      \field{number}{4}
+      \field{title}{Channels of Interstate Risk Sharing: United States 1963-1990}
+      \field{volume}{111}
+      \field{year}{1996}
+      \field{pages}{1081\bibrangedash 1110}
+      \range{pages}{30}
+    \endentry
+    \entry{BalliSorensen2006}{inproceedings}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=7a923ed33f736c887048f556bf937d9c}{%
+           family={Balli},
+           familyi={B\bibinitperiod},
+           given={Faruk},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2e0315cffc37f9410262c9bf838a1f37}{%
+           family={S{ø}rensen},
+           familyi={S\bibinitperiod},
+           given={Bent\bibnamedelima E.},
+           giveni={B\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{location}{1}{%
+        {Izmir, Turkey}%
+      }
+      \strng{namehash}{da97c1ff258c6916dd44f4adb343b702}
+      \strng{fullhash}{da97c1ff258c6916dd44f4adb343b702}
+      \strng{fullhashraw}{da97c1ff258c6916dd44f4adb343b702}
+      \strng{bibnamehash}{da97c1ff258c6916dd44f4adb343b702}
+      \strng{authorbibnamehash}{da97c1ff258c6916dd44f4adb343b702}
+      \strng{authornamehash}{da97c1ff258c6916dd44f4adb343b702}
+      \strng{authorfullhash}{da97c1ff258c6916dd44f4adb343b702}
+      \strng{authorfullhashraw}{da97c1ff258c6916dd44f4adb343b702}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the International Conference on Human and Economic Resources}
+      \field{title}{The Impact of the {EMU} on Channels of Risk Sharing between Member Countries}
+      \field{year}{2006}
+      \field{pages}{399\bibrangedash 429}
+      \range{pages}{31}
+    \endentry
+    \entry{NBERw32275}{report}{}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=826e92fc30c6c52fea4cd0143d17cd61}{%
+           family={Beck},
+           familyi={B\bibinitperiod},
+           given={Roland},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2db539cd9c7c4e0e1a38b50ae6093822}{%
+           family={Coppola},
+           familyi={C\bibinitperiod},
+           given={Antonio},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2009d01dba941cd78babc51744221111}{%
+           family={Lewis},
+           familyi={L\bibinitperiod},
+           given={Angus\bibnamedelima J},
+           giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fea573f2f3abfde1ce56b3c705a0b68e}{%
+           family={Maggiori},
+           familyi={M\bibinitperiod},
+           given={Matteo},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6d8df1827eb2f7aba024da327f1b11e2}{%
+           family={Schmitz},
+           familyi={S\bibinitperiod},
+           given={Martin},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=665ffcdb01d3ae58ee286682edfc2a50}{%
+           family={Schreger},
+           familyi={S\bibinitperiod},
+           given={Jesse},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{institution}{1}{%
+        {National Bureau of Economic Research}%
+      }
+      \strng{namehash}{796a92e535c6d9448c38c089eb4237a4}
+      \strng{fullhash}{972829c64939f1e9eb49d0328b3bf84a}
+      \strng{fullhashraw}{972829c64939f1e9eb49d0328b3bf84a}
+      \strng{bibnamehash}{796a92e535c6d9448c38c089eb4237a4}
+      \strng{authorbibnamehash}{796a92e535c6d9448c38c089eb4237a4}
+      \strng{authornamehash}{796a92e535c6d9448c38c089eb4237a4}
+      \strng{authorfullhash}{972829c64939f1e9eb49d0328b3bf84a}
+      \strng{authorfullhashraw}{972829c64939f1e9eb49d0328b3bf84a}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We assess Euro Area financial integration correcting for the role of “onshore offshore financial centers” (OOFCs) within the Euro Area. The OOFCs of Luxembourg, Ireland, and the Netherlands serve dual roles as both hubs of investment fund intermediation and centers of securities issuance by foreign firms. We provide new estimates of Euro Area countries’ bilateral portfolio investments which look through both roles, attributing the wealth held via investment funds to the underlying holders and linking securities issuance to the ultimate parent firms. Our new estimates show that the Euro Area is less financially integrated than it appears, both within the currency union and vis-à-vis the rest of the world. While official data suggests a sharp decline in portfolio home bias for Euro Area countries relative to other developed economies following the introduction of the euro, we demonstrate that this pattern only remains true for bond portfolios, while it is artificially generated by OOFC activities for equity portfolios. Further, using new administrative evidence on the identity of non-Euro Area investors in OOFC funds, we document that the bulk of the positions constituting missing wealth in international financial accounts are now accounted for by United Kingdom counterparts.}
+      \field{number}{32275}
+      \field{series}{Working Paper Series}
+      \field{title}{The Geography of Capital Allocation in the Euro Area}
+      \field{type}{Working Paper}
+      \field{year}{March 2024}
+      \verb{doi}
+      \verb 10.3386/w32275
+      \endverb
+      \verb{urlraw}
+      \verb http://www.nber.org/papers/w32275
+      \endverb
+      \verb{url}
+      \verb http://www.nber.org/papers/w32275
+      \endverb
+    \endentry
+    \entry{BorsaItaliana2026}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=a7dbc0f66bd1b28505f42be5aec06e8d}{%
+           family={{Borsa Italiana}},
+           familyi={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{a7dbc0f66bd1b28505f42be5aec06e8d}
+      \strng{fullhash}{a7dbc0f66bd1b28505f42be5aec06e8d}
+      \strng{fullhashraw}{a7dbc0f66bd1b28505f42be5aec06e8d}
+      \strng{bibnamehash}{a7dbc0f66bd1b28505f42be5aec06e8d}
+      \strng{authorbibnamehash}{a7dbc0f66bd1b28505f42be5aec06e8d}
+      \strng{authornamehash}{a7dbc0f66bd1b28505f42be5aec06e8d}
+      \strng{authorfullhash}{a7dbc0f66bd1b28505f42be5aec06e8d}
+      \strng{authorfullhashraw}{a7dbc0f66bd1b28505f42be5aec06e8d}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://www.borsaitaliana.it/borsaitaliana/storia/storia/scenari-economici-finanziari.en.htm}}
+      \field{note}{Accessed: 2026-05-29}
+      \field{title}{History of {Borsa Italiana}}
+      \field{year}{2026}
+    \endentry
+    \entry{notes}{lecture}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=4daf6110df2e79e11c878a5abde58dbe}{%
+           family={Clymo},
+           familyi={C\bibinitperiod},
+           given={Alex},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{institution}{1}{%
+        {Paris School of Economics (PSE)}%
+      }
+      \strng{namehash}{4daf6110df2e79e11c878a5abde58dbe}
+      \strng{fullhash}{4daf6110df2e79e11c878a5abde58dbe}
+      \strng{fullhashraw}{4daf6110df2e79e11c878a5abde58dbe}
+      \strng{bibnamehash}{4daf6110df2e79e11c878a5abde58dbe}
+      \strng{authorbibnamehash}{4daf6110df2e79e11c878a5abde58dbe}
+      \strng{authornamehash}{4daf6110df2e79e11c878a5abde58dbe}
+      \strng{authorfullhash}{4daf6110df2e79e11c878a5abde58dbe}
+      \strng{authorfullhashraw}{4daf6110df2e79e11c878a5abde58dbe}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Macro 3, APE Masters Year 1 (M1)}
+      \field{month}{4}
+      \field{note}{Lecture notes}
+      \field{title}{Lecture 4: Capital Markets and International Risk Sharing}
+      \field{year}{2026}
+    \endentry
+    \entry{CooperKaplanis1994}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=78194fafaa15c7f04851ed34b2c1f593}{%
+           family={Cooper},
+           familyi={C\bibinitperiod},
+           given={Ian\bibnamedelima A.},
+           giveni={I\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=df40a523e91a374fde0b67f14d832f6b}{%
+           family={Kaplanis},
+           familyi={K\bibinitperiod},
+           given={Evi},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{553804292f2fe1c46a7180dd202c0777}
+      \strng{fullhash}{553804292f2fe1c46a7180dd202c0777}
+      \strng{fullhashraw}{553804292f2fe1c46a7180dd202c0777}
+      \strng{bibnamehash}{553804292f2fe1c46a7180dd202c0777}
+      \strng{authorbibnamehash}{553804292f2fe1c46a7180dd202c0777}
+      \strng{authornamehash}{553804292f2fe1c46a7180dd202c0777}
+      \strng{authorfullhash}{553804292f2fe1c46a7180dd202c0777}
+      \strng{authorfullhashraw}{553804292f2fe1c46a7180dd202c0777}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Review of Financial Studies}
+      \field{number}{1}
+      \field{title}{Home Bias in Equity Portfolios, Inflation Hedging, and International Capital Market Equilibrium}
+      \field{volume}{7}
+      \field{year}{1994}
+      \field{pages}{45\bibrangedash 60}
+      \range{pages}{16}
+    \endentry
+    \entry{FrenchPoterba1991}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=4ca55f4db61ae3245d066a218dca72c8}{%
+           family={French},
+           familyi={F\bibinitperiod},
+           given={Kenneth\bibnamedelima R.},
+           giveni={K\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8eac1f708dfc6a357a2a2ca1796e3a26}{%
+           family={Poterba},
+           familyi={P\bibinitperiod},
+           given={James\bibnamedelima M.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{5b7e167bcf200aeba8a8b4ecb9d38d39}
+      \strng{fullhash}{5b7e167bcf200aeba8a8b4ecb9d38d39}
+      \strng{fullhashraw}{5b7e167bcf200aeba8a8b4ecb9d38d39}
+      \strng{bibnamehash}{5b7e167bcf200aeba8a8b4ecb9d38d39}
+      \strng{authorbibnamehash}{5b7e167bcf200aeba8a8b4ecb9d38d39}
+      \strng{authornamehash}{5b7e167bcf200aeba8a8b4ecb9d38d39}
+      \strng{authorfullhash}{5b7e167bcf200aeba8a8b4ecb9d38d39}
+      \strng{authorfullhashraw}{5b7e167bcf200aeba8a8b4ecb9d38d39}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{American Economic Review: Papers and Proceedings}
+      \field{number}{2}
+      \field{title}{Investor Diversification and International Equity Markets}
+      \field{volume}{81}
+      \field{year}{1991}
+      \field{pages}{222\bibrangedash 226}
+      \range{pages}{5}
+    \endentry
+    \entry{HonkapohjaKoskela1999}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=6a9be018ef92ff553e005eb5f6a24698}{%
+           family={Honkapohja},
+           familyi={H\bibinitperiod},
+           given={Seppo},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7a6ad9b2714e54e96deec7042061a7e4}{%
+           family={Koskela},
+           familyi={K\bibinitperiod},
+           given={Erkki},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{0d6bac917e672214c91ce22ac46b1f54}
+      \strng{fullhash}{0d6bac917e672214c91ce22ac46b1f54}
+      \strng{fullhashraw}{0d6bac917e672214c91ce22ac46b1f54}
+      \strng{bibnamehash}{0d6bac917e672214c91ce22ac46b1f54}
+      \strng{authorbibnamehash}{0d6bac917e672214c91ce22ac46b1f54}
+      \strng{authornamehash}{0d6bac917e672214c91ce22ac46b1f54}
+      \strng{authorfullhash}{0d6bac917e672214c91ce22ac46b1f54}
+      \strng{authorfullhashraw}{0d6bac917e672214c91ce22ac46b1f54}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Economic Policy}
+      \field{number}{29}
+      \field{title}{The Economic Crisis of the 1990s in {Finland}}
+      \field{volume}{14}
+      \field{year}{1999}
+      \field{pages}{399\bibrangedash 436}
+      \range{pages}{38}
+    \endentry
+    \entry{working_paper_26}{report}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=1f24f37ef3f6f351b291da0b9e3c1a67}{%
+           family={Hosseini},
+           familyi={H\bibinitperiod},
+           given={Roozbeh},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a0e5ed2b76cb4f4c6c0f8faf57b5faa0}{%
+           family={Gervais},
+           familyi={G\bibinitperiod},
+           given={Martin},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{institution}{1}{%
+        {SSRN}%
+      }
+      \strng{namehash}{71ea98f022c93acb2e9abf0cc6a138ef}
+      \strng{fullhash}{71ea98f022c93acb2e9abf0cc6a138ef}
+      \strng{fullhashraw}{71ea98f022c93acb2e9abf0cc6a138ef}
+      \strng{bibnamehash}{71ea98f022c93acb2e9abf0cc6a138ef}
+      \strng{authorbibnamehash}{71ea98f022c93acb2e9abf0cc6a138ef}
+      \strng{authornamehash}{71ea98f022c93acb2e9abf0cc6a138ef}
+      \strng{authorfullhash}{71ea98f022c93acb2e9abf0cc6a138ef}
+      \strng{authorfullhashraw}{71ea98f022c93acb2e9abf0cc6a138ef}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Risk Sharing across U.S. States and EU Countries}
+      \field{type}{Working Paper}
+      \field{year}{March 2026}
+      \verb{urlraw}
+      \verb https://roozbeh-hosseini.github.io/papers/risk_sharing_states.pdf
+      \endverb
+      \verb{url}
+      \verb https://roozbeh-hosseini.github.io/papers/risk_sharing_states.pdf
+      \endverb
+    \endentry
+    \entry{IMF2009BPM6}{book}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=ebb24d27be637c70ebf0c297ab842b7f}{%
+           family={{International Monetary Fund}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Washington, D.C.}%
+      }
+      \list{publisher}{1}{%
+        {International Monetary Fund}%
+      }
+      \strng{namehash}{ebb24d27be637c70ebf0c297ab842b7f}
+      \strng{fullhash}{ebb24d27be637c70ebf0c297ab842b7f}
+      \strng{fullhashraw}{ebb24d27be637c70ebf0c297ab842b7f}
+      \strng{bibnamehash}{ebb24d27be637c70ebf0c297ab842b7f}
+      \strng{authorbibnamehash}{ebb24d27be637c70ebf0c297ab842b7f}
+      \strng{authornamehash}{ebb24d27be637c70ebf0c297ab842b7f}
+      \strng{authorfullhash}{ebb24d27be637c70ebf0c297ab842b7f}
+      \strng{authorfullhashraw}{ebb24d27be637c70ebf0c297ab842b7f}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{6th}
+      \field{title}{Balance of Payments and International Investment Position Manual}
+      \field{year}{2009}
+    \endentry
+    \entry{lane2018external}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=9307b378fcfca8f9c209153e193ffa08}{%
+           family={Lane},
+           familyi={L\bibinitperiod},
+           given={Philip\bibnamedelima R.},
+           giveni={P\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3252c434d1c572c418ad16d7813413c3}{%
+           family={Milesi-Ferretti},
+           familyi={M\bibinithyphendelim F\bibinitperiod},
+           given={Gian\bibnamedelima Maria},
+           giveni={G\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{0a2217e586628396e64681b8002652a7}
+      \strng{fullhash}{0a2217e586628396e64681b8002652a7}
+      \strng{fullhashraw}{0a2217e586628396e64681b8002652a7}
+      \strng{bibnamehash}{0a2217e586628396e64681b8002652a7}
+      \strng{authorbibnamehash}{0a2217e586628396e64681b8002652a7}
+      \strng{authornamehash}{0a2217e586628396e64681b8002652a7}
+      \strng{authorfullhash}{0a2217e586628396e64681b8002652a7}
+      \strng{authorfullhashraw}{0a2217e586628396e64681b8002652a7}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IMF Economic Review}
+      \field{title}{The External Wealth of Nations Revisited: International Financial Integration in the Aftermath of the Global Financial Crisis}
+      \field{volume}{66}
+      \field{year}{2018}
+      \field{pages}{189\bibrangedash 222}
+      \range{pages}{34}
+      \verb{doi}
+      \verb 10.1057/s41308-017-0048-y
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1057/s41308-017-0048-y
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1057/s41308-017-0048-y
+      \endverb
+    \endentry
+    \entry{Obstfeld1994}{incollection}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=0c923601596f623c2abb75d6ce9e3d84}{%
+           family={Obstfeld},
+           familyi={O\bibinitperiod},
+           given={Maurice},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=2ab60559a967a48b2d2bbcc39c87f396}{%
+           family={Leiderman},
+           familyi={L\bibinitperiod},
+           given={Leonardo},
+           giveni={L\bibinitperiod}}}%
+        {{hash=b6bc470f25d78435ebbf7c8d31b46f81}{%
+           family={Razin},
+           familyi={R\bibinitperiod},
+           given={Assaf},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, NY}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{0c923601596f623c2abb75d6ce9e3d84}
+      \strng{fullhash}{0c923601596f623c2abb75d6ce9e3d84}
+      \strng{fullhashraw}{0c923601596f623c2abb75d6ce9e3d84}
+      \strng{bibnamehash}{0c923601596f623c2abb75d6ce9e3d84}
+      \strng{authorbibnamehash}{0c923601596f623c2abb75d6ce9e3d84}
+      \strng{authornamehash}{0c923601596f623c2abb75d6ce9e3d84}
+      \strng{authorfullhash}{0c923601596f623c2abb75d6ce9e3d84}
+      \strng{authorfullhashraw}{0c923601596f623c2abb75d6ce9e3d84}
+      \strng{editorbibnamehash}{4749b40dd10e034c20ac71c9a608683f}
+      \strng{editornamehash}{4749b40dd10e034c20ac71c9a608683f}
+      \strng{editorfullhash}{4749b40dd10e034c20ac71c9a608683f}
+      \strng{editorfullhashraw}{4749b40dd10e034c20ac71c9a608683f}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Capital Mobility: The Impact on Consumption, Investment and Growth}
+      \field{title}{Are Industrial-Country Consumption Risks Globally Diversified?}
+      \field{year}{1994}
+      \field{pages}{13\bibrangedash 44}
+      \range{pages}{32}
+    \endentry
+    \entry{main}{article}{}{}
+      \name{author}{4}{ul=2}{%
+        {{un=0,uniquepart=base,hash=2e0315cffc37f9410262c9bf838a1f37}{%
+           family={Sørensen},
+           familyi={S\bibinitperiod},
+           given={Bent\bibnamedelima E.},
+           giveni={B\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e2328bb3139b758264c5579540a43ff2}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={Yi-Tsung},
+           giveni={Y\bibinithyphendelim T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=33e73cd89789b71af09243326fff5d93}{%
+           family={Yosha},
+           familyi={Y\bibinitperiod},
+           given={Oved},
+           giveni={O\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1a4cc60974837e41def809152b6f9b88}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={Yu},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{de5dabeef01ef24f0e77447780c90a4e}
+      \strng{fullhash}{46bd9040e5aba63cf6523dd976379a37}
+      \strng{fullhashraw}{46bd9040e5aba63cf6523dd976379a37}
+      \strng{bibnamehash}{de5dabeef01ef24f0e77447780c90a4e}
+      \strng{authorbibnamehash}{de5dabeef01ef24f0e77447780c90a4e}
+      \strng{authornamehash}{de5dabeef01ef24f0e77447780c90a4e}
+      \strng{authorfullhash}{46bd9040e5aba63cf6523dd976379a37}
+      \strng{authorfullhashraw}{46bd9040e5aba63cf6523dd976379a37}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of International Money and Finance}
+      \field{note}{Financial Globalization and Integration}
+      \field{number}{4}
+      \field{title}{Home bias and international risk sharing: Twin puzzles separated at birth}
+      \field{volume}{26}
+      \field{year}{2007}
+      \field{pages}{587\bibrangedash 605}
+      \range{pages}{19}
+    \endentry
+    \entry{sy1998}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=2e0315cffc37f9410262c9bf838a1f37}{%
+           family={Sørensen},
+           familyi={S\bibinitperiod},
+           given={Bent\bibnamedelima E.},
+           giveni={B\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=33e73cd89789b71af09243326fff5d93}{%
+           family={Yosha},
+           familyi={Y\bibinitperiod},
+           given={Oved},
+           giveni={O\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{28dd16509e0dc1393d5e075985feb0db}
+      \strng{fullhash}{28dd16509e0dc1393d5e075985feb0db}
+      \strng{fullhashraw}{28dd16509e0dc1393d5e075985feb0db}
+      \strng{bibnamehash}{28dd16509e0dc1393d5e075985feb0db}
+      \strng{authorbibnamehash}{28dd16509e0dc1393d5e075985feb0db}
+      \strng{authornamehash}{28dd16509e0dc1393d5e075985feb0db}
+      \strng{authorfullhash}{28dd16509e0dc1393d5e075985feb0db}
+      \strng{authorfullhashraw}{28dd16509e0dc1393d5e075985feb0db}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of International Economics}
+      \field{number}{2}
+      \field{title}{International risk sharing and European monetary unification}
+      \field{volume}{45}
+      \field{year}{1998}
+      \field{pages}{211\bibrangedash 238}
+      \range{pages}{28}
+    \endentry
+    \entry{WienerBoerse2026}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=5835d42b64ca0d2c9139ece574843dc5}{%
+           family={{Wiener Börse}},
+           familyi={W\bibinitperiod}}}%
+      }
+      \strng{namehash}{5835d42b64ca0d2c9139ece574843dc5}
+      \strng{fullhash}{5835d42b64ca0d2c9139ece574843dc5}
+      \strng{fullhashraw}{5835d42b64ca0d2c9139ece574843dc5}
+      \strng{bibnamehash}{5835d42b64ca0d2c9139ece574843dc5}
+      \strng{authorbibnamehash}{5835d42b64ca0d2c9139ece574843dc5}
+      \strng{authornamehash}{5835d42b64ca0d2c9139ece574843dc5}
+      \strng{authorfullhash}{5835d42b64ca0d2c9139ece574843dc5}
+      \strng{authorfullhashraw}{5835d42b64ca0d2c9139ece574843dc5}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://www.wienerborse.at/en/about-us/vienna-stock-exchange/250-years-wiener-boerse/history/}}
+      \field{note}{Accessed: 2026-05-29}
+      \field{title}{250 Years: History of {Wiener Börse}}
+      \field{year}{2026}
+    \endentry
+    \entry{WorldBank2026WDI}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=32730e15a7ca0bf0686ea8d4a3a46ab9}{%
+           family={{World Bank}},
+           familyi={W\bibinitperiod}}}%
+      }
+      \strng{namehash}{32730e15a7ca0bf0686ea8d4a3a46ab9}
+      \strng{fullhash}{32730e15a7ca0bf0686ea8d4a3a46ab9}
+      \strng{fullhashraw}{32730e15a7ca0bf0686ea8d4a3a46ab9}
+      \strng{bibnamehash}{32730e15a7ca0bf0686ea8d4a3a46ab9}
+      \strng{authorbibnamehash}{32730e15a7ca0bf0686ea8d4a3a46ab9}
+      \strng{authornamehash}{32730e15a7ca0bf0686ea8d4a3a46ab9}
+      \strng{authorfullhash}{32730e15a7ca0bf0686ea8d4a3a46ab9}
+      \strng{authorfullhashraw}{32730e15a7ca0bf0686ea8d4a3a46ab9}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://databank.worldbank.org/source/world-development-indicators}}
+      \field{note}{Accessed: 2026-05-29}
+      \field{title}{World Development Indicators}
+      \field{year}{2026}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

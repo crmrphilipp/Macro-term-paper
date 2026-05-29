@@ -1,27 +1,34 @@
-\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
-\contentsline {section}{\numberline {2}Data}{4}{section.2}%
-\contentsline {section}{\numberline {3}Replication of {sorensen2007}}{4}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Equity Home Bias}{4}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Cross-Section Risk Sharing}{5}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Panel-Data Regressions}{7}{subsection.3.3}%
-\contentsline {subsubsection}{\numberline {3.3.1}Theoretical outline}{7}{subsubsection.3.3.1}%
-\contentsline {subsubsection}{\numberline {3.3.2}Empirical results}{7}{subsubsection.3.3.2}%
-\contentsline {section}{\numberline {4}Extensions by Time and Sample Size}{8}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Extension: Equity Home Bias}{9}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Extension: Cross-Section Risk Sharing Estimates}{9}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Extension: Panel-Data Regressions}{9}{subsection.4.3}%
-\contentsline {subsubsection}{\numberline {4.3.1}First Extension: Similar Country Sample 1987--2017}{9}{subsubsection.4.3.1}%
-\contentsline {subsubsection}{\numberline {4.3.2}Second Extension: Extended Country Sample 1987--2017}{10}{subsubsection.4.3.2}%
-\contentsline {section}{\numberline {5}Case Study Euro Area}{11}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Case Study Euro Area: Panel Regression}{12}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Case Study Euro Area: Equity Home Bias}{12}{subsection.5.2}%
-\contentsline {subsubsection}{\numberline {5.2.1}Onshore--Offshore Financial Centres}{14}{subsubsection.5.2.1}%
-\contentsline {subsubsection}{\numberline {5.2.2}Data Analysis}{15}{subsubsection.5.2.2}%
-\contentsline {subsubsection}{\numberline {5.2.3}Home Bias Trajectory}{16}{subsubsection.5.2.3}%
-\contentsline {subsection}{\numberline {5.3}Case Study Euro Area: Risk Sharing}{16}{subsection.5.3}%
-\contentsline {section}{\numberline {6}Conclusion}{16}{section.6}%
-\contentsline {section}{Appendices}{17}{section*.12}%
-\contentsline {section}{\numberline {A}Appendix A: Replication}{17}{appendix.1.A}%
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
+\contentsline {section}{\numberline {2}Replication of \blx@tocontentsinit {0}\textcite {main}}{1}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Equity home bias}{1}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Cross-Section Risk Sharing and first replication result}{2}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Replication issues in Cross Section Risk Sharing}{3}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Panel-Data Regressions}{4}{subsection.2.4}%
+\contentsline {subsubsection}{\numberline {2.4.1}Theoretical outline}{4}{subsubsection.2.4.1}%
+\contentsline {subsubsection}{\numberline {2.4.2}Empirical results}{5}{subsubsection.2.4.2}%
+\contentsline {section}{\numberline {3}Extensions by Time and Sample Size}{6}{section.3}%
+\contentsline {section}{\numberline {4}Case Study Euro Area}{7}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Case Study Euro Area: Panel Regression}{7}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Case Study Euro Area: Equity home bias}{8}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}Financial Centers in Europe}{8}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}Data Analysis}{9}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.3}Home bias Trajectory}{10}{subsubsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.3}Case Study Euro Area: Risk Sharing}{10}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Conclusion}{12}{section.5}%
+\contentsline {section}{Appendices}{15}{section*.12}%
+\contentsline {section}{\numberline {A}Appendix A: Replication}{15}{appendix.1.A}%
+\contentsline {subsection}{\numberline {A.1}Appendix A: Paper Table 1 Replication}{15}{subsection.1.A.1}%
+\contentsline {subsection}{\numberline {A.2}Appendix A: Paper Table 2 Replication}{15}{subsection.1.A.2}%
+\contentsline {subsection}{\numberline {A.3}Appendix A: Data Processing Description}{16}{subsection.1.A.3}%
+\contentsline {subsection}{\numberline {A.4}Appendix A: GNI Exploratory Cross Section Plot}{16}{subsection.1.A.4}%
+\contentsline {subsection}{\numberline {A.5}Appendix A: Cross Section Regression Results Assets/GDP}{17}{subsection.1.A.5}%
 \contentsline {section}{\numberline {B}Appendix B: Within Paper Extension}{17}{appendix.1.B}%
-\contentsline {section}{\numberline {C}Appendix C: Eurozone - Home Bias}{17}{appendix.1.C}%
-\contentsline {section}{\numberline {D}Appendix D: Eurozone - Risk Sharing}{17}{appendix.1.D}%
+\contentsline {subsection}{\numberline {B.1}Appendix B: Long Sample Cross Section Regression Assets/GDP}{17}{subsection.1.B.1}%
+\contentsline {subsection}{\numberline {B.2}Appendix B: Broad Sample Construction}{18}{subsection.1.B.2}%
+\contentsline {subsection}{\numberline {B.3}Appendix B: Broad Sample Cross Section Regression}{20}{subsection.1.B.3}%
+\contentsline {section}{\numberline {C}Appendix C: Eurozone Case Study}{21}{appendix.1.C}%
+\contentsline {subsection}{\numberline {C.1}Appendix C: Eurozone Cross Section Regression Results Assets/GDP}{21}{subsection.1.C.1}%
+\contentsline {subsection}{\numberline {C.2}Appendix C: Luxembourg and Ireland Fund Ownership}{21}{subsection.1.C.2}%
+\contentsline {subsection}{\numberline {C.3}Appendix C: Corrected Foreign Equity Shares}{22}{subsection.1.C.3}%
+\contentsline {subsection}{\numberline {C.4}Appendix C: Within Group Robustness Check and Panel Risk Sharing Regression}{23}{subsection.1.C.4}%
+\contentsline {subsection}{\numberline {C.5}Appendix C: Corrected Foreign Equity Shares}{23}{subsection.1.C.5}%
