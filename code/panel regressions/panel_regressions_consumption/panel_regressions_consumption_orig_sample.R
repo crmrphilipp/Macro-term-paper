@@ -237,7 +237,6 @@ table3_t <- c(
 
 names(table3_t) <- required_terms
 
-# Optional: print transformed values before exporting
 print(table3_coef)
 print(table3_t)
 

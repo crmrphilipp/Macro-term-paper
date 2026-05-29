@@ -2,7 +2,7 @@
 # Code for the panel regressions to recreate panel 3 
 # and panel 5 of the paper. 
 # Using current OECD data. 
-# EXTENTION 3:  Sample of 2021 Euroarea countries,
+# EXTENTION 3:  Sample of 221 Euroarea countries,
 #  time period 1987 - 2017
 #=============================================
 
