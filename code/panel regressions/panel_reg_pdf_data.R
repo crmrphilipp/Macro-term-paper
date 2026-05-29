@@ -100,11 +100,6 @@ summary(reg_cons_stage2)
 summary(reg_cons_stage1)
 
 
-#========================================
-# Consumption regression again, but using actual 
-# individual consumption instead of total 
-# consumption.
-#========================================
 
 # First step regression with country FE
 
@@ -208,10 +203,6 @@ reg_gni_stage2 <- plm(
 summary(reg_gni_stage1)
 summary(reg_gni_stage2)
 
-#========================================
-# Regression Table 5
-# Foreign Assets over GDP
-#========================================
 
 
 estimate_table5_cons <- function(data, asset_var) {
@@ -273,17 +264,6 @@ estimate_table5_cons <- function(data, asset_var) {
 }
 
 
-#==========================================================
-# CONSUMPTION
-#### Estimate the five Table 5-style regressions
-# Note:
-# eq_ehb_crude_dev_non_ppp        <- Equity assets / GDP deviation
-# debt_ehb_crude_dev_non_ppp      <- Debt assets / GDP deviation
-# fdi_ehb_crude_dev_non_ppp       <- FDI assets / GDP deviation
-# eq_debt_ehb_crude_dev_non_ppp   <- Equity + Debt assets / GDP deviation
-# ehb_crude_dev_non_ppp           <- All assets deviation
-#==========================================================
-
 reg_cons_eq_assets <- estimate_table5_cons(
   merged_df,
   "eq_ehb_crude_dev_non_ppp"
@@ -323,7 +303,6 @@ summary(reg_cons_all_assets)
 
 estimate_table5_gni <- function(data, asset_var) {
   
-  # Clean estimation sample for this specific asset variable
   reg_df_tmp <- data %>%
     mutate(asset_dev = .data[[asset_var]]) %>%
     filter(
@@ -334,7 +313,6 @@ estimate_table5_gni <- function(data, asset_var) {
     ) %>%
     arrange(iso, year)
   
-  # First-stage country FE regression
   panel_df_tmp <- pdata.frame(reg_df_tmp, index = c("iso", "year"))
   
   reg_stage1_tmp <- plm(
@@ -344,7 +322,6 @@ estimate_table5_gni <- function(data, asset_var) {
     effect = "individual"
   )
   
-  # Country-specific residual standard deviation
   reg_df_tmp$resid_stage1 <- as.numeric(residuals(reg_stage1_tmp))
   
   sigma_by_country_tmp <- reg_df_tmp %>%
@@ -355,7 +332,6 @@ estimate_table5_gni <- function(data, asset_var) {
       .groups = "drop"
     )
   
-  # Second-stage weights
   reg_df_tmp_w <- reg_df_tmp %>%
     left_join(sigma_by_country_tmp, by = "iso") %>%
     mutate(weight_i = 1 / sigma_i) %>%
@@ -365,7 +341,6 @@ estimate_table5_gni <- function(data, asset_var) {
       n_resid >= 2
     )
   
-  # Second-stage weighted country FE regression
   panel_df_tmp_w <- pdata.frame(reg_df_tmp_w, index = c("iso", "year"))
   
   reg_stage2_tmp <- plm(
@@ -379,16 +354,6 @@ estimate_table5_gni <- function(data, asset_var) {
   return(reg_stage2_tmp)
 }
 
-#==========================================================
-# GNI
-#### Estimate the five Table 5-style regressions
-# Note:
-# eq_ehb_crude_dev_non_ppp        <- Equity assets / GDP deviation
-# debt_ehb_crude_dev_non_ppp      <- Debt assets / GDP deviation
-# fdi_ehb_crude_dev_non_ppp       <- FDI assets / GDP deviation
-# eq_debt_ehb_crude_dev_non_ppp   <- Equity + Debt assets / GDP deviation
-# ehb_crude_dev_non_ppp           <- All assets deviation
-#==========================================================
 
 reg_gni_eq_assets <- estimate_table5_gni(
   merged_df,
@@ -422,15 +387,6 @@ summary(reg_gni_eq_debt_assets)
 summary(reg_gni_all_assets)
 
 
-#=============================
-#### Export regression table
-#=============================
-
-# ============================================================
-# Stargazer table creation code
-# Paper-style estimates with standard errors in parentheses
-# ============================================================
-
 library(stargazer)
 
 output_dir <- "../output"
@@ -439,13 +395,6 @@ if (!dir.exists(output_dir)) {
   dir.create(output_dir, recursive = TRUE)
 }
 
-# ------------------------------------------------------------
-# Transform raw coefficients into paper-style estimates
-# Reports:
-#   100 * (1 - kappa_0)
-#   -100 * kappa_1
-#   -100 * kappa_2
-# ------------------------------------------------------------
 
 get_paper_coef <- function(model) {
   
@@ -486,9 +435,6 @@ get_paper_se <- function(model) {
   return(out)
 }
 
-# ============================================================
-# Quick checks
-# ============================================================
 
 print(get_paper_coef(reg_cons_stage2))
 print(get_paper_se(reg_cons_stage2))
@@ -566,22 +512,12 @@ stargazer(
 )
 
 
-
-# ============================================================
-# Table 5 LaTeX tables
-# Point estimates only
-# No standard errors, no t-values, no CSV
-# ============================================================
-
 output_dir <- "../output"
 
 if (!dir.exists(output_dir)) {
   dir.create(output_dir, recursive = TRUE)
 }
 
-# ------------------------------------------------------------
-# Transform raw regression coefficients into paper-style estimates
-# ------------------------------------------------------------
 
 get_table5_estimates <- function(model) {
   

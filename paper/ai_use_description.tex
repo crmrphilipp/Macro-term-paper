@@ -17,7 +17,7 @@ In the following we will describe for what types of problems/questions we used g
     When we discovered the feasible GLS approach used in the replication paper, we discussed the implementation of this as well as the 
     consequences for the estimation and whether this might cause problems for the inference/results because while normally residual weighting
     seems intuitive, in the case of the risk sharing, large residuals show a lot of uninsured risk. Furthermore dominant countries like the US might always
-    fit the trend better leading to higher weights. Additionally, countries with stable grwoth in the short period might just have a better fit but 
+    fit the trend better leading to higher weights. Additionally, countries with stable growth in the short period might just have a better fit but 
     little interesting variation for the actual risk sharing.
     To unravel problems like this we analsed our own thoughts and discussions with AI applications.
 
@@ -32,14 +32,23 @@ In the following we will describe for what types of problems/questions we used g
 
     Example:
 
+    Am I right in understanding that the paper uses a two stage feasable GLS approach, weighted by the inverse of the standard deviation of the residuals? Please scan the original
+    paper for further hints on how exactly they run this two stage regression.
+
 2. Writing or Correcting Code
     We used AI extensively to write code or for troubleshooting. This happened in various forms, from prompting questions or demands e.g. for sophisticated plots,
-    to assistants like copilot in vs-code or for finding problems in the code.
+    to assistants like copilot in vs-code or for finding problems in the code. Further, we used AI to clean and comment self-generated code, to make it easier to understand 
+    for other group members. We used AI in some instances to translate STATA code to R code, as one group member used STATA and not R in his undergrad.
     
     Example:
         I have a dataframe in R called "ehb_top60_restr". It contains home bias measuresin column "ehb" and iso codes in "iso" across years ("year").
         I want to plot unweighted means for 4 different groups, the Euro Area founding members (EA core), the countries that joine dlater (Euro periphery), 
-        the US, and all other countries in the sample. 
+        the US, and all other countries in the sample.\
+    Example:
+        I just wrote this code. Please make sure it runs smoothly and comment the main parts of it to make sure that other group members are able to understand it, even if 
+        they have not been involved in writing this code. \
+    Example: 
+        Please explain how this STATA command works in R [Insert relevant STATA command]. Please let me know any structural differences in how this command is used in R compared to STATA
 
     We used applications like Claude Code coding independently only in two instances:
         1. When the PPP adjusted chained linked volumes OECD data produced negative trends we gave only the raw data to Claude Code and asked to replicate the papers risk sharing regression and plot.

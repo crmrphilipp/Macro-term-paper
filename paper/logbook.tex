@@ -24,7 +24,13 @@ Discussed first Euro Area Extensions
 Step 2 - Replicate Risk Sharing Regression
 
 Data Process:
-first try - OECD Data non PPP (Jannis)
+first try - OECD Data non PPP 
+We tried to replicate the Consumption, GNI and GDP data using today's OECD National Accounts and exchange rates. 
+We realized that \textcite{main} only weakly documented how they approached this topic, forcing us to make various 
+individual choices on how to adjust the data. After a handful of rather unsuccessful tries, we decided to use OECD chained linked
+volumes 2020 rebased since they are already PPP adjusted by the OECD.
+Further, we tried to run the main regressions using PPP adjusted data for Consumption, GNI and GDP from the world bank. 
+After a deeper analysis of this data, we decided against this data source, as GNI data for the 1990th is very limited. 
 second - OECD chained linked volumes 2020 rebased
 third - WDI data PPP
 
@@ -34,7 +40,9 @@ fourth - OECD data non PPP, PPP adjustment with base year ???
 fifth - old 2005 OECD data scraped from PDF with Claude Code
 
 both give increasing trends with smaller slopes than original paper
-smoothing 
+smoothing\
+We used the old 2005 OECD data scraped from the PDF to replicate the main regressions and confirm that our code is 
+working, concluding that the problems before were related to data problems and not to a problem in our code. 
 
 
 Step 3 - Refine EHB data
@@ -45,8 +53,10 @@ exclude some irregular values (negative EHB or above 1 EHB) and investigate pote
 Step 4 - Replication Panel Regressions
 
 quite far off with initial data versions also yielding opposite signs and different significance patterns
-disovered the two stage approach (feasible GLS) which is only mentioned in a footnote
-replicated direction of effects, similar magnitudes and paper consistent significance patterns with data versions 4 and 5
+We disovered the two stage approach (feasible GLS) which is only mentioned in a footnote. 
+Once we managed to rebuild \textcite{main} data with OECD data, we replicated their regressions and recieved similar direction of effects, 
+similar magnitudes and paper consistent significance patterns with data version 4 and 5. 
+
 
 Step 5 - Extension of Home Bias data
 
