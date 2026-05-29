@@ -42,7 +42,7 @@ eurozone_21 <- c(
 wdi_data <- WDI(
   indicator = indicator_list,
   country   = eurozone_21,
-  start     = 1969,
+  start     = 1995,
   end       = 2023,
   extra     = FALSE
 )
@@ -50,7 +50,7 @@ wdi_data <- WDI(
 wdi_data_rep <- WDI(
   indicator = indicator_list,
   country   = eu_no_estonia,
-  start     = 1969,
+  start     = 1995,
   end       = 2023,
   extra     = FALSE
 )

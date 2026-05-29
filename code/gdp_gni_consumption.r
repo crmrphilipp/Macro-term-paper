@@ -430,7 +430,7 @@ country_selection_extension_2 <- c(
     "Russia", "Saudi Arabia", "Singapore", "Slovak Republic", "Slovenia", 
     "South Africa", "Spain", "Sweden", "Switzerland", "Thailand", 
     "Türkiye", "United Arab Emirates", "United Kingdom", "United States", 
-    "Vietnam"
+    "Vietnam", "Cyprus", "Estonia", "Finland", "Ireland", "Lithuania", "Malta"
 )
 
 # Check which countries and which time periods are in the big sample
@@ -448,7 +448,8 @@ data_sets_replication <- data_cleaning_function(gdp_cons_dataset = gdp_cons_data
 write_csv(data_sets_replication[["consumption_data"]], "../data/data_cy_ext_2.csv")
 write_csv(data_sets_replication[["gni_data"]], "../data/data_iy_ext_2.csv")
 
-######################### EXTENSION 3: 1987 to 2017, Eurozone
+######################### EXTENSION 3: 1987 to 2017, Eurozone (within-group aggregate)
+# First, using the within-group aggregate (will be used for appendix later)
 ### Eurozone: Choose all countries that eventually join the Euro
 country_selection_extension_3 <- c(
     "Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus", "Estonia", "Finland", "France", "Germany", "Greece",
@@ -456,8 +457,19 @@ country_selection_extension_3 <- c(
 )
 time_frame_extension_3 <- 1986:2017
 data_sets_replication <- data_cleaning_function(gdp_cons_dataset = gdp_cons_data, gdp_gni_dataset = gdp_gni_data,
-                                                time_frame = time_frame_extension_3, country_selection = country_selection_extension_4a,
+                                                time_frame = time_frame_extension_3, country_selection = country_selection_extension_3,
                                                 cpi_data = cpi_data, ppp_data = ppp_data, pop_data = pop_data)
 
 write_csv(data_sets_replication[["consumption_data"]], "../data/data_cy_ext_3.csv")
 write_csv(data_sets_replication[["gni_data"]], "../data/data_iy_ext_3.csv")
+
+### Non-Eurozone
+country_selection_extension_3b <- setdiff(country_selection_extension_2, country_selection_extension_3)
+time_frame_extension_3b <- 1986:2017
+data_sets_replication <- data_cleaning_function(gdp_cons_dataset = gdp_cons_data, gdp_gni_dataset = gdp_gni_data,
+                                                time_frame = time_frame_extension_3b, country_selection = country_selection_extension_3b,
+                                                cpi_data = cpi_data, ppp_data = ppp_data, pop_data = pop_data)
+
+write_csv(data_sets_replication[["consumption_data"]], "../data/data_cy_ext_3b.csv")
+write_csv(data_sets_replication[["gni_data"]], "../data/data_iy_ext_3b.csv")
+

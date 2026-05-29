@@ -152,6 +152,8 @@ plot_generator <- function(df, limits, left_sec = 10, seq = 1,
   } else {
     # 3. Standard Configuration (No Right Axis)
     p1 <- p1 + 
+      geom_vline(xintercept = 1999, linetype = "dotted", color = "grey50", linewidth = 1.2) +
+      geom_vline(xintercept = 2010, linetype = "dotted", color = "grey50", linewidth = 1.2) +
       scale_y_continuous(
         labels = function(x) sprintf("%.1f%%", x),
         limits = c(limits[1], limits[2]),
@@ -188,7 +190,7 @@ plot_generator <- function(df, limits, left_sec = 10, seq = 1,
       legend.title = element_blank()
     )
   
-return(p1)
+  return(p1)
 }
 
 ############################# Generate plots
@@ -229,6 +231,18 @@ plot <- plot_generator(df = data_clean, limits = c(-20,35), sec_limits = c(-1.5,
                                                home_bias_include = TRUE, home_bias_df = home_bias_df)
 ggsave("../output/rs_cs_sanity_i.pdf", plot = plot, width = 8, height = 6)
 
+### VOLATILITY CHECK: USING CHAINED-Linked-volumes
+home_bias_df <- read_csv("../data/fig_2_asset_gdp.csv")
+home_bias_df <- home_bias_df[,-1]
+# Consumption risk sharing
+data <- read.csv("../data/data_cy_rebased.csv")
+data_clean <- data_cleaning(data = data, consumption = TRUE)
+data_clean <- data_clean %>% filter(TIME_PERIOD %in% 1993:2003)
+
+plot <- plot_generator(df = data_clean, limits = c(0,100), sec_limits = c(-0.8, 0.4),
+                                               home_bias_include = TRUE, home_bias_df = home_bias_df)
+ggsave("../output/rs_cs_rebased.pdf", plot = plot, width = 8, height = 6)
+
 ##########################################################################
 ### EXTENSION 1: 1987 to 2017, same countries
 home_bias_df <- read_csv("../data/fig_2_asset_gdp_data_long.csv")
@@ -268,21 +282,97 @@ plot <- plot_generator(df = data_clean, limits = c(-70,110), seq = 5, sec_limits
                                                home_bias_include = TRUE, home_bias_df = home_bias_df)
 ggsave("../output/rs_cs_ext_2_i.pdf", plot = plot, width = 8, height = 6)
 
-### EXTENSION 3: 1987 to 2017, Eurozone
-home_bias_df <- read_csv("../data/fig_2_asset_gdp_data_long_euro.csv")
-home_bias_df <- home_bias_df[,-1]
+#-----------------------------------------------------------------#
+##### EXTENSION 3: 1987 to 2017, Eurozone (within-group aggregate)
+### Will be used for Appendix
+## Eurozone
 # Consumption risk sharing
 data <- read.csv("../data/data_cy_ext_3.csv")
 data_clean <- data_cleaning(data = data, consumption = TRUE)
 
-plot <- plot_generator(df = data_clean, limits = c(-10,100), seq = 5, sec_limits = c(-2.5, 0.5),
-                                               home_bias_include = TRUE, home_bias_df = home_bias_df)
+plot <- plot_generator(df = data_clean, limits = c(-40,100), seq = 5, sec_limits = c(-2.5, 0.5),
+                                               home_bias_include = FALSE)
 ggsave("../output/rs_cs_ext_3_c.pdf", plot = plot, width = 8, height = 6)
 
 # Income risk sharing
 data <- read.csv("../data/data_iy_ext_3.csv")
 data_clean <- data_cleaning(data = data, consumption = FALSE)
 
-plot <- plot_generator(df = data_clean, limits = c(-190,190), seq = 5, left_sec = 30, sec_limits = c(-2.5, 0.5),
-                                               home_bias_include = TRUE, home_bias_df = home_bias_df)
+plot <- plot_generator(df = data_clean, limits = c(-70,110), seq = 5, left_sec = 30, sec_limits = c(-2.5, 0.5),
+                                               home_bias_include = FALSE)
 ggsave("../output/rs_cs_ext_3_i.pdf", plot = plot, width = 8, height = 6)
+
+## Non-Eurozone
+# Consumption risk sharing
+data <- read.csv("../data/data_cy_ext_3b.csv")
+data_clean <- data_cleaning(data = data, consumption = TRUE)
+
+plot <- plot_generator(df = data_clean, limits = c(-40,100), seq = 5, sec_limits = c(-2.5, 0.5),
+                                               home_bias_include = FALSE)
+ggsave("../output/rs_cs_ext_3b_c.pdf", plot = plot, width = 8, height = 6)
+
+# Income risk sharing
+data <- read.csv("../data/data_iy_ext_3b.csv")
+data_clean <- data_cleaning(data = data, consumption = FALSE)
+
+plot <- plot_generator(df = data_clean, limits = c(-70,110), seq = 5, left_sec = 30, sec_limits = c(-2.5, 0.5),
+                                               home_bias_include = FALSE)
+ggsave("../output/rs_cs_ext_3b_i.pdf", plot = plot, width = 8, height = 6)
+#-----------------------------------------------------------------#
+
+#-----------------------------------------------------------------#
+##### EXTENSION 4: 1987 to 2017, Eurozone (same aggregate across EA and non-EA)
+## Eurozone
+# Consumption risk sharing
+data <- read.csv("../data/data_cy_ext_2.csv")
+countries_ea <- c(
+    "AUT", "BEL", "BGR", "HRV", "CYP", "EST", "FIN", "FRA", "DEU", "GRC","Aggregate",
+    "IRL", "ITA", "LVA", "LTU", "LUX", "MLT", "NLD", "PRT", "SVK", "SVN", "ESP"
+)
+data <- data  %>% filter(REF_AREA %in% countries_ea)
+data_clean <- data_cleaning(data = data, consumption = TRUE)
+
+plot <- plot_generator(df = data_clean, limits = c(-40,110), seq = 5, sec_limits = c(-2.5, 0.5),
+                                               home_bias_include = FALSE)
+ggsave("../output/rs_cs_ext_4_c.pdf", plot = plot, width = 8, height = 6)
+
+# Income risk sharing
+data <- read.csv("../data/data_iy_ext_2.csv")
+countries_ea <- c(
+    "AUT", "BEL", "BGR", "HRV", "CYP", "EST", "FIN", "FRA", "DEU", "GRC","Aggregate",
+    "IRL", "ITA", "LVA", "LTU", "LUX", "MLT", "NLD", "PRT", "SVK", "SVN", "ESP"
+)
+data <- data  %>% filter(REF_AREA %in% countries_ea)
+data_clean <- data_cleaning(data = data, consumption = FALSE)
+
+plot <- plot_generator(df = data_clean, limits = c(-220,190), seq = 5, left_sec = 30, sec_limits = c(-2.5, 0.5),
+                                               home_bias_include = FALSE)
+ggsave("../output/rs_cs_ext_4_i.pdf", plot = plot, width = 8, height = 6)
+
+## Non-Eurozone
+# Consumption risk sharing
+data <- read.csv("../data/data_cy_ext_2.csv")
+data_clean <- data_cleaning(data = data, consumption = TRUE)
+countries_ea <- c(
+    "AUT", "BEL", "BGR", "HRV", "CYP", "EST", "FIN", "FRA", "DEU", "GRC",
+    "IRL", "ITA", "LVA", "LTU", "LUX", "MLT", "NLD", "PRT", "SVK", "SVN", "ESP"
+)
+data <- data  %>% filter(!REF_AREA %in% countries_ea)
+
+plot <- plot_generator(df = data_clean, limits = c(-40,110), seq = 5, sec_limits = c(-2.5, 0.5),
+                                               home_bias_include = FALSE)
+ggsave("../output/rs_cs_ext_4b_c.pdf", plot = plot, width = 8, height = 6)
+
+# Income risk sharing
+data <- read.csv("../data/data_cy_ext_2.csv")
+data_clean <- data_cleaning(data = data, consumption = TRUE)
+countries_ea <- c(
+    "AUT", "BEL", "BGR", "HRV", "CYP", "EST", "FIN", "FRA", "DEU", "GRC",
+    "IRL", "ITA", "LVA", "LTU", "LUX", "MLT", "NLD", "PRT", "SVK", "SVN", "ESP"
+)
+data <- data  %>% filter(!REF_AREA %in% countries_ea)
+
+plot <- plot_generator(df = data_clean, limits = c(-200,190), seq = 5, left_sec = 30, sec_limits = c(-2.5, 0.5),
+                                               home_bias_include = FALSE)
+ggsave("../output/rs_cs_ext_4b_i.pdf", plot = plot, width = 8, height = 6)
+#-----------------------------------------------------------------#
